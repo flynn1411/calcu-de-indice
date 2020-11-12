@@ -13,6 +13,7 @@ export default function Materia( {materia, manejarCambiosMateria} ) {
 
     function manejarClase(e){
         let nuevaClase = refClase.current.value;
+        //console.log(materia.id);
 
         manejarCambiosMateria(materia.id, {"Clase":nuevaClase, "Nota": nota, "UV": uv});
     }

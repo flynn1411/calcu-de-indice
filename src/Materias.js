@@ -2,21 +2,10 @@ import React from 'react'
 import Materia from './Materia'
 import uuidv4 from 'uuid/dist/v4'
 
-export default function Materias( {materias, manejarCambiosMateria, actualizarMaterias} ) {
+export default function Materias( {materias, manejarCambiosMateria} ) {
 
-    function crearID(){
-        return uuidv4();
-    }
-
-    function actualizar(){
-        mostrarMaterias(materias.map(materia => {materia.id = crearID()}));
-    }
-
-    function mostrarMaterias(materias2){
-        actualizarMaterias(materias2);
-
-        return materias2.map( materia => {
-            
+    function mostrarMaterias(){
+        return materias.map( materia => {
             return <Materia key={materia.id} materia={materia} manejarCambiosMateria={manejarCambiosMateria}/>
         } )
     }
@@ -31,7 +20,7 @@ export default function Materias( {materias, manejarCambiosMateria, actualizarMa
                 </tr>
             </thead>
             <tbody>
-                {actualizar()}
+                {mostrarMaterias()}
             </tbody>
         </table>
     )
