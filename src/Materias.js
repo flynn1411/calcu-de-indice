@@ -2,11 +2,11 @@ import React from 'react'
 import Materia from './Materia'
 import uuidv4 from 'uuid/dist/v4'
 
-export default function Materias( {materias, manejarCambiosMateria} ) {
+export default function Materias( {materias, autoSaving} ) {
 
     function mostrarMaterias(){
         return materias.map( materia => {
-            return <Materia key={materia.id} materia={materia} manejarCambiosMateria={manejarCambiosMateria}/>
+            return <Materia key={materia.id} materia={materia} autoSaving={autoSaving}/>
         } )
     }
 
