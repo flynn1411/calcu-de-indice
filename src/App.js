@@ -2,12 +2,26 @@ import React, { useState, useRef } from 'react';
 import Materias from './Materias';
 import uuidv4 from 'uuid/dist/v4';
 
+document.body.className = "default";
+
 /*#################Variables Globales###################*/
-const listaClases = [{"Clase":"Conta","Nota":70,"UV":4},{"Clase":"Lenguajes","Nota":66,"UV":4}];
-const ULTIMOS_CAMBIOS_PERIODO = "6/8/2020 13:52";
+const DEFAULT_CAMBIOS_PERIODO = "6/8/2020 13:52";
+const DEFAULT_PERIODO = [
+    {"Clase":"Conta","Nota":70,"UV":4},
+    {"Clase":"Lenguajes","Nota":66,"UV":4}
+];
 const TIMEOUT_VALUE = 1200;
-const CANTIDAD_DEFECTO_PERIODO = 10;
 const CANTIDAD_MAXIMA_PERIODO = 10;
+
+const periodoKey = "MATERIAS_PERIODO";
+const changesPeriodoKey = "CAMBIOS_PERIODO";
+
+const backupClases = JSON.parse(localStorage.getItem(periodoKey));
+const backupCambios = localStorage.getItem(changesPeriodoKey);
+
+const listaClases = backupClases != null ? backupClases : DEFAULT_PERIODO;
+const ULTIMOS_CAMBIOS_PERIODO = backupCambios != null ? backupCambios : DEFAULT_CAMBIOS_PERIODO;
+
 
 /*#################Aplicación Principal###################*/
 function App(){
@@ -21,7 +35,6 @@ function App(){
     }) );
 
     const [tiempoPeriodo, setTiempoPeriodo] = useState(ULTIMOS_CAMBIOS_PERIODO);
-    const [cantidadClases, setCantidadClases] = useState(CANTIDAD_DEFECTO_PERIODO);
     const [cantidadMaxima, setCantidadMaxima] = useState(CANTIDAD_MAXIMA_PERIODO);
 
     /*#################Referencias#################*/
@@ -45,6 +58,7 @@ function App(){
             const timeStamp = `${time.getDate()}/${time.getMonth()}/${time.getFullYear()} ${time.getHours()}:${minutes}`;
             refTiempoPeriodo.current.innerText = `Últimos Cambios Realizados: ${timeStamp}`;
             setTiempoPeriodo(timeStamp);
+            localStorage.setItem(changesPeriodoKey, timeStamp);
 
         }, TIMEOUT_VALUE);
     }
@@ -59,6 +73,7 @@ function App(){
 
         //console.log(nuevasMaterias);
         setMaterias(nuevasMaterias);
+        localStorage.setItem(periodoKey, JSON.stringify(nuevasMaterias));
     }
 
     //Elimina Clases
@@ -68,7 +83,7 @@ function App(){
         const nuevasMaterias = [...materias].slice(0, materias.length-1);
 
         setMaterias(nuevasMaterias);
-        setCantidadClases(cantidadClases-1);
+        localStorage.setItem(periodoKey, JSON.stringify(nuevasMaterias));
     }
 
     //Agrega Clases
@@ -78,26 +93,12 @@ function App(){
         const nuevasMaterias = [...materias, {id: crearID(),"Clase":`Clase${materias.length+1}`,"Nota":0,"UV":0}];
 
         setMaterias(nuevasMaterias);
-        setCantidadClases(cantidadClases+1);
+        localStorage.setItem(periodoKey, JSON.stringify(nuevasMaterias));
     }
 
-    //Agregar Clases de manera dinamica
-    function cambiarClases(e){
-         let cantidadActual = parseInt(e.target.value);
-         
-         if(cantidadActual < cantidadClases){
-             for(let i = 0; i<cantidadClases-cantidadActual; i++){
-                 eliminarClases();
-             }
-         }
-         else if(cantidadActual > cantidadClases){
-            for(let i = 0; i<cantidadActual-cantidadClases; i++){
-                agregarClases();
-            }
-         }
-
-         setCantidadClases(cantidadActual);
-
+    //cambiar temas
+    function cambiarTema(e){
+        document.body.className = document.body.className==="default" ? "default2":"default";
     }
 
     return (
@@ -105,8 +106,11 @@ function App(){
             <div>Indice Academico Global</div>
             <div>
                 <button onClick={eliminarClases}>-</button>
-                <input type="number" min="1" max={cantidadMaxima} onChange={cambiarClases} defaultValue={cantidadClases}/>
+                <input type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases}*/ value={materias.length}/>
                 <button onClick={agregarClases}>+</button>
+            </div>
+            <div>
+                <button onClick={cambiarTema}>Cambiar Color</button>
             </div>
             <div>
                 <p ref={refTiempoPeriodo}>Últimos cambios realizados: {tiempoPeriodo}</p>

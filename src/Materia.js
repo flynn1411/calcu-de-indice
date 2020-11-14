@@ -11,8 +11,8 @@ export default function Materia( {materia, autoSaving} ) {
         //console.log(e.target.value)
 
         if (nuevaClase.match(/^(([ A-Za-z0-9áéíóúÁÉÍÓÚÜü])|(\-))+$/gm) === null){
-            nuevaClase = "";
-            e.target.value = "";
+            nuevaClase = clase;
+            e.target.value = clase;
         }
 
         setClase(nuevaClase)
@@ -33,8 +33,8 @@ export default function Materia( {materia, autoSaving} ) {
                 nuevaNota = 100;
             }
         }else{
-            e.target.value = 0;
-            nuevaNota = 0;
+            e.target.value = nota;
+            nuevaNota = nota;
         }
 
         setNota(nuevaNota)
@@ -50,8 +50,8 @@ export default function Materia( {materia, autoSaving} ) {
             nuevoUV = parseInt(nuevoUV);
             
         }else{
-            e.target.value = 0;
-            nuevoUV = 0;
+            e.target.value = uv;
+            nuevoUV = uv;
         }
 
         setNota(nuevoUV)

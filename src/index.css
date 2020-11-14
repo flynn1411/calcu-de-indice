@@ -1,0 +1,15 @@
+.default{
+    --background-color: blanchedalmond;
+}
+
+.default2{
+    --background-color: #73ca9c;
+}
+
+#root{
+    background-color: var(--background-color);
+}
+
+body{
+    background-color: var(--background-color);
+}
