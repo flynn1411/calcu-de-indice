@@ -1,0 +1,54 @@
+import React from 'react'
+
+export default function Resultados( {materias, tipoIndice, agregarAlGlobal} ) {
+
+    function obtenerUV(clases){
+        let uv = 0;
+
+        for (let c=0; c<clases.length; c++){ uv += clases[c].UV}
+
+        return uv;
+    }
+
+    function addToGlobal(e){
+        agregarAlGlobal();
+    }
+
+    function obtenerIndice(){
+
+        let materiasSinNSP = materias.filter(materia => materia.Nota !== 0);
+
+        let totalUV = obtenerUV(materiasSinNSP);
+        let suma=0;
+
+        for (let i=0; i<materiasSinNSP.length; i++){suma += materiasSinNSP[i].Nota*materiasSinNSP[i].UV}
+
+        return (parseFloat((suma/totalUV))).toFixed(2);
+    }
+
+    return (
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <p>Indice {tipoIndice}</p>
+                        <p>{obtenerIndice()}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Redondeado</p>
+                        <p>{parseFloat(obtenerIndice()).toFixed(0)}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onClick={addToGlobal}>
+                            Agregar Clases al Índice Global
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    )
+}

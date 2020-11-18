@@ -1,6 +1,6 @@
 import React from 'react'
 import Materia from './Materia'
-import uuidv4 from 'uuid/dist/v4'
+//import uuidv4 from 'uuid/dist/v4'
 
 export default function Materias( {materias, autoSaving} ) {
 
@@ -11,7 +11,7 @@ export default function Materias( {materias, autoSaving} ) {
     }
 
     return (
-        <table border="1">
+        <table id="datos" border="1">
             <thead>
                 <tr>
                     <th>Clase</th>

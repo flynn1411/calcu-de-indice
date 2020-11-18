@@ -1,26 +1,32 @@
 import React, { useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import Materias from './Materias';
+import Resultados from './Resultados';
 import uuidv4 from 'uuid/dist/v4';
+import indiceGlobal from './profiles/global';
+import indicePeriodo from './profiles/periodo';
 
-document.body.className = "default";
+/*###################Para cuando la pagina carga#######################*/
+const currentTheme = localStorage.getItem("currentTheme");
+document.body.className = currentTheme != null? currentTheme:"default";
+
+let indiceActual = localStorage.getItem("tipoIndice");
+const tipoIndice = indiceActual != null ? indiceActual:"GLOBAL";
+
+let infoIndice = tipoIndice === "GLOBAL" ? indiceGlobal : indicePeriodo;
+let materiasKey = infoIndice.llaveStorage;
+let cambiosKey = infoIndice.llaveCambios;
+let defaultTemplate = infoIndice.default;
+let maxCantidad = infoIndice.cantidadMaxima;
 
 /*#################Variables Globales###################*/
-const DEFAULT_CAMBIOS_PERIODO = "6/8/2020 13:52";
-const DEFAULT_PERIODO = [
-    {"Clase":"Conta","Nota":70,"UV":4},
-    {"Clase":"Lenguajes","Nota":66,"UV":4}
-];
 const TIMEOUT_VALUE = 1200;
-const CANTIDAD_MAXIMA_PERIODO = 10;
 
-const periodoKey = "MATERIAS_PERIODO";
-const changesPeriodoKey = "CAMBIOS_PERIODO";
+let backupClases = JSON.parse(localStorage.getItem(materiasKey));
+let backupCambios = localStorage.getItem(cambiosKey);
 
-const backupClases = JSON.parse(localStorage.getItem(periodoKey));
-const backupCambios = localStorage.getItem(changesPeriodoKey);
-
-const listaClases = backupClases != null ? backupClases : DEFAULT_PERIODO;
-const ULTIMOS_CAMBIOS_PERIODO = backupCambios != null ? backupCambios : DEFAULT_CAMBIOS_PERIODO;
+const listaClases = backupClases != null ? backupClases : defaultTemplate;
+const ULTIMOS_CAMBIOS = backupCambios != null ? backupCambios : "nunca";
 
 
 /*#################Aplicación Principal###################*/
@@ -34,17 +40,26 @@ function App(){
         return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
     }) );
 
-    const [tiempoPeriodo, setTiempoPeriodo] = useState(ULTIMOS_CAMBIOS_PERIODO);
-    const [cantidadMaxima, setCantidadMaxima] = useState(CANTIDAD_MAXIMA_PERIODO);
+    const [modalidad, setModalidad] = useState(tipoIndice);
+    const [ultimosCambios, setUltimosCambios] = useState(ULTIMOS_CAMBIOS);
+    const [cantidadMaxima, setCantidadMaxima] = useState(maxCantidad);
 
     /*#################Referencias#################*/
-    const refTiempoPeriodo = useRef();
+    const refCambios = useRef();
 
     /*#################Funciones###################*/
+    function guardarEnStorage(nuevasMaterias){
+        localStorage.setItem(materiasKey, JSON.stringify(nuevasMaterias.map(materia => {return {
+            "Clase": materia.Clase,
+            "Nota": materia.Nota,
+            "UV": materia.UV
+        }})));
+    }
+
     function autoSaving(id, nuevaMateria){
         let timeoutId, time = new Date();
 
-        refTiempoPeriodo.current.innerText = "Guardando...";
+        refCambios.current.innerText = "Guardando...";
 
         if (timeoutId) clearTimeout(timeoutId);
 
@@ -56,15 +71,18 @@ function App(){
             if(minutes < 10) minutes = "0" + minutes;
 
             const timeStamp = `${time.getDate()}/${time.getMonth()}/${time.getFullYear()} ${time.getHours()}:${minutes}`;
-            refTiempoPeriodo.current.innerText = `Últimos Cambios Realizados: ${timeStamp}`;
-            setTiempoPeriodo(timeStamp);
-            localStorage.setItem(changesPeriodoKey, timeStamp);
+            refCambios.current.innerText = `Últimos Cambios Realizados: ${timeStamp}`;
+            setUltimosCambios(timeStamp);
+            localStorage.setItem(cambiosKey, timeStamp);
 
         }, TIMEOUT_VALUE);
     }
 
     //Realiza cambios en el estado de las clases
     function manejarCambiosMateria(id, nuevaMateria){
+
+        if (id === null && nuevaMateria === null) return
+
         const nuevasMaterias = [...materias];
         const materiaEncontrada = nuevasMaterias.find(materia => materia.id === id);
         materiaEncontrada.Clase = nuevaMateria.Clase;
@@ -73,7 +91,7 @@ function App(){
 
         //console.log(nuevasMaterias);
         setMaterias(nuevasMaterias);
-        localStorage.setItem(periodoKey, JSON.stringify(nuevasMaterias));
+        guardarEnStorage(nuevasMaterias);
     }
 
     //Elimina Clases
@@ -83,7 +101,8 @@ function App(){
         const nuevasMaterias = [...materias].slice(0, materias.length-1);
 
         setMaterias(nuevasMaterias);
-        localStorage.setItem(periodoKey, JSON.stringify(nuevasMaterias));
+        autoSaving(null, null);
+        guardarEnStorage(nuevasMaterias);
     }
 
     //Agrega Clases
@@ -93,29 +112,124 @@ function App(){
         const nuevasMaterias = [...materias, {id: crearID(),"Clase":`Clase${materias.length+1}`,"Nota":0,"UV":0}];
 
         setMaterias(nuevasMaterias);
-        localStorage.setItem(periodoKey, JSON.stringify(nuevasMaterias));
+        autoSaving(null, null);
+        guardarEnStorage(nuevasMaterias);
     }
+
+    //cambia clases de acuerdo a como se escriban por el usuario
+    /*function cambiarClases(e){
+        let nuevaCantidad = parseInt(e.target.value);
+        let materiasNuevas = [...materias];
+
+        if(nuevaCantidad > materias.length){
+            let diferencia = nuevaCantidad - materias.length;
+
+            for(let i = 0; i<diferencia; i++){
+                if(materiasNuevas.length < cantidadMaxima){
+                    materiasNuevas.push({id: crearID(),"Clase":`Clase${materias.length+i+1}`,"Nota":0,"UV":0})
+                }else{break}
+            }
+        }
+        else if(nuevaCantidad < materias.length){
+            let diferencia = materias.length - nuevaCantidad;
+
+            for(let i = 0; i<diferencia; i++){
+                if(materiasNuevas.length > 1){
+                    materiasNuevas.slice(0, materias.length-i-1);
+                }
+                else{break}
+            }
+        }
+
+        setMaterias(materiasNuevas);
+    }*/
 
     //cambiar temas
     function cambiarTema(e){
         document.body.className = document.body.className==="default" ? "default2":"default";
+        localStorage.setItem("currentTheme", document.body.className);
     }
+
+    //devuleve el tipo de indice para el titulo
+    function getTipo(){
+        return modalidad === "GLOBAL" ? "Global":"de Periodo";
+    }
+
+    //cambia el tipo de indice que se utiliza
+    function cambiarModalidad(){
+        const nuevaModalidad = modalidad === "GLOBAL" ? indicePeriodo: indiceGlobal;
+
+        setModalidad(nuevaModalidad.tipoIndice);
+        let contenedor = document.getElementById("resultados");
+        if(contenedor.children[0]) ReactDOM.unmountComponentAtNode(contenedor);
+
+        materiasKey = nuevaModalidad.llaveStorage;
+        cambiosKey = nuevaModalidad.llaveCambios;
+
+        backupClases = JSON.parse(localStorage.getItem(materiasKey));
+        backupCambios = localStorage.getItem(cambiosKey);
+
+        setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia)=>{
+            return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
+        }) );
+        setUltimosCambios(backupCambios != null ? backupCambios : "nunca");
+        setCantidadMaxima(nuevaModalidad.cantidadMaxima);
+
+        localStorage.setItem("tipoIndice", nuevaModalidad.tipoIndice);
+    }
+
+    //Agrega clases del periodo a las clases globales
+    function agregarGlobal(){
+        let clasesPeriodo = [...materias].map(clase => {
+            return {
+                "Clase": clase.Clase,
+                "Nota": clase.Nota,
+                "UV": clase.UV
+            }
+        });
+        let clasesGlobal = JSON.parse(localStorage.getItem(indiceGlobal.llaveStorage));
+
+        if(clasesGlobal === null){
+            localStorage.setItem(indiceGlobal.llaveStorage, JSON.stringify(clasesPeriodo));
+        }else{
+            for(let i=0; i<clasesPeriodo.length; i++){
+                clasesGlobal.push(clasesPeriodo[i]);
+            }
+            localStorage.setItem(indiceGlobal.llaveStorage, JSON.stringify(clasesGlobal));
+        }
+        
+        cambiarModalidad();
+        setTimeout(()=>{
+            document.getElementById("calcular").scrollIntoView(true);
+        },500);
+    }
+
+    //Función que realiza el calculo del indice academico
+    function calcularIndice(){
+        ReactDOM.render(<Resultados materias={materias} tipoIndice={getTipo()} agregarAlGlobal={agregarGlobal}/>, document.getElementById("resultados"));
+    }
+
 
     return (
         <>
-            <div>Indice Academico Global</div>
+            <div>Indice {getTipo()}</div>
             <div>
                 <button onClick={eliminarClases}>-</button>
-                <input type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases}*/ value={materias.length}/>
+                <input type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases} defaultV*/ value={materias.length}/>
                 <button onClick={agregarClases}>+</button>
             </div>
             <div>
                 <button onClick={cambiarTema}>Cambiar Color</button>
+                <button onClick={cambiarModalidad}>Cambiar Indice</button>
             </div>
             <div>
-                <p ref={refTiempoPeriodo}>Últimos cambios realizados: {tiempoPeriodo}</p>
+                <p ref={refCambios}>Últimos cambios realizados: {ultimosCambios}</p>
             </div>
-            <Materias materias={materias} autoSaving={autoSaving}/>
+            <div>
+                <Materias materias={materias} autoSaving={autoSaving}/>
+                <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
+                <div id="resultados"></div>
+            </div>
         </>
     );
 }
