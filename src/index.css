@@ -7,9 +7,34 @@
 }
 
 #root{
-    background-color: var(--background-color);
+    /*background-color: var(--background-color);*/
+    display: grid;
+    grid-template-areas: 
+    ". . titulo titulo ."
+    ". datos datos miscelaneos ."
 }
 
 body{
     background-color: var(--background-color);
+}
+
+#fotoPerfil{
+    max-width: 15%;
+}
+
+#titulo{
+    grid-area: titulo;
+}
+
+#clases{
+    grid-area: datos;
+}
+
+#lateral{
+    grid-area: miscelaneos;
+}
+
+#navbar-desktop{
+    bottom: 0%;
+    position: fixed;
 }

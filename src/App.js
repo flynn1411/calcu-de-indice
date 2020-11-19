@@ -5,6 +5,27 @@ import Resultados from './Resultados';
 import uuidv4 from 'uuid/dist/v4';
 import indiceGlobal from './profiles/global';
 import indicePeriodo from './profiles/periodo';
+import firebase from 'firebase/app';
+import 'firebase/firebase-firestore';
+import 'firebase/firebase-auth';
+import SignedIn from './SignedIn';
+import SignedOut from './SignedOut';
+
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+/*********************INICIALIZACIÓN DE FIREBASE***********************/
+
+firebase.initializeApp({
+    apiKey: "AIzaSyCrFbPHJizkQbb3IEPf_DyNjwcwZCD7NpM",
+    authDomain: "calculadoradeindice.firebaseapp.com",
+    databaseURL: "https://calculadoradeindice.firebaseio.com",
+    projectId: "calculadoradeindice",
+    storageBucket: "calculadoradeindice.appspot.com",
+    messagingSenderId: "180634225139",
+    appId: "1:180634225139:web:c4300eb226ca6f4db46a86",
+    measurementId: "G-7DG9TX7RN9"
+
+});
 
 /*###################Para cuando la pagina carga#######################*/
 const currentTheme = localStorage.getItem("currentTheme");
@@ -43,6 +64,10 @@ function App(){
     const [modalidad, setModalidad] = useState(tipoIndice);
     const [ultimosCambios, setUltimosCambios] = useState(ULTIMOS_CAMBIOS);
     const [cantidadMaxima, setCantidadMaxima] = useState(maxCantidad);
+
+    const auth = firebase.auth();
+    const firestore = firebase.firestore();
+    const [user] = useAuthState(auth);
 
     /*#################Referencias#################*/
     const refCambios = useRef();
@@ -156,12 +181,22 @@ function App(){
     }
 
     //cambia el tipo de indice que se utiliza
-    function cambiarModalidad(){
-        const nuevaModalidad = modalidad === "GLOBAL" ? indicePeriodo: indiceGlobal;
+    function cambiarModalidad(dato = null){
+        let nuevaModalidad = "";
+
+        if(dato !== null){
+            nuevaModalidad = dato === "GLOBAL" ? indiceGlobal: indicePeriodo;
+        }else{
+            nuevaModalidad = modalidad === "GLOBAL" ? indicePeriodo: indiceGlobal;
+        }
+
 
         setModalidad(nuevaModalidad.tipoIndice);
         let contenedor = document.getElementById("resultados");
-        if(contenedor.children[0]) ReactDOM.unmountComponentAtNode(contenedor);
+
+        if(contenedor !== null){
+            if(contenedor.children[0]) ReactDOM.unmountComponentAtNode(contenedor);
+        }
 
         materiasKey = nuevaModalidad.llaveStorage;
         cambiosKey = nuevaModalidad.llaveCambios;
@@ -209,26 +244,40 @@ function App(){
         ReactDOM.render(<Resultados materias={materias} tipoIndice={getTipo()} agregarAlGlobal={agregarGlobal}/>, document.getElementById("resultados"));
     }
 
+    function googleAuth(){
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider);
+    }
+
+    function cerrarSesion(){
+        auth.signOut();
+    }
+
 
     return (
         <>
-            <div>Indice {getTipo()}</div>
-            <div>
+            <div id="titulo">Indice {getTipo()}</div>
+            <div id="clases">
+                <p ref={refCambios}>Últimos cambios realizados: {ultimosCambios}</p>
                 <button onClick={eliminarClases}>-</button>
                 <input type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases} defaultV*/ value={materias.length}/>
                 <button onClick={agregarClases}>+</button>
-            </div>
-            <div>
-                <button onClick={cambiarTema}>Cambiar Color</button>
-                <button onClick={cambiarModalidad}>Cambiar Indice</button>
-            </div>
-            <div>
-                <p ref={refCambios}>Últimos cambios realizados: {ultimosCambios}</p>
-            </div>
-            <div>
+
                 <Materias materias={materias} autoSaving={autoSaving}/>
+            </div>
+            <div id ="lateral">
+                <button onClick={cambiarTema}>Cambiar Color</button>
+
                 <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
                 <div id="resultados"></div>
+                
+                <div>Usuario conectado: {user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />}</div>
+            </div>
+            <div id="navbar-desktop">
+                <p>info</p>
+                <p>Indice:</p>
+                <button onClick={() => {cambiarModalidad("GLOBAL")}}>Global</button>
+                <button onClick={() => {cambiarModalidad("PERIODO")}}>Periodo</button>
             </div>
         </>
     );
