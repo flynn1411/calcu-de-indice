@@ -1,21 +1,50 @@
 .default{
     --background-color: blanchedalmond;
+    --foreground-color: #73ca9c;
 }
 
 .default2{
     --background-color: #73ca9c;
-}
-
-#root{
-    /*background-color: var(--background-color);*/
-    display: grid;
-    grid-template-areas: 
-    ". . titulo titulo ."
-    ". datos datos miscelaneos ."
+    --foreground-color: blanchedalmond;
 }
 
 body{
     background-color: var(--background-color);
+    overflow: hidden;
+    margin: 0 0 0 0;
+}
+
+#root{
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    row-gap: 1vh;
+    grid-template-areas:
+    "contenido"
+    "navegacion";
+    justify-content: center;
+}
+
+#pagina{
+    grid-area: contenido;
+    width: 95vw;
+    /*background-color: var(--background-color);*/
+    display: grid;
+    /*padding: 20px;*/
+    height: 85vh;
+    grid-template-areas: 
+    " titulo titulo"
+    "controles ."
+    "main main";
+}
+
+#main-content{
+    display: grid;
+    overflow-y: scroll;
+    grid-area: main;
+    grid-template-areas:
+    "datos miscelaneos";
 }
 
 #fotoPerfil{
@@ -24,6 +53,22 @@ body{
 
 #titulo{
     grid-area: titulo;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: 50%;
+    /*width: 20vw;*/
+    justify-content: center;
+    display: grid;
+}
+
+#titulo > h1 {
+    border: 1px solid var(--foreground-color);
+    width: 30vw;
+}
+
+#controles{
+    grid-area: controles;
+    overflow: hidden;
 }
 
 #clases{
@@ -35,6 +80,17 @@ body{
 }
 
 #navbar-desktop{
-    bottom: 0%;
-    position: fixed;
+    grid-area: navegacion;
+    background-color: var(--foreground-color);
+    width: 100%;
+    height: 12vh;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.dNavItems{
+    width: 25%;
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }

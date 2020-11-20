@@ -190,27 +190,31 @@ function App(){
             nuevaModalidad = modalidad === "GLOBAL" ? indicePeriodo: indiceGlobal;
         }
 
+        if(modalidad !== nuevaModalidad.tipoIndice){
 
-        setModalidad(nuevaModalidad.tipoIndice);
-        let contenedor = document.getElementById("resultados");
+            setModalidad(nuevaModalidad.tipoIndice);
+            let contenedor = document.getElementById("resultados");
+    
+            if(contenedor !== null){
+                if(contenedor.children[0]) ReactDOM.unmountComponentAtNode(contenedor);
+            }
+    
+            materiasKey = nuevaModalidad.llaveStorage;
+            cambiosKey = nuevaModalidad.llaveCambios;
+    
+            backupClases = JSON.parse(localStorage.getItem(materiasKey));
+            backupCambios = localStorage.getItem(cambiosKey);
+    
+            setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia)=>{
+                return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
+            }) );
+            setUltimosCambios(backupCambios != null ? backupCambios : "nunca");
+            setCantidadMaxima(nuevaModalidad.cantidadMaxima);
+    
+            localStorage.setItem("tipoIndice", nuevaModalidad.tipoIndice);
 
-        if(contenedor !== null){
-            if(contenedor.children[0]) ReactDOM.unmountComponentAtNode(contenedor);
         }
 
-        materiasKey = nuevaModalidad.llaveStorage;
-        cambiosKey = nuevaModalidad.llaveCambios;
-
-        backupClases = JSON.parse(localStorage.getItem(materiasKey));
-        backupCambios = localStorage.getItem(cambiosKey);
-
-        setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia)=>{
-            return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
-        }) );
-        setUltimosCambios(backupCambios != null ? backupCambios : "nunca");
-        setCantidadMaxima(nuevaModalidad.cantidadMaxima);
-
-        localStorage.setItem("tipoIndice", nuevaModalidad.tipoIndice);
     }
 
     //Agrega clases del periodo a las clases globales
@@ -256,29 +260,38 @@ function App(){
 
     return (
         <>
-            <div id="titulo">Indice {getTipo()}</div>
-            <div id="clases">
-                <p ref={refCambios}>Últimos cambios realizados: {ultimosCambios}</p>
+        <div id="pagina">
+            <div id="titulo">
+                <h1>
+                    Indice {getTipo()}
+                </h1>
+            </div>
+            <div id="controles">
                 <button onClick={eliminarClases}>-</button>
                 <input type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases} defaultV*/ value={materias.length}/>
                 <button onClick={agregarClases}>+</button>
+                <p ref={refCambios}>Últimos cambios realizados: {ultimosCambios}</p>
+            </div>
+            <div id="main-content">
+                <div id="clases">
+                    <Materias materias={materias} autoSaving={autoSaving}/>
+                </div>
+                <div id ="lateral">
+                    <button onClick={cambiarTema}>Cambiar Color</button>
 
-                <Materias materias={materias} autoSaving={autoSaving}/>
+                    <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
+                    <div id="resultados"></div>
+                    
+                    <div>Usuario conectado: {/*user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />*/ "nada"}</div>
+                </div>
             </div>
-            <div id ="lateral">
-                <button onClick={cambiarTema}>Cambiar Color</button>
-
-                <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
-                <div id="resultados"></div>
-                
-                <div>Usuario conectado: {user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />}</div>
-            </div>
-            <div id="navbar-desktop">
-                <p>info</p>
-                <p>Indice:</p>
-                <button onClick={() => {cambiarModalidad("GLOBAL")}}>Global</button>
-                <button onClick={() => {cambiarModalidad("PERIODO")}}>Periodo</button>
-            </div>
+        </div>
+        <div id="navbar-desktop">
+            <div className="dNavItems">info</div>
+            <div className="dNavItems">Indice:</div>
+            <div className="dNavItems" onClick={() => {cambiarModalidad("GLOBAL")}}>Global</div>
+            <div className="dNavItems" onClick={() => {cambiarModalidad("PERIODO")}}>Periodo</div>
+        </div>
         </>
     );
 }
