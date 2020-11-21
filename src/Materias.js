@@ -11,7 +11,7 @@ export default function Materias( {materias, autoSaving} ) {
     }
 
     return (
-        <table id="datos" border="1">
+        <table id="datos">
             <thead>
                 <tr>
                     <th>Clase</th>

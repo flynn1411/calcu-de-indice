@@ -15,11 +15,12 @@ body{
 }
 
 #root{
+    padding-top: 1vh;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
     display: grid;
-    row-gap: 1vh;
+    /*row-gap: 1vh;*/
     grid-template-areas:
     "contenido"
     "navegacion";
@@ -27,24 +28,30 @@ body{
 }
 
 #pagina{
+    background-color: var(--foreground-color);
     grid-area: contenido;
     width: 95vw;
     /*background-color: var(--background-color);*/
     display: grid;
     /*padding: 20px;*/
-    height: 85vh;
+    height: 83vh;
     grid-template-areas: 
     " titulo titulo"
     "controles ."
     "main main";
+    grid-template-rows: 15% 17% auto;
 }
 
 #main-content{
+    padding-left: 5vw;
+    padding-right: 5vw;
     display: grid;
-    overflow-y: scroll;
+    overflow-y: auto;
     grid-area: main;
     grid-template-areas:
     "datos miscelaneos";
+    grid-template-columns: 60% auto;
+    column-gap: 2vw;
 }
 
 #fotoPerfil{
@@ -62,17 +69,39 @@ body{
 }
 
 #titulo > h1 {
-    border: 1px solid var(--foreground-color);
-    width: 30vw;
+    border: 2.5px solid var(--background-color);
+    padding-left: 0.5vw;
+    padding-right: 0.5vh;
 }
 
 #controles{
     grid-area: controles;
     overflow: hidden;
+    padding-left: 5vw;
 }
 
 #clases{
     grid-area: datos;
+}
+
+#datos{
+    border: 1px solid var(--background-color);
+    border-collapse: collapse;
+}
+
+#datos > tbody > tr > td {
+    border: 1px solid var(--background-color);
+    padding: 0 0 0 0;
+    display: table-cell;
+    width: 33%;
+    justify-content: center;
+}
+
+#datos > tbody > tr > td > input {
+    width: 95%;
+    text-align: center;
+    background-color: transparent;
+    border: 0;
 }
 
 #lateral{
@@ -93,4 +122,32 @@ body{
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+}
+
+input {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-inner-spin-button, 
+input::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+@media only screen and (max-width: 600px){
+    #pagina{
+        grid-template-areas: 
+        "titulo"
+        "controles"
+        "main";
+        grid-template-rows: 15% 17% auto;
+    }
+
+    #main-content{
+        grid-template-areas:
+        "datos"
+        "miscelaneos";
+        grid-template-columns: 100%;
+        row-gap: 2vw;
+    }
 }

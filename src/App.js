@@ -278,8 +278,9 @@ function App(){
                 </div>
                 <div id ="lateral">
                     <button onClick={cambiarTema}>Cambiar Color</button>
-
+                    <br/>
                     <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
+                    <br/>
                     <div id="resultados"></div>
                     
                     <div>Usuario conectado: {/*user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />*/ "nada"}</div>
