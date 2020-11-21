@@ -70,8 +70,8 @@ export default function Materia( {materia, autoSaving} ) {
     return (
         <tr>
             <td>{ claseInput() }</td>
-            <td><input type='number' min="0" max="100" defaultValue={nota} onChange={manejarNota}/></td>
-            <td><input type='number' min="0" max="20" defaultValue={uv} onChange={manejarUV}/></td>
+            <td><input type='number' min="0" max="100" defaultValue={nota === 0 ? "": nota} onChange={manejarNota}/></td>
+            <td><input type='number' min="0" max="20" defaultValue={uv === 0 ? "": uv} onChange={manejarUV}/></td>
         </tr>
     )
 }

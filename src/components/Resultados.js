@@ -1,11 +1,11 @@
 import React from 'react'
 
-export default function Resultados( {materias, tipoIndice, agregarAlGlobal} ) {
+export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlobal} ) {
 
     function obtenerUV(clases){
         let uv = 0;
 
-        for (let c=0; c<clases.length; c++){ uv += clases[c].UV}
+        for (let c=0; c<clases.length; c++){uv += clases[c].UV}
 
         return uv;
     }
@@ -26,12 +26,24 @@ export default function Resultados( {materias, tipoIndice, agregarAlGlobal} ) {
         return (parseFloat((suma/totalUV))).toFixed(2);
     }
 
+    function moverAGlobal(){
+        if(tipoIndice === "PERIODO"){
+            return (<tr>
+            <td>
+                <button onClick={addToGlobal}>
+                    Agregar Clases al Índice Global
+                </button>
+            </td>
+        </tr>)
+        }
+    }
+
     return (
         <table>
             <tbody>
                 <tr>
                     <td>
-                        <p>Indice {tipoIndice}</p>
+                        <p>Indice {getTipo}</p>
                         <p>{obtenerIndice()}</p>
                     </td>
                 </tr>
@@ -41,13 +53,7 @@ export default function Resultados( {materias, tipoIndice, agregarAlGlobal} ) {
                         <p>{parseFloat(obtenerIndice()).toFixed(0)}</p>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <button onClick={addToGlobal}>
-                            Agregar Clases al Índice Global
-                        </button>
-                    </td>
-                </tr>
+                {moverAGlobal()}
             </tbody>
         </table>
     )

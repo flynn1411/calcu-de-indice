@@ -1,17 +1,14 @@
 import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import Materias from './Materias';
-import Resultados from './Resultados';
 import uuidv4 from 'uuid/dist/v4';
 import indiceGlobal from './profiles/global';
 import indicePeriodo from './profiles/periodo';
 import firebase from 'firebase/app';
 import 'firebase/firebase-firestore';
 import 'firebase/firebase-auth';
-import SignedIn from './SignedIn';
-import SignedOut from './SignedOut';
-
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Contenido from './components/Contenido';
+import Navegacion from './components/Navegacion';
 
 /*********************INICIALIZACIÓN DE FIREBASE***********************/
 
@@ -119,62 +116,6 @@ function App(){
         guardarEnStorage(nuevasMaterias);
     }
 
-    //Elimina Clases
-    function eliminarClases(e=null){
-        if (materias.length === 1) return
-
-        const nuevasMaterias = [...materias].slice(0, materias.length-1);
-
-        setMaterias(nuevasMaterias);
-        autoSaving(null, null);
-        guardarEnStorage(nuevasMaterias);
-    }
-
-    //Agrega Clases
-    function agregarClases(e=null){
-        if (materias.length === cantidadMaxima) return
-
-        const nuevasMaterias = [...materias, {id: crearID(),"Clase":`Clase${materias.length+1}`,"Nota":0,"UV":0}];
-
-        setMaterias(nuevasMaterias);
-        autoSaving(null, null);
-        guardarEnStorage(nuevasMaterias);
-    }
-
-    //cambia clases de acuerdo a como se escriban por el usuario
-    /*function cambiarClases(e){
-        let nuevaCantidad = parseInt(e.target.value);
-        let materiasNuevas = [...materias];
-
-        if(nuevaCantidad > materias.length){
-            let diferencia = nuevaCantidad - materias.length;
-
-            for(let i = 0; i<diferencia; i++){
-                if(materiasNuevas.length < cantidadMaxima){
-                    materiasNuevas.push({id: crearID(),"Clase":`Clase${materias.length+i+1}`,"Nota":0,"UV":0})
-                }else{break}
-            }
-        }
-        else if(nuevaCantidad < materias.length){
-            let diferencia = materias.length - nuevaCantidad;
-
-            for(let i = 0; i<diferencia; i++){
-                if(materiasNuevas.length > 1){
-                    materiasNuevas.slice(0, materias.length-i-1);
-                }
-                else{break}
-            }
-        }
-
-        setMaterias(materiasNuevas);
-    }*/
-
-    //cambiar temas
-    function cambiarTema(e){
-        document.body.className = document.body.className==="default" ? "default2":"default";
-        localStorage.setItem("currentTheme", document.body.className);
-    }
-
     //devuleve el tipo de indice para el titulo
     function getTipo(){
         return modalidad === "GLOBAL" ? "Global":"de Periodo";
@@ -243,56 +184,26 @@ function App(){
         },500);
     }
 
-    //Función que realiza el calculo del indice academico
-    function calcularIndice(){
-        ReactDOM.render(<Resultados materias={materias} tipoIndice={getTipo()} agregarAlGlobal={agregarGlobal}/>, document.getElementById("resultados"));
-    }
-
-    function googleAuth(){
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
-    }
-
-    function cerrarSesion(){
-        auth.signOut();
-    }
-
-
     return (
         <>
-        <div id="pagina">
-            <div id="titulo">
-                <h1>
-                    Indice {getTipo()}
-                </h1>
-            </div>
-            <div id="controles">
-                <button onClick={eliminarClases}>-</button>
-                <input type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases} defaultV*/ value={materias.length}/>
-                <button onClick={agregarClases}>+</button>
-                <p ref={refCambios}>Últimos cambios realizados: {ultimosCambios}</p>
-            </div>
-            <div id="main-content">
-                <div id="clases">
-                    <Materias materias={materias} autoSaving={autoSaving}/>
-                </div>
-                <div id ="lateral">
-                    <button onClick={cambiarTema}>Cambiar Color</button>
-                    <br/>
-                    <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
-                    <br/>
-                    <div id="resultados"></div>
-                    
-                    <div>Usuario conectado: {/*user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />*/ "nada"}</div>
-                </div>
-            </div>
-        </div>
-        <div id="navbar-desktop">
-            <div className="dNavItems">info</div>
-            <div className="dNavItems">Indice:</div>
-            <div className="dNavItems" onClick={() => {cambiarModalidad("GLOBAL")}}>Global</div>
-            <div className="dNavItems" onClick={() => {cambiarModalidad("PERIODO")}}>Periodo</div>
-        </div>
+        <Contenido 
+            materias={materias}
+            setMaterias={setMaterias}
+            crearID={crearID}
+            ultimosCambios={ultimosCambios} 
+            cantidadMaxima={cantidadMaxima}
+            tipoIndice={tipoIndice}
+            getTipo={getTipo}
+            guardarEnStorage={guardarEnStorage}
+            autoSaving={autoSaving}
+            refCambios={refCambios}
+            agregarGlobal={agregarGlobal}
+            firebase={firebase}
+            auth={auth}
+            user={user}
+            firestore={firestore}
+        />
+        <Navegacion cambiarModalidad={cambiarModalidad} tipoIndice={tipoIndice} />
         </>
     );
 }
