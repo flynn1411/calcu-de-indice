@@ -9,6 +9,8 @@ import 'firebase/firebase-auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Contenido from './components/Contenido';
 import Navegacion from './components/Navegacion';
+import {useSpring, animated} from 'react-spring';
+
 
 /*********************INICIALIZACIÓN DE FIREBASE***********************/
 
@@ -61,6 +63,7 @@ function App(){
     const [modalidad, setModalidad] = useState(tipoIndice);
     const [ultimosCambios, setUltimosCambios] = useState(ULTIMOS_CAMBIOS);
     const [cantidadMaxima, setCantidadMaxima] = useState(maxCantidad);
+    const [temaActual, setTemaActual] = useState(document.body.className);
 
     const auth = firebase.auth();
     const firestore = firebase.firestore();
@@ -186,6 +189,7 @@ function App(){
 
     return (
         <>
+        <div  id="contenedor-pagina">
         <Contenido 
             materias={materias}
             setMaterias={setMaterias}
@@ -202,8 +206,11 @@ function App(){
             auth={auth}
             user={user}
             firestore={firestore}
+            temaActual={temaActual}
+            setTemaActual={setTemaActual}
         />
-        <Navegacion cambiarModalidad={cambiarModalidad} tipoIndice={tipoIndice} />
+        </div>
+        <Navegacion cambiarModalidad={cambiarModalidad} tipoIndice={tipoIndice} temaActual={temaActual} />
         </>
     );
 }

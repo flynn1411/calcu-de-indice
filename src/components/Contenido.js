@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { unstable_renderSubtreeIntoContainer } from 'react-dom';
 import Materias from './Materias';
 import Resultados from './Resultados';
 import SignedIn from './SignedIn';
@@ -20,8 +20,18 @@ export default function Contenido( {
     firebase,
     auth,
     user,
-    firestore
+    firestore,
+    temaActual,
+    setTemaActual
 } ) {
+
+    function mensajeClases(){
+        if(tipoIndice === "GLOBAL"){
+            return "Ingresar el total de clases cursadas (incluyendo reprobadas o NSP):";
+        }else{
+            return "Ingresar todas las clases cursadas en el periodo.";
+        }
+    }
     
     //Elimina Clases
     function eliminarClases(e=null){
@@ -75,8 +85,9 @@ export default function Contenido( {
 
     //cambiar temas
     function cambiarTema(e){
-        document.body.className = document.body.className==="default" ? "default2":"default";
+        document.body.className = document.body.className==="light" ? "dark":"light";
         localStorage.setItem("currentTheme", document.body.className);
+        setTemaActual(document.body.className);
     }
 
     //Función que realiza el calculo del indice academico
@@ -111,14 +122,31 @@ export default function Contenido( {
         <div id="pagina">
             <div id="titulo">
                 <h1>
-                    Indice {getTipo()}
+                    <strong>Indice {getTipo()}</strong>
                 </h1>
             </div>
             <div id="controles">
-                <button onClick={eliminarClases}>-</button>
-                <input type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases} defaultV*/ value={materias.length}/>
-                <button onClick={agregarClases}>+</button>
-                <p ref={refCambios}>Últimos cambios realizados: {ultimosCambios}</p>
+                <h4>
+                    {mensajeClases()}
+                </h4>
+                <div id="spinner">
+                    <table id="tabla-spinner">
+                        <tbody>
+                            <tr>
+                                <td className="clickable" onClick={eliminarClases}>
+                                    <button>-</button>
+                                </td>
+                                <td>
+                                    <input id="contenidoClases" type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases} defaultV*/ value={materias.length}/>
+                                </td>
+                                <td className="clickable" onClick={agregarClases}>
+                                    <button>+</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p ref={refCambios}>Últimas módificaciones: {ultimosCambios}</p>
             </div>
             <div id="main-content">
                 <div id="clases">

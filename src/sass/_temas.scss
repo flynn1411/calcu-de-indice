@@ -1,0 +1,66 @@
+.dark{
+    --bg: #535e7e;
+    --text: #d8d8d8;
+    --fcolor: #16262e;
+    --hover-bg: #8fb1cc;
+    --hover-fcolor:#73ca9c;
+    --passed: #73ca9c;
+    --passed-glow: none;
+    --failed: crimson;
+    --failed-glow: none;
+    --bg-gradient: var(--hover-fcolor);
+    --fcolor-gradient: var(--text);
+    --bg-image: none;
+    --button-hover: cadetblue;
+    --title: #73ca9c;
+    --title-neon: none;
+    --navbar-bg: #264351;
+    --navbar-img: none;
+    --navbar-text: #d8d8d8;
+    --data-color: #264351;
+    /*--font1 : */
+}
+
+.light{
+    --bg: #264351;
+    --text: #264351;
+    --fcolor: #d8d8d8;
+    --hover-bg: coral;
+    --hover-fcolor: #73ca9c;
+    --passed: #73ca9c;
+    --passed-glow: none;
+    --failed: crimson;
+    --failed-glow: none;
+    --bg-gradient: var(--hover-fcolor);
+    --fcolor-gradient: var(--text);
+    --bg-image: none;
+    --button-hover: #73ca9c;
+    --title: #73ca9c;
+    --title-neon: none;
+    --navbar-img: none;
+    --navbar-bg: var(--fcolor);
+    --navbar-text: #262626;
+    --data-color: #d8d8d8;
+}
+
+.synthwave{
+    --bg: rgb(54,40,59);
+    --text: rgb(54,40,59);
+    --fcolor: #ffd319;
+    --hover-bg: #ff2975;
+    --hover-fcolor: #f222ff;
+    --passed: #6df1d8;
+    --passed-glow: 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #6df1d8, 0 0 3px #6df1d8, 0 0 3px #6df1d8, 0 0 8px #6df1d8, 0 0 2px #6df1d8;
+    --failed: #ff2975;
+    --failed-glow: 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #ff2975, 0 0 3px #ff2975, 0 0 3px #ff2975, 0 0 8px #ff2975, 0 0 2px #ff2975;
+    --bg-img: url("../resources/synthwave/nightsky.jpg");
+    --bg-gradient: linear-gradient(180deg, rgba(54,40,59,0.8995798148360907) 0%, rgba(10,32,78,0.8435574058725053) 100%);
+    --fcolor-gradient: linear-gradient(180deg, rgba(255,144,31,1) 0%, rgba(255,41,117,1) 100%);
+    --button-hover: #f222ff;
+    --title:#a6a6a6;
+    --title-neon: 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #c0c0c0, 0 0 5px #c0c0c0, 0 0 3px #c0c0c0, 0 0 7px #c0c0c0, 0 0 3px #c0c0c0; 
+    --navbar-img: url("../resources/synthwave/gridline.png");
+    --navbar-bg: #264351;
+    --navbar-text: #0cbfe9;
+    --data-color: #ff2975;
+}

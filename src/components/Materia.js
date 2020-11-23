@@ -61,9 +61,9 @@ export default function Materia( {materia, autoSaving} ) {
 
     function claseInput(){
         if(!clase.match(/^Clase([0-9]{1,3})$/)){
-            return <input type='text' placeholder='Clase' defaultValue={clase} onChange={manejarClase}/>
+            return <input className='claseInput' type='text' placeholder='Clase' defaultValue={clase} onChange={manejarClase}/>
         }else{
-            return <input type='text' placeholder={clase} defaultValue={""} onChange={manejarClase}/>
+            return <input className='claseInput' type='text' placeholder={clase} defaultValue={""} onChange={manejarClase}/>
         }
     }
 

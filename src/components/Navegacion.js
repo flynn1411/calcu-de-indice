@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Navegacion( {cambiarModalidad, tipoIndice} ) {
+export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual} ) {
 
     function cambiarActive(id){
         let elementoActivo = null;
@@ -22,16 +22,18 @@ export default function Navegacion( {cambiarModalidad, tipoIndice} ) {
 
     function setActive(id){
         if(id === tipoIndice){
-            return "dNavItems seleccion active"
+            return "hvr-grow dNavItems seleccion active"
         }else{
-            return "dNavItems seleccion"
+            return "hvr-grow dNavItems seleccion"
         }
     }
 
     return (
         <>
         <div id="navbar-desktop" className="navegacion">
-            <div className="dNavItems" id="logo">info</div>
+            <div className="dNavItems seleccion" id="logo">
+                <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Icono de Información."/>
+                </div>
             <div className="dNavItems" id="indice">Indice:</div>
             <div className={setActive("GLOBAL")} id="global" onClick={() => {cambiarActive("GLOBAL")}}>Global</div>
             <div className={setActive("PERIODO")} id="periodo" onClick={() => {cambiarActive("PERIODO")}}>Periodo</div>

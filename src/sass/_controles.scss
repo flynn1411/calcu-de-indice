@@ -1,0 +1,82 @@
+#controles{
+    grid-area: controles;
+    overflow: hidden;
+    padding-left: 5vw;
+    display: grid;
+    grid-template-areas:
+    "mensaje spinner"
+    "cambios cambios";
+    grid-template-columns: 45% auto;
+    max-width: 80%;
+    row-gap: 1vh;
+
+    h4{
+        grid-area: mensaje;
+        height: min-content;
+        margin-bottom: 0;
+    }
+    
+    p{
+        grid-area: cambios;
+        margin: 0 0 0 0;
+    }
+}
+
+#spinner{
+    grid-area: spinner;
+    display: grid;
+    place-items: center;
+}
+
+#tabla-spinner{
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid var(--text);
+    background-color: var(--text);
+    max-height: 13vw;
+    height: auto;
+
+    tbody{
+        tr{
+            td{
+                width: 33%;
+                padding: 0.75rem;
+
+                button{
+                    font-family: 'Poppins', sans-serif;
+                    width: 100%;
+                    background-color: transparent !important;
+                    border: 0;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+.clickable{
+    transition: 0.6s;
+}
+
+.clickable:hover{
+    background-color: var(--hover-fcolor);
+    cursor: pointer;
+
+    button{
+        cursor: pointer;
+    }
+}
+
+#contenidoClases{
+    font-family: 'Poppins', sans-serif;
+    width: 3vw;
+    background-color: transparent;
+    text-align: center;
+    font-size: 1.2rem;
+    border: 0;
+    font-weight: bold;
+}
+
+#contenidoClases:hover{
+    cursor: default;
+}

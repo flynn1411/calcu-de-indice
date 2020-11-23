@@ -1,19 +1,17 @@
+@import 'temas';
+@import 'scrollbar';
+@import 'pagina';
 @import 'navegacion';
-
-.default{
-    --background-color: blanchedalmond;
-    --foreground-color: #73ca9c;
-}
-
-.default2{
-    --background-color: #73ca9c;
-    --foreground-color: blanchedalmond;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Glegoo&display=swap');
 
 body{
-    background-color: var(--background-color);
+    background: var(--bg-gradient), var(--bg-img);
+    background-color: var(--bg) !important;
+    color: var(--fcolor) !important;
     overflow: hidden;
     margin: 0 0 0 0;
+    font-family: 'Glegoo', serif;
 }
 
 #root{
@@ -29,89 +27,6 @@ body{
     justify-content: center;
 }
 
-#pagina{
-    background-color: var(--foreground-color);
-    grid-area: contenido;
-    width: 95vw;
-    /*background-color: var(--background-color);*/
-    display: grid;
-    /*padding: 20px;*/
-    height: 83vh;
-    grid-template-areas: 
-    " titulo titulo"
-    "controles ."
-    "main main";
-    grid-template-rows: 15% 17% auto;
-}
-
-#main-content{
-    padding-left: 5vw;
-    padding-right: 5vw;
-    display: grid;
-    overflow-y: auto;
-    grid-area: main;
-    grid-template-areas:
-    "datos miscelaneos";
-    grid-template-columns: 60% auto;
-    column-gap: 2vw;
-}
-
-#fotoPerfil{
-    max-width: 15%;
-}
-
-#titulo{
-    grid-area: titulo;
-    overflow: hidden;
-    text-align: center;
-    vertical-align: 50%;
-    /*width: 20vw;*/
-    justify-content: center;
-    display: grid;
-}
-
-#titulo > h1 {
-    border: 2.5px solid var(--background-color);
-    padding-left: 0.5vw;
-    padding-right: 0.5vh;
-}
-
-#controles{
-    grid-area: controles;
-    overflow: hidden;
-    padding-left: 5vw;
-}
-
-#clases{
-    grid-area: datos;
-    padding-bottom: 4vh;
-}
-
-#datos{
-    border: 1px solid var(--background-color);
-    border-collapse: collapse;
-}
-
-#datos > tbody > tr > td {
-    border: 1px solid var(--background-color);
-    padding: 0 0 0 0;
-    display: table-cell;
-    width: 33%;
-    justify-content: center;
-}
-
-#datos > tbody > tr > td > input {
-    width: 95%;
-    text-align: center;
-    background-color: transparent;
-    border: 0;
-}
-
-#lateral{
-    grid-area: miscelaneos;
-    padding-bottom: 4vh;
-}
-
 input {
     -moz-appearance:textfield;
 }
@@ -122,13 +37,61 @@ input::-webkit-outer-spin-button {
   margin: 0; 
 }
 
+button:hover{
+    cursor: pointer;
+}
+
 @media only screen and (max-width: 600px){
     #pagina{
         grid-template-areas: 
         "titulo"
         "controles"
         "main";
-        grid-template-rows: 15% 17% auto;
+        grid-template-rows: 20% auto auto;
+    }
+
+    #controles{
+        grid-template-areas:
+        "mensaje"
+        "spinner"
+        "cambios";
+        max-width: 100%;
+        place-items: center;
+        grid-template-columns: 100%;
+        padding-right: 6vw;
+        text-align: center;
+        padding: 1vh 0;
+
+        h4{
+            height: min-content;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+        
+        div{
+            grid-area: spinner;
+            width: 90%;
+        }
+        p{
+            grid-area: cambios;
+            margin: 0 0 0 0;
+        }
+    }
+
+    #tabla-spinner{
+        width: 55%;
+
+        tbody{
+            tr{
+                td{
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    #contenidoClases{
+        width: 20vw;
     }
 
     #main-content{
@@ -137,5 +100,37 @@ input::-webkit-outer-spin-button {
         "miscelaneos";
         grid-template-columns: 100%;
         row-gap: 2vw;
+    }
+
+    #lateral{
+        display: grid;
+        place-items: center;
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 900px) {
+    #root{
+        grid-template-rows: auto 10%;
+    }
+
+    #navbar-desktop{
+        height: 8vh;
+    }
+
+    #pagina{
+        height: 88vh;
+        grid-template-areas: 
+        "titulo"
+        "controles"
+        "main";
+        grid-template-rows: 18% auto auto;
+    }
+
+    #controles{
+        width: 80vw;
+    }
+
+    #contenidoClases{
+        width: 6vw;
     }
 }
