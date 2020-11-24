@@ -10,6 +10,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Contenido from './components/Contenido';
 import Navegacion from './components/Navegacion';
 import {useSpring, animated} from 'react-spring';
+import Modal from './components/Modal';
 
 
 /*********************INICIALIZACIÓN DE FIREBASE***********************/
@@ -28,7 +29,7 @@ firebase.initializeApp({
 
 /*###################Para cuando la pagina carga#######################*/
 const currentTheme = localStorage.getItem("currentTheme");
-document.body.className = currentTheme != null? currentTheme:"default";
+document.body.className = currentTheme != null? currentTheme:"light";
 
 let indiceActual = localStorage.getItem("tipoIndice");
 const tipoIndice = indiceActual != null ? indiceActual:"GLOBAL";
@@ -64,6 +65,8 @@ function App(){
     const [ultimosCambios, setUltimosCambios] = useState(ULTIMOS_CAMBIOS);
     const [cantidadMaxima, setCantidadMaxima] = useState(maxCantidad);
     const [temaActual, setTemaActual] = useState(document.body.className);
+    const [viewModal, setViewModal] = useState(false);
+    const [showResultados, setShowResultados] = useState(false);
 
     const auth = firebase.auth();
     const firestore = firebase.firestore();
@@ -73,6 +76,15 @@ function App(){
     const refCambios = useRef();
 
     /*#################Funciones###################*/
+    function mostrarResultados(){
+        setShowResultados(true);
+    }
+
+    function ocultarResultados(){
+        setShowResultados(false);
+    }
+
+
     function guardarEnStorage(nuevasMaterias){
         localStorage.setItem(materiasKey, JSON.stringify(nuevasMaterias.map(materia => {return {
             "Clase": materia.Clase,
@@ -124,23 +136,35 @@ function App(){
         return modalidad === "GLOBAL" ? "Global":"de Periodo";
     }
 
+    function closeModal(){
+        setViewModal(false);
+    }
+
+    function cerrarResultados(){
+        let contenedor = document.getElementById("resultados");
+
+        if(contenedor !== null){
+            if(contenedor.children[0]) ReactDOM.unmountComponentAtNode(contenedor);
+            ocultarResultados();
+        }
+    }
+
     //cambia el tipo de indice que se utiliza
     function cambiarModalidad(dato = null){
-        let nuevaModalidad = "";
+        let nuevaModalidad = modalidad;
 
         if(dato !== null){
             nuevaModalidad = dato === "GLOBAL" ? indiceGlobal: indicePeriodo;
         }else{
-            nuevaModalidad = modalidad === "GLOBAL" ? indicePeriodo: indiceGlobal;
+            nuevaModalidad = nuevaModalidad === "GLOBAL" ? indicePeriodo: indiceGlobal;
         }
 
         if(modalidad !== nuevaModalidad.tipoIndice){
 
             setModalidad(nuevaModalidad.tipoIndice);
-            let contenedor = document.getElementById("resultados");
     
-            if(contenedor !== null){
-                if(contenedor.children[0]) ReactDOM.unmountComponentAtNode(contenedor);
+            if(showResultados){
+                cerrarResultados();
             }
     
             materiasKey = nuevaModalidad.llaveStorage;
@@ -189,28 +213,37 @@ function App(){
 
     return (
         <>
-        <div  id="contenedor-pagina">
-        <Contenido 
-            materias={materias}
-            setMaterias={setMaterias}
-            crearID={crearID}
-            ultimosCambios={ultimosCambios} 
-            cantidadMaxima={cantidadMaxima}
-            tipoIndice={tipoIndice}
-            getTipo={getTipo}
-            guardarEnStorage={guardarEnStorage}
-            autoSaving={autoSaving}
-            refCambios={refCambios}
-            agregarGlobal={agregarGlobal}
-            firebase={firebase}
-            auth={auth}
-            user={user}
-            firestore={firestore}
+            <Modal viewModal={viewModal} closeModal={closeModal}/>
+            <div  id="contenedor-pagina">
+            <Contenido 
+                materias={materias}
+                setMaterias={setMaterias}
+                crearID={crearID}
+                ultimosCambios={ultimosCambios} 
+                cantidadMaxima={cantidadMaxima}
+                tipoIndice={modalidad}
+                getTipo={getTipo}
+                guardarEnStorage={guardarEnStorage}
+                autoSaving={autoSaving}
+                refCambios={refCambios}
+                agregarGlobal={agregarGlobal}
+                firebase={firebase}
+                auth={auth}
+                user={user}
+                firestore={firestore}
+                temaActual={temaActual}
+                setTemaActual={setTemaActual}
+                showResultados={showResultados}
+                mostrarResultados={mostrarResultados}
+                cerrarResultados={cerrarResultados}
+            />
+            </div>
+            <Navegacion
+            cambiarModalidad={cambiarModalidad}
+            tipoIndice={modalidad}
             temaActual={temaActual}
-            setTemaActual={setTemaActual}
-        />
-        </div>
-        <Navegacion cambiarModalidad={cambiarModalidad} tipoIndice={tipoIndice} temaActual={temaActual} />
+            setViewModal={setViewModal}
+            />
         </>
     );
 }

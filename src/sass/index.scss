@@ -2,10 +2,12 @@
 @import 'scrollbar';
 @import 'pagina';
 @import 'navegacion';
+@import 'modal';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Glegoo&display=swap');
 
 body{
+    transition: 0.8s;
     background: var(--bg-gradient), var(--bg-img);
     background-color: var(--bg) !important;
     color: var(--fcolor) !important;
@@ -15,16 +17,20 @@ body{
 }
 
 #root{
-    padding-top: 1vh;
+    /*padding-top: 1vh;*/
     width: 100vw;
     height: 100vh;
     overflow: hidden;
     display: grid;
-    /*row-gap: 1vh;*/
+    row-gap: 1vh;
     grid-template-areas:
     "contenido"
     "navegacion";
     justify-content: center;
+}
+
+#contenedor-pagina{
+    display: grid;
 }
 
 input {
@@ -43,11 +49,19 @@ button:hover{
 
 @media only screen and (max-width: 600px){
     #pagina{
+        height: 85vh;
         grid-template-areas: 
         "titulo"
         "controles"
         "main";
-        grid-template-rows: 20% auto auto;
+        grid-template-rows: auto auto auto;
+    }
+
+    #titulo{
+        h1{
+            max-width: 70%;
+            margin-bottom: 0;
+        }
     }
 
     #controles{
@@ -99,12 +113,38 @@ button:hover{
         "datos"
         "miscelaneos";
         grid-template-columns: 100%;
-        row-gap: 2vw;
+        row-gap: 2vh;
     }
 
     #lateral{
         display: grid;
         place-items: center;
+        text-align: center;
+        grid-template-areas:
+        "resultados"
+        "tema";
+        grid-template-columns: 100%;
+        row-gap: 2.5vh;
+    }
+
+    #temaActual {
+        max-width: 45%;
+    }
+
+    #navbar-desktop{
+        display: none;
+    }
+
+    #navbar-mobile{
+        display: grid;
+        /*grid-area: navegacion;*/
+        grid-template-areas:
+        "logo indice actual";
+        grid-template-columns: 20% 40% auto;
+    }
+
+    #logo img {
+        max-width: 75%;
     }
 }
 
@@ -128,6 +168,10 @@ button:hover{
 
     #controles{
         width: 80vw;
+    }
+
+    #temaActual{
+        max-width: 90%;
     }
 
     #contenidoClases{

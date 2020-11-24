@@ -1,0 +1,61 @@
+#lateral{
+    display: grid;
+    grid-area: miscelaneos;
+    padding-bottom: 4vh;
+    grid-template-areas: "tema resultados";
+    grid-template-columns: 45% auto;
+    column-gap: 1vw;
+
+    button{
+        font-family: 'Poppins', sans-serif;
+        font-weight: bold;
+        color: var(--navbar-text);
+        background-color: var(--fcolor);
+        border: 3px solid var(--navbar-text);
+        border-radius: 5px;
+        padding: 1vh 1vw;
+        font-size: 1.04em;
+    }
+
+    h4{
+        font-family: 'Glegoo', serif;
+        font-weight: bold;
+        margin-bottom: 0;
+        /*transition: 0.5s;*/
+    }
+}
+
+#temas{
+    grid-area: tema;
+}
+
+#accionCalcular {
+    grid-area: resultados;
+}
+
+#temaActual{
+    max-width: 65%;
+}
+
+#resultados > table{
+    margin-top: 3vh;
+    max-width: 100%;
+
+    tbody{
+        tr{
+            padding: 0;
+            td{
+                padding: 0;
+
+                p{
+                    margin: 3px;
+                }
+            }
+        }
+    }
+}
+
+#fotoPerfil{
+    max-width: 15%;
+    transition: 0.6s;
+}

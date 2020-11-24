@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM, { unstable_renderSubtreeIntoContainer } from 'react-dom';
+import ReactDOM from 'react-dom';
 import Materias from './Materias';
 import Resultados from './Resultados';
 import SignedIn from './SignedIn';
@@ -22,7 +22,10 @@ export default function Contenido( {
     user,
     firestore,
     temaActual,
-    setTemaActual
+    setTemaActual,
+    showResultados,
+    mostrarResultados,
+    cerrarResultados
 } ) {
 
     function mensajeClases(){
@@ -85,27 +88,39 @@ export default function Contenido( {
 
     //cambiar temas
     function cambiarTema(e){
-        document.body.className = document.body.className==="light" ? "dark":"light";
+        const temas = ["light", "dark", "synthwave"];
+
+        /*document.body.className = document.body.className==="light" ? "dark":"light";*/
+
+        document.body.className = temas[Math.floor(Math.random() * temas.length)];
         localStorage.setItem("currentTheme", document.body.className);
         setTemaActual(document.body.className);
     }
 
     //Función que realiza el calculo del indice academico
     function calcularIndice(){
-        let uvLlenas = true;
 
-        for(let i=0; i<materias.length; i++){
-            if(materias[i].UV === 0){
-                uvLlenas = false;
-                break
-            }
-        }
-
-        if(uvLlenas){
-            ReactDOM.render(<Resultados materias={materias} tipoIndice={tipoIndice} getTipo={getTipo} agregarAlGlobal={agregarGlobal}/>, document.getElementById("resultados"));
+        if(showResultados){
+            cerrarResultados();
         }else{
-            alert('Ocupas llenar por lo menos todas las casillas de "UV". Las casillas de notas sin llenar se tomarán como "NSP".')
-        }
+            mostrarResultados();        
+
+            let uvLlenas = true;
+
+            for(let i=0; i<materias.length; i++){
+                if(materias[i].UV === 0){
+                    uvLlenas = false;
+                    break
+                }
+            }
+
+            if(uvLlenas){
+                ReactDOM.render(<Resultados materias={materias} tipoIndice={tipoIndice} getTipo={getTipo} agregarAlGlobal={agregarGlobal}/>, document.getElementById("resultados"));
+            }else{
+                alert('Ocupas llenar por lo menos todas las casillas de "UV". Las casillas de notas sin llenar se tomarán como "NSP".')
+            }
+
+        }   
 
     }
 
@@ -122,7 +137,7 @@ export default function Contenido( {
         <div id="pagina">
             <div id="titulo">
                 <h1>
-                    <strong>Indice {getTipo()}</strong>
+                    <strong>Índice {getTipo()}</strong>
                 </h1>
             </div>
             <div id="controles">
@@ -153,13 +168,17 @@ export default function Contenido( {
                     <Materias materias={materias} autoSaving={autoSaving}/>
                 </div>
                 <div id ="lateral">
-                    <button onClick={cambiarTema}>Cambiar Color</button>
+                    <div id="temas">
+                        {user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />}
+                        <h4>Tema Actual:</h4>
+                        <img id="temaActual" src={`resources/${temaActual}.png`} alt={`Tema de colores ${temaActual}`} onClick={cambiarTema}/>
+                    </div>
                     <br/>
-                    <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
-                    <br/>
-                    <div id="resultados"></div>
+                    <div id="accionCalcular">
+                        <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
+                        <div id="resultados"></div>
+                    </div>
                     
-                    <div>Usuario conectado: {/*user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />*/ "nada"}</div>
                 </div>
             </div>
         </div>

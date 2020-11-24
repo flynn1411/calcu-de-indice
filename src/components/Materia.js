@@ -10,7 +10,7 @@ export default function Materia( {materia, autoSaving} ) {
         let nuevaClase = e.target.value;
         //console.log(e.target.value)
 
-        if (nuevaClase.match(/^(([ A-Za-z0-9áéíóúÁÉÍÓÚÜü])|(\-))+$/gm) === null){
+        if (nuevaClase.match(/^(([ A-Za-z0-9áéíóúÁÉÍÓÚÜü])|(-))+$/gm) === null){
             nuevaClase = clase;
             e.target.value = clase;
         }
@@ -24,7 +24,7 @@ export default function Materia( {materia, autoSaving} ) {
         let nuevaNota = e.target.value;
         //console.log(e.target.value)
 
-        /*if(nuevaNota.match(/[0-9]{1,3}$/gm)){
+        if(nuevaNota.match(/[0-9]{1,3}$/gm)){
             nuevaNota = parseInt(nuevaNota);
             //console.log(nuevaNota);
     
@@ -32,10 +32,15 @@ export default function Materia( {materia, autoSaving} ) {
                 e.target.value = 100;
                 nuevaNota = 100;
             }
-        }else{
+        }
+        else if(nuevaNota === ""){
+            nuevaNota = 0;
+        }
+        
+        else{
             e.target.value = nota;
             nuevaNota = nota;
-        }*/
+        }
 
         setNota(nuevaNota)
 
@@ -46,13 +51,18 @@ export default function Materia( {materia, autoSaving} ) {
         let nuevoUV = e.target.value;
         //console.log(e.target.value)
 
-        /*if(nuevoUV.match(/^(0|1|2)?[0-9]{1}$/gm)){
+        if(nuevoUV.match(/^(0|1|2)?[0-9]{1}$/gm)){
             nuevoUV = parseInt(nuevoUV);
             
-        }else{
+        }
+        else if(nuevoUV === ""){
+            nuevoUV = 0;
+        }
+
+        else{
             e.target.value = uv;
             nuevoUV = uv;
-        }*/
+        }
 
         setNota(nuevoUV)
 

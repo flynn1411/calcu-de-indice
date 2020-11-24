@@ -1,23 +1,27 @@
-import React from 'react'
+import React from 'react';
 
-export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual} ) {
+export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, setViewModal} ) {
 
     function cambiarActive(id){
-        let elementoActivo = null;
-        let elementoViejo = null;
+        cambiarModalidad(id);
 
-        if(id==="GLOBAL"){
-            elementoActivo = document.getElementById("global");
-            elementoViejo = document.getElementById("periodo");
-        }else{
-            elementoActivo = document.getElementById("periodo");
-            elementoViejo = document.getElementById("global");
+        if(id !== null){
+            //document.getElementById("modoActual").innerHTML = getModalidadActual();
+            let elementoActivo = null;
+            let elementoViejo = null;
+    
+            if(id==="GLOBAL"){
+                elementoActivo = document.getElementById("global");
+                elementoViejo = document.getElementById("periodo");
+            }else{
+                elementoActivo = document.getElementById("periodo");
+                elementoViejo = document.getElementById("global");
+            }
+    
+            elementoViejo.className = "dNavItems seleccion";
+            elementoActivo.className = "dNavItems seleccion active";
         }
 
-        elementoViejo.className = "dNavItems seleccion";
-        elementoActivo.className = "dNavItems seleccion active";
-
-        cambiarModalidad(id);
     }
 
     function setActive(id){
@@ -28,18 +32,36 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual} )
         }
     }
 
+    function getModalidadActual(){
+        if(tipoIndice === "GLOBAL"){
+            return "Global";
+        }else{
+            return "Periodo";
+        }
+    }
+
+    function showModal(){
+        setViewModal(true);
+    }
+
     return (
         <>
         <div id="navbar-desktop" className="navegacion">
-            <div className="dNavItems seleccion" id="logo">
+            <div className="dNavItems seleccion" id="logo" onClick={e => {showModal();}}>
                 <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Icono de Información."/>
-                </div>
+            </div>
             <div className="dNavItems" id="indice">Indice:</div>
             <div className={setActive("GLOBAL")} id="global" onClick={() => {cambiarActive("GLOBAL")}}>Global</div>
             <div className={setActive("PERIODO")} id="periodo" onClick={() => {cambiarActive("PERIODO")}}>Periodo</div>
         </div>
-        <div id="navbar-mobile" className="navegacion">
-
+        <div id="navbar-mobile" className="navegacion" onClick={e => {showModal();}}>
+            <div className="dNavItems seleccion" id="logo">
+                    <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Icono de Información."/>
+                </div>
+                <div className="dNavItems" id="indice">Indice:</div>
+                <div className={"hvr-grow dNavItems seleccion active"} id="modoActual" onClick={() => {cambiarActive(null)}}>
+                    {getModalidadActual()}
+                </div>
         </div>
         </>
     )

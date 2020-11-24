@@ -43,7 +43,7 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
             <tbody>
                 <tr>
                     <td>
-                        <p>Indice {getTipo}</p>
+                        <p>Indice {getTipo()}</p>
                         <p>{obtenerIndice()}</p>
                     </td>
                 </tr>
