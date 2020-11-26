@@ -4,6 +4,7 @@ import Materias from './Materias';
 import Resultados from './Resultados';
 import SignedIn from './SignedIn';
 import SignedOut from './SignedOut';
+import { useSpring, animated } from 'react-spring';
 
 export default function Contenido( {
     materias,
@@ -27,6 +28,48 @@ export default function Contenido( {
     mostrarResultados,
     cerrarResultados
 } ) {
+
+    const periodoSpawn = {
+        "width": "34vw",
+        "height": "1vh",
+        "bottom": "9vh",
+        "position": "absolute",
+        "right": "2vw"
+    };
+
+    const globalSpawn = {
+        "width": "34vw",
+        "height": "1vh",
+        "bottom": "9vh",
+        "position": "absolute",
+        "right": "35vw"
+    };
+
+    let spawnActual = tipoIndice === "GLOBAL" ? globalSpawn:periodoSpawn;
+
+    const animacionPagina = useSpring({
+        from:{
+            width: spawnActual.width,
+            height: spawnActual.height,
+            opacity: 0.2,
+            right: spawnActual.right,
+            bottom: spawnActual.bottom
+        },
+        to:{
+            width: "95vw",
+            height: "85vh",
+            opacity: 1,
+            right: "2.5vw",
+            bottom: "13.5vh"
+        },
+        config: {
+            mass: 2,
+            tension: 207,
+            friction: 40,
+            clamp: true,
+            velocity: 2
+          }
+    });
 
     function mensajeClases(){
         if(tipoIndice === "GLOBAL"){
@@ -134,7 +177,7 @@ export default function Contenido( {
     }
 
     return (
-        <div id="pagina">
+        <animated.div style={animacionPagina} id="pagina">
             <div id="titulo">
                 <h1>
                     <strong>Índice {getTipo()}</strong>
@@ -181,6 +224,6 @@ export default function Contenido( {
                     
                 </div>
             </div>
-        </div>
+        </animated.div>
     )
 }

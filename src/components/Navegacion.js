@@ -41,6 +41,7 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
     }
 
     function showModal(){
+        console.log("corrió");
         setViewModal(true);
     }
 
@@ -54,8 +55,8 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
             <div className={setActive("GLOBAL")} id="global" onClick={() => {cambiarActive("GLOBAL")}}>Global</div>
             <div className={setActive("PERIODO")} id="periodo" onClick={() => {cambiarActive("PERIODO")}}>Periodo</div>
         </div>
-        <div id="navbar-mobile" className="navegacion" onClick={e => {showModal();}}>
-            <div className="dNavItems seleccion" id="logo">
+        <div id="navbar-mobile" className="navegacion">
+            <div className="dNavItems seleccion" id="logo" onClick={e => {showModal();}}>
                     <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Icono de Información."/>
                 </div>
                 <div className="dNavItems" id="indice">Indice:</div>

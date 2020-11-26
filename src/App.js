@@ -67,6 +67,7 @@ function App(){
     const [temaActual, setTemaActual] = useState(document.body.className);
     const [viewModal, setViewModal] = useState(false);
     const [showResultados, setShowResultados] = useState(false);
+    const [cambioPagina, setCambioPagina] = useState(false);
 
     const auth = firebase.auth();
     const firestore = firebase.firestore();
@@ -160,6 +161,7 @@ function App(){
         }
 
         if(modalidad !== nuevaModalidad.tipoIndice){
+            setCambioPagina(true);
 
             setModalidad(nuevaModalidad.tipoIndice);
     
@@ -178,6 +180,10 @@ function App(){
             }) );
             setUltimosCambios(backupCambios != null ? backupCambios : "nunca");
             setCantidadMaxima(nuevaModalidad.cantidadMaxima);
+
+            setTimeout(()=>{
+                setCambioPagina(false);
+            } , 15)
     
             localStorage.setItem("tipoIndice", nuevaModalidad.tipoIndice);
 
@@ -211,33 +217,40 @@ function App(){
         },500);
     }
 
+    /************************************************ANIMACIONES*******************************************************/
+
+
     return (
         <>
             <Modal viewModal={viewModal} closeModal={closeModal}/>
+            
             <div  id="contenedor-pagina">
-            <Contenido 
-                materias={materias}
-                setMaterias={setMaterias}
-                crearID={crearID}
-                ultimosCambios={ultimosCambios} 
-                cantidadMaxima={cantidadMaxima}
-                tipoIndice={modalidad}
-                getTipo={getTipo}
-                guardarEnStorage={guardarEnStorage}
-                autoSaving={autoSaving}
-                refCambios={refCambios}
-                agregarGlobal={agregarGlobal}
-                firebase={firebase}
-                auth={auth}
-                user={user}
-                firestore={firestore}
-                temaActual={temaActual}
-                setTemaActual={setTemaActual}
-                showResultados={showResultados}
-                mostrarResultados={mostrarResultados}
-                cerrarResultados={cerrarResultados}
-            />
+                { cambioPagina ? null : (
+                <Contenido 
+                    materias={materias}
+                    setMaterias={setMaterias}
+                    crearID={crearID}
+                    ultimosCambios={ultimosCambios} 
+                    cantidadMaxima={cantidadMaxima}
+                    tipoIndice={modalidad}
+                    getTipo={getTipo}
+                    guardarEnStorage={guardarEnStorage}
+                    autoSaving={autoSaving}
+                    refCambios={refCambios}
+                    agregarGlobal={agregarGlobal}
+                    firebase={firebase}
+                    auth={auth}
+                    user={user}
+                    firestore={firestore}
+                    temaActual={temaActual}
+                    setTemaActual={setTemaActual}
+                    showResultados={showResultados}
+                    mostrarResultados={mostrarResultados}
+                    cerrarResultados={cerrarResultados}
+                />
+                ) }
             </div>
+            
             <Navegacion
             cambiarModalidad={cambiarModalidad}
             tipoIndice={modalidad}

@@ -30,6 +30,10 @@ body{
 }
 
 #contenedor-pagina{
+    grid-area: contenido;
+    height: 85vh;
+    width: 95vw;
+    margin-top: 1.5vh;
     display: grid;
 }
 

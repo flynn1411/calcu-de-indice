@@ -6,7 +6,6 @@
     background: var(--card-gradient), var(--card-bg);
     background-color: var(--card-bg2);
     color: var(--text);
-    grid-area: contenido;
     width: 95vw;
     /*background-color: var(--background-color);*/
     display: grid;
@@ -20,7 +19,7 @@
     border-radius: 5px;
     row-gap: 1vh;
     box-shadow: var(--box-shadow1);
-    transition: 0.8s;
+    position: absolute;
 }
 
 #main-content{
@@ -75,7 +74,6 @@
 }
 
 #datos{
-    transition: 0.6s;
     border: 2px solid var(--text);
     border-collapse: collapse;
     font-family: 'Poppins', sans-serif;
@@ -115,7 +113,6 @@
     line-height: 1.5;
     padding: 0 0 0 0;
     height: calc(1.5em + .75rem + 2px);
-    transition: 0.5s;
 }
 
 .claseInput{
