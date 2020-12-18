@@ -118,3 +118,7 @@
 .claseInput{
     font-style: italic;
 }
+
+textarea:focus, input:focus{
+    outline: none;
+}

@@ -9,7 +9,7 @@ import 'firebase/firebase-auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Contenido from './components/Contenido';
 import Navegacion from './components/Navegacion';
-import {useSpring, animated} from 'react-spring';
+//import {useSpring, animated} from 'react-spring';
 import Modal from './components/Modal';
 
 
@@ -73,6 +73,9 @@ function App(){
     const firestore = firebase.firestore();
     const [user] = useAuthState(auth);
 
+    /*if(user && navigator.onLine){
+        checkAuthedUser();
+    }*/
     /*#################Referencias#################*/
     const refCambios = useRef();
 
@@ -94,6 +97,33 @@ function App(){
         }})));
     }
 
+    /* Inicio de Funciones Firebase
+    if(user){
+        console.log(user.uid);
+    }
+     Fin de Funciones Firebase*/
+
+    function autoSaveFirebase(){
+        let timeoutID;
+
+        if(timeoutID) clearTimeout(timeoutID);
+
+        timeoutID = setTimeout(() => {
+            firestore.collection("notas").doc(user.uid).set({
+                global: JSON.parse(localStorage.getItem(indiceGlobal.llaveStorage)),
+                periodo: JSON.parse(localStorage.getItem(indicePeriodo.llaveStorage)),
+                "lastModified-global": localStorage.getItem(indiceGlobal.llaveCambios),
+                "lastModified-periodo": localStorage.getItem(indicePeriodo.llaveCambios)
+            }, {merge: true}
+            ).then( () => {
+                console.log("Success");
+            }
+            ).catch( error => {
+                console.log(error);
+            });
+        }, 10000);
+    }
+
     function autoSaving(id, nuevaMateria){
         let timeoutId, time = new Date();
 
@@ -108,12 +138,14 @@ function App(){
 
             if(minutes < 10) minutes = "0" + minutes;
 
-            const timeStamp = `${time.getDate()}/${time.getMonth()}/${time.getFullYear()} ${time.getHours()}:${minutes}`;
+            const timeStamp = `${time.getDate()}/${time.getMonth()+1}/${time.getFullYear()} ${time.getHours()}:${minutes}`;
             refCambios.current.innerText = `Últimos Cambios Realizados: ${timeStamp}`;
             setUltimosCambios(timeStamp);
             localStorage.setItem(cambiosKey, timeStamp);
 
+            if(user) autoSaveFirebase();
         }, TIMEOUT_VALUE);
+
     }
 
     //Realiza cambios en el estado de las clases
@@ -229,6 +261,7 @@ function App(){
                 <Contenido 
                     materias={materias}
                     setMaterias={setMaterias}
+                    setUltimosCambios={setUltimosCambios}
                     crearID={crearID}
                     ultimosCambios={ultimosCambios} 
                     cantidadMaxima={cantidadMaxima}
@@ -241,12 +274,13 @@ function App(){
                     firebase={firebase}
                     auth={auth}
                     user={user}
-                    firestore={firestore}
                     temaActual={temaActual}
                     setTemaActual={setTemaActual}
                     showResultados={showResultados}
                     mostrarResultados={mostrarResultados}
                     cerrarResultados={cerrarResultados}
+                    modalidad={modalidad}
+                    firestore={firestore}
                 />
                 ) }
             </div>

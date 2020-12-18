@@ -5,6 +5,8 @@ import Resultados from './Resultados';
 import SignedIn from './SignedIn';
 import SignedOut from './SignedOut';
 import { useSpring, animated } from 'react-spring';
+import indiceGlobal from '../profiles/global';
+import indicePeriodo from '../profiles/periodo';
 
 export default function Contenido( {
     materias,
@@ -13,20 +15,22 @@ export default function Contenido( {
     tipoIndice,
     getTipo,
     ultimosCambios,
+    setUltimosCambios,
     cantidadMaxima,
     guardarEnStorage,
     autoSaving,
     refCambios,
     agregarGlobal,
     firebase,
+    firestore,
     auth,
     user,
-    firestore,
     temaActual,
     setTemaActual,
     showResultados,
     mostrarResultados,
-    cerrarResultados
+    cerrarResultados,
+    modalidad
 } ) {
 
     const periodoSpawn = {
@@ -53,14 +57,16 @@ export default function Contenido( {
             height: spawnActual.height,
             opacity: 0.2,
             right: spawnActual.right,
-            bottom: spawnActual.bottom
+            bottom: spawnActual.bottom,
+            borderRadius: "50%"
         },
         to:{
             width: "95vw",
             height: "85vh",
             opacity: 1,
             right: "2.5vw",
-            bottom: "13.5vh"
+            bottom: "13.5vh",
+            borderRadius: "0%"
         },
         config: {
             mass: 2,
@@ -68,7 +74,7 @@ export default function Contenido( {
             friction: 40,
             clamp: true,
             velocity: 2
-          }
+        }
     });
 
     function mensajeClases(){
@@ -100,34 +106,6 @@ export default function Contenido( {
         autoSaving(null, null);
         guardarEnStorage(nuevasMaterias);
     }
-
-    //cambia clases de acuerdo a como se escriban por el usuario
-    /*function cambiarClases(e){
-        let nuevaCantidad = parseInt(e.target.value);
-        let materiasNuevas = [...materias];
-
-        if(nuevaCantidad > materias.length){
-            let diferencia = nuevaCantidad - materias.length;
-
-            for(let i = 0; i<diferencia; i++){
-                if(materiasNuevas.length < cantidadMaxima){
-                    materiasNuevas.push({id: crearID(),"Clase":`Clase${materias.length+i+1}`,"Nota":0,"UV":0})
-                }else{break}
-            }
-        }
-        else if(nuevaCantidad < materias.length){
-            let diferencia = materias.length - nuevaCantidad;
-
-            for(let i = 0; i<diferencia; i++){
-                if(materiasNuevas.length > 1){
-                    materiasNuevas.slice(0, materias.length-i-1);
-                }
-                else{break}
-            }
-        }
-
-        setMaterias(materiasNuevas);
-    }*/
 
     //cambiar temas
     function cambiarTema(e){
@@ -167,13 +145,82 @@ export default function Contenido( {
 
     }
 
+    function manejarAuth(authedUser){
+
+        var referencia = firestore.collection("usuarios").doc(authedUser.uid);
+
+        referencia.get().then( respuesta => {
+            //console.log(retrieved.data());
+            if(respuesta.exists){
+                let datos = respuesta.data();
+
+                localStorage.setItem("currentTheme", datos["currentTheme"]);
+                setTemaActual(localStorage.getItem("currentTheme"));
+                document.body.className = datos["currentTheme"];
+
+                firestore.collection("notas").doc(authedUser.uid).get().then(
+                    respuesta => {
+                        if(respuesta.exists){
+                            let datosRespuesta = respuesta.data();
+                            let datosGlobal = datosRespuesta["global"] ? datosRespuesta["global"] : indiceGlobal.default;
+                            let datosPeriodo = datosRespuesta["periodo"] ? datosRespuesta["periodo"] : indicePeriodo.default;
+                            
+                            localStorage.setItem(indiceGlobal.llaveStorage, JSON.stringify(datosGlobal));
+                            localStorage.setItem(indicePeriodo.llaveStorage, JSON.stringify(datosPeriodo));
+
+                            if(datosRespuesta["lastModified-global"]){
+                                localStorage.setItem(indiceGlobal.llaveCambios, datosRespuesta["lastModified-global"]);
+                            }
+
+                            if(datosRespuesta["lastModified-periodo"]){
+                                localStorage.setItem(indicePeriodo.llaveCambios, datosRespuesta["lastModified-periodo"]);
+                            }
+
+                            if(modalidad === "GLOBAL" && localStorage.getItem(indiceGlobal.llaveCambios)){
+                                setUltimosCambios(localStorage.getItem(indiceGlobal.llaveCambios));
+                            }else if(localStorage.getItem(indicePeriodo.llaveCambios)){
+                                setUltimosCambios(localStorage.getItem(indicePeriodo.llaveCambios));
+                            }
+
+                            let modalidadActual = modalidad === "GLOBAL" ? datosGlobal : datosPeriodo;
+                            setMaterias(modalidadActual.map( clase => {
+                                return {"id":crearID(), "Clase":clase.Clase, "Nota":clase.Nota, "UV":clase.UV}
+                            }))
+                        }
+                    }
+                ).catch( error => {
+                    console.log(error);
+                });
+            }else{
+                firestore.collection("usuarios").doc(authedUser.uid).set({
+                    nombre : `${authedUser.displayName}`,
+                    correo : `${authedUser.email}`,
+                    correoVerificado : `${authedUser.emailVerified}`,
+                    id : `${authedUser.uid}`,
+                    "visibility" : "public",
+                    currentTheme : localStorage.getItem("currentTheme")
+                }, {merge: true}
+                ).then( () => {
+                    console.log("Success");
+                }
+                ).catch( error => {
+                    console.log(error);
+                });
+            }
+        } ).catch();
+    }
+
     function googleAuth(){
         const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
+
+        auth.signInWithPopup(provider).then( resultado => manejarAuth(resultado.user) );
     }
 
     function cerrarSesion(){
-        auth.signOut();
+        auth.signOut().then(event => {
+            localStorage.clear();
+            window.location.reload();
+        });
     }
 
     return (

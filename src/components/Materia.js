@@ -26,7 +26,7 @@ export default function Materia( {materia, autoSaving} ) {
         let nuevaClase = e.target.value;
         //console.log(e.target.value)
 
-        if (nuevaClase.match(/^(([ A-Za-z0-9áéíóúÁÉÍÓÚÜü])|(-))+$/gm) === null){
+        if (nuevaClase.match(/^(([ A-Za-z0-9áéíóúÁÉÍÓÚÜü])|(-))*$/gm) === null){
             nuevaClase = clase;
             e.target.value = clase;
         }
@@ -40,7 +40,7 @@ export default function Materia( {materia, autoSaving} ) {
         let nuevaNota = e.target.value;
         //console.log(e.target.value)
 
-        if(nuevaNota.match(/[0-9]{1,3}$/gm)){
+        if(nuevaNota.match(/[0-9]{0,3}$/gm)){
             nuevaNota = parseInt(nuevaNota);
             //console.log(nuevaNota);
     
