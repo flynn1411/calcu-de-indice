@@ -52,13 +52,29 @@ button:hover{
 }
 
 @media only screen and (max-width: 600px){
-    #pagina{
+    #root{
+        height: 99vh;
+        bottom: 0vh;
+    }
+
+    #contenedor-pagina{
+        grid-area: contenido;
         height: 85vh;
-        grid-template-areas: 
-        "titulo"
-        "controles"
-        "main";
+        width: 95vw;
+        margin-top: 1.5vh;
+        display: grid;
+        /*overflow: auto;*/
+    }
+
+    #pagina{
+        //height: 85vh !important;
+        grid-template-areas:
+            "titulo"
+            "controles"
+            "main";
+        bottom: 4.5vh !important;
         grid-template-rows: auto auto auto;
+        overflow: auto !important;
     }
 
     #titulo{
@@ -66,6 +82,7 @@ button:hover{
             max-width: 70%;
             margin-bottom: 0;
         }
+        overflow: visible;
     }
 
     #controles{
@@ -79,6 +96,7 @@ button:hover{
         padding-right: 6vw;
         text-align: center;
         padding: 1vh 0;
+        overflow: visible;
 
         h4{
             height: min-content;
@@ -118,6 +136,7 @@ button:hover{
         "miscelaneos";
         grid-template-columns: 100%;
         row-gap: 2vh;
+        overflow-y: visible;
     }
 
     #lateral{
@@ -162,7 +181,7 @@ button:hover{
     }
 
     #pagina{
-        height: 88vh;
+        //height: 88vh;
         grid-template-areas: 
         "titulo"
         "controles"

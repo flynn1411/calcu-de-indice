@@ -57,7 +57,7 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
         </div>
         <div id="navbar-mobile" className="navegacion">
             <div className="dNavItems seleccion" id="logo" onClick={e => {showModal();}}>
-                    <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Icono de Información."/>
+                    <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Info"/>
                 </div>
                 <div className="dNavItems" id="indice">Indice:</div>
                 <div className={"hvr-grow dNavItems seleccion active"} id="modoActual" onClick={() => {cambiarActive(null)}}>
