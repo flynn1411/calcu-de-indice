@@ -1,6 +1,5 @@
 {
-  /*"homepage": "http://flynn1411.github.io/calcu-de-indice",*/
-  "homepage": "http://www.calcudeindice.live",
+  "homepage": "http://flynn1411.github.io/calcu-de-indice",
   "name": "calcu-de-indice",
   "version": "0.1.0",
   "private": true,
