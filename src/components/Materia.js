@@ -1,11 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import { useSpring, animated } from 'react-spring';
 
 export default function Materia( {materia, autoSaving} ) {
     //Hooks
     const [clase, setClase] = useState(materia.Clase);
     const [nota, setNota] = useState(materia.Nota);
-    const [uv, setUV] = useState(materia.UV);
+    const [uv] = useState(materia.UV);
 
     const animacionMateria = useSpring({
         to:{
