@@ -27,6 +27,7 @@
     padding-right: 5vw;
     display: grid;
     overflow-y: auto;
+    scroll-behavior: smooth;
     scrollbar-color: var(--hover-fcolor) transparent;
     scrollbar-width: thin;
     grid-area: main;
@@ -101,7 +102,15 @@
     /*padding: 1.3vh 0vw;*/
 }
 
-#datos > tbody > tr > td > input {
+tr.inactive-row td div{
+    max-height: 0%;
+    background-color: var(--hover-bg);
+    box-sizing: border-box;
+    //display: none;
+    transition: max-height 0.6s, background-color 1s;
+}
+
+#datos > tbody > tr > td > div > input {
     font-family: 'Poppins', sans-serif;
     width: 95%;
     text-align: center;
@@ -117,6 +126,12 @@
 
 .claseInput{
     font-style: italic;
+}
+
+tr.active-row td div{
+    max-height: 100%;
+    background-color: transparent;
+    transition: max-height 0.6s, background-color 1s;
 }
 
 textarea:focus, input:focus{

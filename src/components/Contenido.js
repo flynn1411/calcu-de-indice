@@ -89,6 +89,8 @@ export default function Contenido( {
     function eliminarClases(e=null){
         if (materias.length === 1) return
 
+        document.getElementById("datos").tBodies[0].lastElementChild.className = "inactive-row";
+
         const nuevasMaterias = [...materias].slice(0, materias.length-1);
 
         setMaterias(nuevasMaterias);
@@ -100,9 +102,16 @@ export default function Contenido( {
     function agregarClases(e=null){
         if (materias.length === cantidadMaxima) return
 
-        const nuevasMaterias = [...materias, {id: crearID(),"Clase":`Clase${materias.length+1}`,"Nota":0,"UV":0}];
+        const nuevasMaterias = [...materias, {id: crearID(),"Clase":`Clase${materias.length+1}`,"Nota":0,"UV":0, "setActiveClass":false}];
 
         setMaterias(nuevasMaterias);
+
+        
+        setTimeout(() => {
+            document.getElementById("datos").tBodies[0].lastElementChild.style.maxHeight="100%";
+            /*document.getElementById("datos").tBodies[0].lastElementChild.className = "active-row";*/
+        }, 450);
+
         autoSaving(null, null);
         guardarEnStorage(nuevasMaterias);
     }
