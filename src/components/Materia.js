@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-export default function Materia( {materia, autoSaving, setActiveClass} ) {
+export default function Materia( {materia, autoSaving} ) {
     //Hooks
     const [clase, setClase] = useState(materia.Clase);
     const [nota, setNota] = useState(materia.Nota);
@@ -78,7 +78,7 @@ export default function Materia( {materia, autoSaving, setActiveClass} ) {
     }
 
     return (
-        <tr className={setActiveClass ? "active-row" : "inactive-row"}>
+        <tr>
             <td><div>{ claseInput() }</div></td>
             <td><div><input type='number' min="0" max="100" defaultValue={nota === 0 ? "": nota} onChange={manejarNota}/></div></td>
             <td><div><input type='number' min="0" max="20" defaultValue={uv === 0 ? "": uv} onChange={manejarUV}/></div></td>

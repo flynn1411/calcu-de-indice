@@ -6,7 +6,7 @@ export default function Materias( {materias, autoSaving} ) {
 
     function mostrarMaterias(){
         return materias.map( materia => {
-            return <Materia key={materia.id} materia={materia} autoSaving={autoSaving} setActiveClass={materia.setActiveClass}/>
+            return <Materia key={materia.id} materia={materia} autoSaving={autoSaving}/>
         } )
     }
 

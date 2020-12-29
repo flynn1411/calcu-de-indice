@@ -58,7 +58,7 @@ function App(){
 
     /*#################Constantes###################*/
     const [materias, setMaterias] = useState( listaClases.map((materia)=>{
-        return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV, "setActiveClass":true}
+        return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
     }) );
 
     const [modalidad, setModalidad] = useState(tipoIndice);
@@ -208,7 +208,7 @@ function App(){
             backupCambios = localStorage.getItem(cambiosKey);
     
             setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia)=>{
-                return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV, "setActiveClass": true}
+                return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
             }) );
             setUltimosCambios(backupCambios != null ? backupCambios : "nunca");
             setCantidadMaxima(nuevaModalidad.cantidadMaxima);
