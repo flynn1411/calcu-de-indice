@@ -6,6 +6,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Glegoo&display=swap');
 
+html {
+    scroll-behavior: smooth;
+  }
+
 body{
     transition: 0.8s;
     background: var(--bg-gradient), var(--bg-img);
@@ -75,6 +79,7 @@ button:hover{
         bottom: 4.5vh !important;
         grid-template-rows: auto auto auto;
         overflow: auto !important;
+        scroll-behavior: smooth;
     }
 
     #titulo{

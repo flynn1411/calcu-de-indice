@@ -1,20 +1,8 @@
 import React from 'react';
 import Materia from './Materia';
-import { useSpring, animated } from 'react-spring';
 //import uuidv4 from 'uuid/dist/v4'
 
 export default function Materias( {materias, autoSaving} ) {
-
-    const animacionTabla = useSpring({
-        from:{
-            opacity: 0,
-            marginTop: "50vh"
-        },
-        to:{
-            opacity: 1,
-            marginTop: "0vh"
-        }
-    });
 
     function mostrarMaterias(){
         return materias.map( materia => {
@@ -23,7 +11,7 @@ export default function Materias( {materias, autoSaving} ) {
     }
 
     return (
-        <animated.table style={animacionTabla} id="datos">
+        <table id="datos">
             <thead>
                 <tr>
                     <th>Clase</th>
@@ -36,6 +24,6 @@ export default function Materias( {materias, autoSaving} ) {
                 mostrarMaterias()        
                 }
             </tbody>
-        </animated.table>
+        </table>
     )
 }

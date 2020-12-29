@@ -41,7 +41,7 @@ let defaultTemplate = infoIndice.default;
 let maxCantidad = infoIndice.cantidadMaxima;
 
 /*#################Variables Globales###################*/
-const TIMEOUT_VALUE = 1200;
+const TIMEOUT_VALUE = 1000;
 
 let backupClases = JSON.parse(localStorage.getItem(materiasKey));
 let backupCambios = localStorage.getItem(cambiosKey);
@@ -232,11 +232,15 @@ function App(){
                 "UV": clase.UV
             }
         });
+
+        let nClases = 0;
         let clasesGlobal = JSON.parse(localStorage.getItem(indiceGlobal.llaveStorage));
 
         if(clasesGlobal === null){
             localStorage.setItem(indiceGlobal.llaveStorage, JSON.stringify(clasesPeriodo));
         }else{
+            nClases = clasesPeriodo.length;
+
             for(let i=0; i<clasesPeriodo.length; i++){
                 clasesGlobal.push(clasesPeriodo[i]);
             }
@@ -244,9 +248,23 @@ function App(){
         }
         
         cambiarModalidad();
+
+        if(nClases > 0){
+            let tableBody = document.getElementById("datos").tBodies[0].childNodes;
+
+            for(let i=0; i<nClases; i++){
+                tableBody[(tableBody.length-nClases+i)].style.backgroundColor = "var(--hover-bg)";
+            }
+        }
+
         setTimeout(()=>{
-            document.getElementById("calcular").scrollIntoView(true);
-        },500);
+            if(window.innerWidth <= 600){
+                document.getElementById("calcular").scrollIntoView({ block: 'start',  behavior: 'smooth' });
+            }else{
+                document.getElementById("clases").scrollIntoView({ block: 'end',  behavior: 'smooth' });
+            }
+
+        },1500);
     }
 
     /************************************************ANIMACIONES*******************************************************/

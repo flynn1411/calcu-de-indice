@@ -89,6 +89,8 @@ export default function Contenido( {
     function eliminarClases(e=null){
         if (materias.length === 1) return
 
+        document.getElementById("datos").tBodies[0].lastElementChild.style.maxHeight = "0";
+
         const nuevasMaterias = [...materias].slice(0, materias.length-1);
 
         setMaterias(nuevasMaterias);
@@ -103,6 +105,7 @@ export default function Contenido( {
         const nuevasMaterias = [...materias, {id: crearID(),"Clase":`Clase${materias.length+1}`,"Nota":0,"UV":0}];
 
         setMaterias(nuevasMaterias);
+
         autoSaving(null, null);
         guardarEnStorage(nuevasMaterias);
     }

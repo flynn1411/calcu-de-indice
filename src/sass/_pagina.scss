@@ -27,6 +27,7 @@
     padding-right: 5vw;
     display: grid;
     overflow-y: auto;
+    scroll-behavior: smooth;
     scrollbar-color: var(--hover-fcolor) transparent;
     scrollbar-width: thin;
     grid-area: main;
@@ -101,7 +102,7 @@
     /*padding: 1.3vh 0vw;*/
 }
 
-#datos > tbody > tr > td > input {
+#datos > tbody > tr > td > div > input {
     font-family: 'Poppins', sans-serif;
     width: 95%;
     text-align: center;

@@ -1,26 +1,10 @@
 import React, {useState} from 'react';
-import { useSpring, animated } from 'react-spring';
 
 export default function Materia( {materia, autoSaving} ) {
     //Hooks
     const [clase, setClase] = useState(materia.Clase);
     const [nota, setNota] = useState(materia.Nota);
     const [uv] = useState(materia.UV);
-
-    const animacionMateria = useSpring({
-        to:{
-            opacity: 1,
-            width: "100%"
-        },
-        from:{
-            opacity: 0,
-            width: "0%"
-        },
-        config:{
-            tension: 280,
-            friction: 60
-          }
-    });
 
     function manejarClase(e){
         let nuevaClase = e.target.value;
@@ -94,10 +78,10 @@ export default function Materia( {materia, autoSaving} ) {
     }
 
     return (
-        <animated.tr style={animacionMateria}>
-            <td>{ claseInput() }</td>
-            <td><input type='number' min="0" max="100" defaultValue={nota === 0 ? "": nota} onChange={manejarNota}/></td>
-            <td><input type='number' min="0" max="20" defaultValue={uv === 0 ? "": uv} onChange={manejarUV}/></td>
-        </animated.tr>
+        <tr>
+            <td><div>{ claseInput() }</div></td>
+            <td><div><input type='number' min="0" max="100" defaultValue={nota === 0 ? "": nota} onChange={manejarNota}/></div></td>
+            <td><div><input type='number' min="0" max="20" defaultValue={uv === 0 ? "": uv} onChange={manejarUV}/></div></td>
+        </tr>
     )
 }
