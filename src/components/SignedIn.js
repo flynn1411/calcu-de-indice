@@ -29,10 +29,10 @@ export default function SignedIn( {cerrarSesion, usuario} ) {
             <div id="nombrePerfil">{usuario.displayName}</div>
             <br></br>
             <div id="signedIn-buttons">
-                <button id="sign-out" onClick={cerrarSesion}>Cerrar Sesión</button>
+                <button className="hvr-ripple-out" id="sign-out" onClick={cerrarSesion}>Cerrar Sesión</button>
                 <br></br>
                 <br></br>
-                <button id="delete">Eliminar Usuario</button>
+                <button className="hvr-ripple-out" id="delete">Eliminar Usuario</button>
             </div>
         </animated.div>
     )

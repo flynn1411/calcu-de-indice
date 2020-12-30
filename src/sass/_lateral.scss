@@ -11,10 +11,17 @@
         font-weight: bold;
         color: var(--navbar-text);
         background-color: var(--fcolor);
-        border: 3px solid var(--navbar-text);
+        border: 3px solid var(--hover-fcolor);
         border-radius: 5px;
         padding: 1vh 1vw;
         font-size: 1.04em;
+      }
+      
+      button:hover{
+        color: var(--navbar-bg) !important;
+        background-color: var(--navbar-text) !important;
+        border-color: var(--hover-fcolor);
+        transition: 0.6s;
     }
 
     h4{
@@ -35,11 +42,13 @@
 
 #temaActual{
     max-width: 65%;
+    cursor: pointer;
 }
 
-#resultados > table{
+#resultados > div > table{
     margin-top: 3vh;
     max-width: 100%;
+    border-spacing: 1vh;
 
     tbody{
         tr{
@@ -53,6 +62,23 @@
             }
         }
     }
+
+    tbody:nth-child(1) , tbody:nth-child(2){
+      div{
+        background-color: var(--bg);
+        color: var(--fcolor);
+        text-align: center;
+        padding-top: 1vh;
+        padding-bottom: 1vh;
+        font-family: 'Poppins';
+        font-size: 1.2em;
+        border-radius: 5px;
+      }
+    }
+}
+
+.datosT{
+  text-decoration: underline;
 }
 
 #fotoPerfil{
@@ -60,3 +86,64 @@
     transition: 0.6s;
     border-radius: 50%;
 }
+
+/* Ripple Out */
+@-webkit-keyframes hvr-ripple-out {
+    100% {
+      top: -12px;
+      right: -12px;
+      bottom: -12px;
+      left: -12px;
+      opacity: 0;
+    }
+  }
+  @keyframes hvr-ripple-out {
+    100% {
+      top: -12px;
+      right: -12px;
+      bottom: -12px;
+      left: -12px;
+      opacity: 0;
+    }
+  }
+  .hvr-ripple-out {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px var(--hover-fcolor);
+    //position: relative;
+  }
+  .hvr-ripple-out:before {
+    content: '';
+    position: absolute;
+    border: var(--hover-fcolor) solid 3px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+  }
+  .hvr-ripple-out:hover:before, .hvr-ripple-out:focus:before, .hvr-ripple-out:active:before {
+    -webkit-animation-name: hvr-ripple-out;
+    animation-name: hvr-ripple-out;
+  }
+
+  /* Bounce In */
+.hvr-bounce-in {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+  }
+  .hvr-bounce-in:hover, .hvr-bounce-in:focus, .hvr-bounce-in:active {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+    -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+    transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+  }
+  

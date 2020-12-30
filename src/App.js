@@ -72,6 +72,7 @@ function App(){
     const auth = firebase.auth();
     const firestore = firebase.firestore();
     const [user] = useAuthState(auth);
+    var timeoutId;
 
     /*if(user && navigator.onLine){
         checkAuthedUser();
@@ -125,7 +126,7 @@ function App(){
     }
 
     function autoSaving(id, nuevaMateria){
-        let timeoutId, time = new Date();
+        let time = new Date();
 
         refCambios.current.innerText = "Guardando...";
 
@@ -296,9 +297,9 @@ function App(){
                     setTemaActual={setTemaActual}
                     showResultados={showResultados}
                     mostrarResultados={mostrarResultados}
-                    cerrarResultados={cerrarResultados}
                     modalidad={modalidad}
                     firestore={firestore}
+                    timeoutId={timeoutId}
                 />
                 ) }
             </div>

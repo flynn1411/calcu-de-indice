@@ -18,8 +18,8 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
                 elementoViejo = document.getElementById("global");
             }
     
-            elementoViejo.className = "dNavItems seleccion";
-            elementoActivo.className = "dNavItems seleccion active";
+            elementoViejo.className = "hvr-grow dNavItems seleccion";
+            elementoActivo.className = "hvr-grow dNavItems seleccion active";
         }
 
     }
@@ -55,6 +55,7 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
             <div className={setActive("GLOBAL")} id="global" onClick={() => {cambiarActive("GLOBAL")}}>Global</div>
             <div className={setActive("PERIODO")} id="periodo" onClick={() => {cambiarActive("PERIODO")}}>Periodo</div>
         </div>
+        
         <div id="navbar-mobile" className="navegacion">
             <div className="dNavItems seleccion" id="logo" onClick={e => {showModal();}}>
                     <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Info"/>
