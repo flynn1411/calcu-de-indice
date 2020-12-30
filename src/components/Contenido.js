@@ -27,10 +27,9 @@ export default function Contenido( {
     user,
     temaActual,
     setTemaActual,
-    showResultados,
     mostrarResultados,
-    cerrarResultados,
-    modalidad
+    modalidad,
+    timeoutId
 } ) {
 
     const periodoSpawn = {
@@ -51,7 +50,7 @@ export default function Contenido( {
 
     let spawnActual = tipoIndice === "GLOBAL" ? globalSpawn:periodoSpawn;
 
-    const animacionPagina = useSpring({
+    const animacionDesktop = useSpring({
         from:{
             width: spawnActual.width,
             height: spawnActual.height,
@@ -124,17 +123,19 @@ export default function Contenido( {
     //Función que realiza el calculo del indice academico
     function calcularIndice(){
 
-        if(showResultados){
-            cerrarResultados();
+        if(timeoutId){
+            return;
         }else{
             mostrarResultados();        
 
             let uvLlenas = true;
 
-            for(let i=0; i<materias.length; i++){
-                if(materias[i].UV === 0){
-                    uvLlenas = false;
-                    break
+            if(!timeoutId){
+                for(let i=0; i<materias.length; i++){
+                    if(materias[i].UV === 0){
+                        uvLlenas = false;
+                        break
+                    }
                 }
             }
 
@@ -227,7 +228,7 @@ export default function Contenido( {
     }
 
     return (
-        <animated.div style={animacionPagina} id="pagina">
+        <animated.div style={animacionDesktop} id="pagina">
             <div id="titulo">
                 <h1>
                     <strong>Índice {getTipo()}</strong>
@@ -241,13 +242,13 @@ export default function Contenido( {
                     <table id="tabla-spinner">
                         <tbody>
                             <tr>
-                                <td className="clickable" onClick={eliminarClases}>
+                                <td className={"clickable"} onClick={eliminarClases}>
                                     <button>-</button>
                                 </td>
                                 <td>
                                     <input id="contenidoClases" type="number" min="1" max={cantidadMaxima} readOnly={true} /*onChange={cambiarClases} defaultV*/ value={materias.length}/>
                                 </td>
-                                <td className="clickable" onClick={agregarClases}>
+                                <td className={"clickable"} onClick={agregarClases}>
                                     <button>+</button>
                                 </td>
                             </tr>
@@ -264,11 +265,11 @@ export default function Contenido( {
                     <div id="temas">
                         {user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />}
                         <h4>Tema Actual:</h4>
-                        <img id="temaActual" src={`resources/${temaActual}.png`} alt={`Tema de colores ${temaActual}`} onClick={cambiarTema}/>
+                        <img className={"hvr-bounce-in"} id="temaActual" src={`resources/${temaActual}.png`} alt={`Tema de colores ${temaActual}`} onClick={cambiarTema}/>
                     </div>
                     <br/>
                     <div id="accionCalcular">
-                        <button id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
+                        <button className={"hvr-ripple-out"} id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
                         <div id="resultados"></div>
                     </div>
                     

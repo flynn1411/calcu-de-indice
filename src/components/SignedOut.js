@@ -8,7 +8,7 @@ export default function SignedOut( {googleAuth} ) {
 
     return (
         <div>
-            <button onClick={signIn}>Ingresar con Google</button>
+            <button className="hvr-ripple-out" onClick={signIn}>Ingresar con Google</button>
         </div>
     )
 }

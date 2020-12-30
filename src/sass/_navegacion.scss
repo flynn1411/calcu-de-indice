@@ -27,10 +27,10 @@
 
 .dNavItems{
     //width: 25%;
-    display: grid;
+    display: grid !important;
     height: 100%;
     vertical-align: middle;
-    place-items: center;
+    place-items: center !important;
     font-size: xx-large;
     transition: 0.8s;
 }

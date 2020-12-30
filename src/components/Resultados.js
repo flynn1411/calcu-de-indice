@@ -1,7 +1,24 @@
 import React from 'react';
-//import {useSpring, animated} from 'react-spring';
+import {useSpring, animated} from 'react-spring';
 
 export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlobal} ) {
+
+    const animacionEntrada = useSpring({
+        from:{
+            height: "0%",
+            opacity: 0
+        },
+        to:{
+            height:"100%",
+            opacity:1
+        },
+        config:{
+            mass: 3.5,
+            tension: 160,
+            precision: 0.172,
+            velocity: -15
+        }
+    });
 
     function obtenerUV(clases){
         let uv = 0;
@@ -40,22 +57,28 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
     }
 
     return (
+        <animated.div id="accionCalcular" style={animacionEntrada}>
         <table>
             <tbody>
                 <tr>
                     <td>
-                        <p>Indice {getTipo()}</p>
-                        <p>{obtenerIndice()}</p>
+                        <div>
+                            <p className="datosT">Indice {getTipo()}</p>
+                            <p className="datosN">{obtenerIndice()}</p>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Redondeado</p>
-                        <p>{parseFloat(obtenerIndice()).toFixed(0)}</p>
+                        <div>
+                            <p className="datosT">Redondeado</p>
+                            <p className="datosN">{parseFloat(obtenerIndice()).toFixed(0)}</p>
+                        </div>
                     </td>
                 </tr>
                 {moverAGlobal()}
             </tbody>
         </table>
+        </animated.div>
     )
 }
