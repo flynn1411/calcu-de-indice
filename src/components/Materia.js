@@ -1,10 +1,39 @@
 import React, {useState} from 'react';
+import {useSpring, animated} from 'react-spring';
 
-export default function Materia( {materia, autoSaving} ) {
+export default function Materia( {materia, autoSaving, temaActual} ) {
     //Hooks
     const [clase, setClase] = useState(materia.Clase);
     const [nota, setNota] = useState(materia.Nota);
     const [uv] = useState(materia.UV);
+
+    let toBg = "rgba(0, 0, 0, 0)";
+    let fromBg = "rgba(38, 67, 81, 1)";
+
+
+    if(temaActual === "dark"){
+        fromBg = "rgba(216, 216, 216, 1)";
+    }
+    else if(temaActual === "synthwave"){
+        fromBg = "rgba(54, 40, 59, 1)";
+        
+    }
+
+    const newMateria = useSpring({
+        from:{
+            //color: fromColor,
+            background: fromBg
+        },
+        to:{
+            //color: toColor,
+            background: toBg
+        },
+        config:{
+            tension: 280,
+            friction: 120
+          }
+        //delay: 750
+    });
 
     function manejarClase(e){
         let nuevaClase = e.target.value;
@@ -79,9 +108,9 @@ export default function Materia( {materia, autoSaving} ) {
 
     return (
         <tr>
-            <td><div>{ claseInput() }</div></td>
-            <td><div><input type='number' min="0" max="100" defaultValue={nota === 0 ? "": nota} onChange={manejarNota}/></div></td>
-            <td><div><input type='number' min="0" max="20" defaultValue={uv === 0 ? "": uv} onChange={manejarUV}/></div></td>
+            <td><animated.div style={newMateria}>{ claseInput() }</animated.div></td>
+            <td><animated.div style={newMateria}><input type='number' min="0" max="100" defaultValue={nota === 0 ? "": nota} onChange={manejarNota}/></animated.div></td>
+            <td><animated.div style={newMateria}><input type='number' min="0" max="20" defaultValue={uv === 0 ? "": uv} onChange={manejarUV}/></animated.div></td>
         </tr>
     )
 }

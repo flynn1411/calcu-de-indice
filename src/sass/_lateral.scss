@@ -45,40 +45,37 @@
     cursor: pointer;
 }
 
-#resultados > div > table{
+#resultados > div {
     margin-top: 3vh;
     max-width: 100%;
     border-spacing: 1vh;
+    //transition: 6ms;
+    font-family: 'Poppins', sans-serif;
+}
 
-    tbody{
-        tr{
-            padding: 0;
-            td{
-                padding: 0;
+.results{
+  background-color: var(--text);
+  color: var(--fcolor);
+  text-align: center;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  margin-bottom: 2vh;
+  border-radius: 5px;
 
-                p{
-                    margin: 3px;
-                }
-            }
-        }
-    }
-
-    tbody:nth-child(1) , tbody:nth-child(2){
-      div{
-        background-color: var(--bg);
-        color: var(--fcolor);
-        text-align: center;
-        padding-top: 1vh;
-        padding-bottom: 1vh;
-        font-family: 'Poppins';
-        font-size: 1.2em;
-        border-radius: 5px;
-      }
-    }
+  p{
+    margin-bottom: 0.4vh;
+    margin-top: 0.4vh;
+  }
 }
 
 .datosT{
   text-decoration: underline;
+  font-size: 1.2em;
+}
+
+.datosN{
+  font-size: 1.4em;
+  font-weight: bold;
 }
 
 #fotoPerfil{
