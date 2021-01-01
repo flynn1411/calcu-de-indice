@@ -259,7 +259,7 @@ export default function Contenido( {
             </div>
             <div id="main-content">
                 <div id="clases">
-                    <Materias materias={materias} autoSaving={autoSaving}/>
+                    <Materias materias={materias} autoSaving={autoSaving} temaActual={temaActual}/>
                 </div>
                 <div id ="lateral">
                     <div id="temas">

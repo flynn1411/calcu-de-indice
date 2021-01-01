@@ -1,23 +1,22 @@
 import React from 'react';
 import {useSpring, animated} from 'react-spring';
+import { Spring } from 'react-spring/renderprops';
 
 export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlobal} ) {
 
+    const indiceRedondeado = parseFloat(obtenerIndice()).toFixed(0);
+
     const animacionEntrada = useSpring({
         from:{
-            height: "0%",
-            opacity: 0
+            height: "1vh"
         },
         to:{
-            height:"100%",
-            opacity:1
+            height:"48vh"
         },
         config:{
-            mass: 3.5,
-            tension: 160,
-            precision: 0.172,
-            velocity: -15
-        }
+            tension: 280,
+            friction: 109
+          }
     });
 
     function obtenerUV(clases){
@@ -46,39 +45,36 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
 
     function moverAGlobal(){
         if(tipoIndice === "PERIODO"){
-            return (<tr>
-            <td>
+            return (<div>
                 <button onClick={addToGlobal}>
                     Agregar Clases al Índice Global
                 </button>
-            </td>
-        </tr>)
+            </div>)
         }
     }
 
     return (
         <animated.div id="accionCalcular" style={animacionEntrada}>
-        <table>
-            <tbody>
-                <tr>
-                    <td>
-                        <div>
-                            <p className="datosT">Indice {getTipo()}</p>
-                            <p className="datosN">{obtenerIndice()}</p>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div>
-                            <p className="datosT">Redondeado</p>
-                            <p className="datosN">{parseFloat(obtenerIndice()).toFixed(0)}</p>
-                        </div>
-                    </td>
-                </tr>
-                {moverAGlobal()}
-            </tbody>
-        </table>
+            <div className="results">
+                <p className="datosT">Indice {getTipo()}</p>
+                <p className="datosN">{obtenerIndice()}</p>
+            </div>
+        
+            <div className="results">
+                <p className="datosT">Redondeado</p>
+                <Spring
+                    from={{ number: 0 }}
+                    to={{ number: indiceRedondeado }}
+                    config={{
+                        tension: 280,
+                        friction: 109
+                      }}
+                >
+
+                    {props => <p className="datosN">{Math.floor(props.number)}</p>}
+                </Spring>
+            </div>
+            {moverAGlobal()}
         </animated.div>
     )
 }
