@@ -76,6 +76,21 @@ export default function Contenido( {
         }
     });
 
+    const animacionMobile = useSpring({
+        from:{
+            height: "1vh",
+            top: "86vh",
+            right: "1vw",
+            width: "37vw"
+        },
+        to:{
+            height: "85vh",
+            top: "1.5vh",
+            width: "95vw",
+            right: "2.5vw"
+        }
+    });
+
     function mensajeClases(){
         if(tipoIndice === "GLOBAL"){
             return "Ingresar el total de clases cursadas (incluyendo reprobadas o NSP):";
@@ -140,7 +155,7 @@ export default function Contenido( {
             }
 
             if(uvLlenas){
-                ReactDOM.render(<Resultados materias={materias} tipoIndice={tipoIndice} getTipo={getTipo} agregarAlGlobal={agregarGlobal}/>, document.getElementById("resultados"));
+                ReactDOM.render(<Resultados materias={materias} tipoIndice={tipoIndice} getTipo={getTipo} agregarAlGlobal={agregarGlobal} temaActual={temaActual}/>, document.getElementById("resultados"));
             }else{
                 alert('Ocupas llenar por lo menos todas las casillas de "UV". Las casillas de notas sin llenar se tomarán como "NSP".')
             }
@@ -228,7 +243,7 @@ export default function Contenido( {
     }
 
     return (
-        <animated.div style={animacionDesktop} id="pagina">
+        <animated.div style={ window.innerWidth > 600 ? animacionDesktop : animacionMobile} id="pagina">
             <div id="titulo">
                 <h1>
                     <strong>Índice {getTipo()}</strong>
