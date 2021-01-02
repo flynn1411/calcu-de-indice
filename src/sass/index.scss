@@ -8,9 +8,12 @@
 
 html {
     scroll-behavior: smooth;
+    height: -webkit-fill-available;
   }
 
 body{
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     transition: 0.8s;
     background: var(--bg-gradient), var(--bg-img);
     background-color: var(--bg) !important;
@@ -57,7 +60,7 @@ button:hover{
 
 @media only screen and (max-width: 600px){
     #root{
-        height: 99vh;
+        //height: 100%;
         bottom: 0vh;
     }
 
@@ -80,6 +83,7 @@ button:hover{
         grid-template-rows: auto auto auto;
         overflow: auto !important;
         scroll-behavior: smooth;
+        bottom: auto !important;
     }
 
     #titulo{
