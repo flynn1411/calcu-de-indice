@@ -32,6 +32,7 @@
     radial-gradient(farthest-side at 50% 100%, rgba(212,255,234, 0.5), rgba(0,0,0,0)) 0 100%;
 
     --main-content-fg: #16262e;
+    --darker-shade: #a7a7a7;
     /*--font1 : */
 }
 
@@ -69,6 +70,7 @@
     radial-gradient(farthest-side at 50% 100%, rgba(31,71,53, 0.5), rgba(0,0,0,0)) 0 100%;
 
     --main-content-fg: #d8d8d8;
+    --darker-shade: #a7a7a7;
 }
 
 .synthwave{
@@ -105,4 +107,6 @@
     radial-gradient(farthest-side at 50% 100%, rgba(12,191,233, 0.5), rgba(0,0,0,0)) 0 100%;
     
     --main-content-fg: transparent;
+
+    --darker-shade: linear-gradient(180deg, rgba(12,191,233,1) 0%, rgba(227,69,53,1) 100%);
 }

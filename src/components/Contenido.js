@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Materias from './Materias';
 import Resultados from './Resultados';
@@ -31,6 +31,23 @@ export default function Contenido( {
     modalidad,
     timeoutId
 } ) {
+    
+    let tempIndex;
+    
+    switch (temaActual) {
+        case "dark":
+            tempIndex = 1;
+            break;
+            
+            case "synthwave":
+                tempIndex = 2;
+                break;
+                default:
+                    tempIndex = 0;
+                    break;
+                }
+
+    const [temaIndex, setTemaIndex] = useState(tempIndex);
 
     const periodoSpawn = {
         "width": "34vw",
@@ -127,10 +144,12 @@ export default function Contenido( {
     //cambiar temas
     function cambiarTema(e){
         const temas = ["light", "dark", "synthwave"];
+        let newTemaIndex = temaIndex;
 
         /*document.body.className = document.body.className==="light" ? "dark":"light";*/
 
-        document.body.className = temas[Math.floor(Math.random() * temas.length)];
+        document.body.className = temas[newTemaIndex++ % temas.length];
+        setTemaIndex(newTemaIndex++);
         localStorage.setItem("currentTheme", document.body.className);
         setTemaActual(document.body.className);
     }

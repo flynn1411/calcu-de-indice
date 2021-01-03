@@ -146,6 +146,10 @@ button:hover{
         grid-template-columns: 100%;
         row-gap: 2vh;
         overflow-y: visible;
+
+        background: none;
+        background-color: transparent;
+        background-repeat: unset;
     }
 
     #lateral{
@@ -156,7 +160,7 @@ button:hover{
         "resultados"
         "tema";
         grid-template-columns: 100%;
-        row-gap: 2.5vh;
+        row-gap: 6vh;
     }
 
     #temaActual {
@@ -177,6 +181,14 @@ button:hover{
 
     #logo img {
         max-width: 75%;
+    }
+
+    .hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
+        transform: none !important;
+    }
+
+    .hvr-bounce-in:hover, .hvr-bounce-in:focus, .hvr-bounce-in:active {
+        transform: none !important;
     }
 }
 
