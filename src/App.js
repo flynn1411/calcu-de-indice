@@ -72,7 +72,7 @@ function App(){
     const auth = firebase.auth();
     const firestore = firebase.firestore();
     const [user] = useAuthState(auth);
-    var timeoutId;
+    var timeoutId = null;
 
     /*if(user && navigator.onLine){
         checkAuthedUser();
@@ -260,7 +260,7 @@ function App(){
 
         setTimeout(()=>{
             if(window.innerWidth <= 600){
-                document.getElementById("calcular").scrollIntoView({ block: 'start',  behavior: 'smooth' });
+                document.getElementById("clases").scrollIntoView({ block: 'end',  behavior: 'smooth' });
             }else{
                 document.getElementById("clases").scrollIntoView({ block: 'end',  behavior: 'smooth' });
             }

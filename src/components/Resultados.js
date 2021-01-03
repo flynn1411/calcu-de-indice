@@ -7,6 +7,18 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
     const indiceRedondeado = parseFloat(obtenerIndice()).toFixed(0);
     const indiceNormal = obtenerIndice();
 
+    let finalHeight = "49vh";
+
+    if(tipoIndice === "GLOBAL" && window.innerWidth <= 600){
+        finalHeight = "31vh";
+    }
+    else if(tipoIndice === "GLOBAL" && window.innerWidth > 600){
+        finalHeight = "35vh";
+    }
+    else if(tipoIndice === "PERIODO" && window.innerWidth <= 600){
+        finalHeight = "41vh";
+    }
+
     //document.getElementById("resultados").style.height = window.innerWidth <= 600 ? "35vh" : "48vh";
 
     if(window.innerWidth <= 600){
@@ -25,10 +37,12 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
 
     const animacionEntrada = useSpring({
         from:{
-            height: "1vh"
+            height: "0vh",
+            borderRadius: "0px"
         },
         to:{
-            height: "max-content"
+            height: finalHeight,
+            borderRadius: "5px"
         }
     });
 

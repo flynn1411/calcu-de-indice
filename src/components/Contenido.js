@@ -49,6 +49,16 @@ export default function Contenido( {
 
     const [temaIndex, setTemaIndex] = useState(tempIndex);
 
+    const animacionCambios = useSpring({
+        from:{opacity: 0},
+        to:{opacity: 1},
+        config:{
+            tension: 69,
+            friction: 1,
+            velocity: 9
+          }
+    });
+
     const periodoSpawn = {
         "width": "34vw",
         "height": "1vh",
@@ -289,7 +299,7 @@ export default function Contenido( {
                         </tbody>
                     </table>
                 </div>
-                <p ref={refCambios}>Últimas módificaciones: {ultimosCambios}</p>
+                <p id="changes" style={animacionCambios} ref={refCambios}>Últimas módificaciones: {ultimosCambios}</p>
             </div>
             <div id="main-content">
                 <div id="clases">

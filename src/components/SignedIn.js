@@ -8,12 +8,14 @@ export default function SignedIn( {cerrarSesion, usuario} ) {
         from: {
             opacity: 0,
             marginBottom: -100,
-            marginTop: 100
+            marginTop: 100,
+            borderRadius: "0px"
         },
         to: {
             opacity: 1,
             marginBottom: 0,
-            marginTop: 0
+            marginTop: 0,
+            borderRadius: "5px"
         },
         config:{
             tension: 117,
@@ -22,9 +24,23 @@ export default function SignedIn( {cerrarSesion, usuario} ) {
         }
     });
 
+    const animacionFoto = useSpring({
+        from:{
+            borderRadius: "0%"
+        },
+        to:{
+            borderRadius: "50%"
+        },
+        config:{
+            tension: 120,
+            friction: 14
+          },
+          delay: 500
+    });
+
     return (
         <animated.div style={animacionSignedIn} id="perfilGoogle">
-            <div><img id="fotoPerfil" src={usuario.photoURL} alt={"Foto de perfil"}/></div>
+            <div id="profilepic"><animated.img style={animacionFoto} id="fotoPerfil" src={usuario.photoURL} alt={"Foto de perfil"}/></div>
             Usuario Actual:<br></br>
             <div id="nombrePerfil">{usuario.displayName}</div>
             <br></br>

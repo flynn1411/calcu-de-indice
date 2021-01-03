@@ -93,6 +93,11 @@
     border-radius: 50%;
 }
 
+#profilepic{
+  display: grid;
+  place-items: center;
+}
+
 #logo img a{
   width: 100%;
   height: auto;
@@ -101,6 +106,17 @@
 #perfilGoogle{
   padding: 3vh 1vw;
   background: var(--darker-shade);
+  display: grid;
+  place-items: center;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: medium;
+  color: var(--title);
+}
+
+#nombrePerfil{
+  font-family: 'Oleo Script', cursive;
+  font-size: x-large;
 }
 
 /* Ripple Out */
