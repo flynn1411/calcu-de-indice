@@ -104,7 +104,7 @@
 
 #datos > tbody > tr > td > div > input {
     font-family: 'Poppins', sans-serif;
-    width: 95%;
+    width: 100%;
     text-align: center;
     background-color: transparent;
     color: var(--text);
@@ -114,6 +114,11 @@
     line-height: 1.5;
     padding: 0 0 0 0;
     height: calc(1.5em + .75rem + 2px);
+    transition: 0.8s ease-in-out;
+}
+
+#datos > tbody > tr > td > div:focus {
+    border: 2px solid var(--hover-fcolor);
 }
 
 .claseInput{
@@ -122,4 +127,5 @@
 
 textarea:focus, input:focus{
     outline: none;
+    background-color: var(--hover-bg) !important;
 }

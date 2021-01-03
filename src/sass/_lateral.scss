@@ -9,7 +9,7 @@
     button{
         font-family: 'Poppins', sans-serif;
         font-weight: bold;
-        color: var(--navbar-text);
+        color: var(--text);
         background-color: var(--fcolor);
         border: 3px solid var(--hover-fcolor);
         border-radius: 5px;
@@ -53,14 +53,23 @@
     font-family: 'Poppins', sans-serif;
 }
 
+#resultados{
+  transition: 1s all;
+}
+
+#resultados2{
+    background: var(--darker-shade);
+    padding: 2vh 2vw;
+    margin-top: 2vh;
+}
+
 .results{
   background-color: var(--text);
   color: var(--fcolor);
   text-align: center;
-  padding-top: 1vh;
-  padding-bottom: 1vh;
   margin-bottom: 2vh;
   border-radius: 5px;
+  padding: 1vh 1vw;
 
   p{
     margin-bottom: 0.4vh;
@@ -82,6 +91,16 @@
     max-width: 33%;
     transition: 0.6s;
     border-radius: 50%;
+}
+
+#logo img a{
+  width: 100%;
+  height: auto;
+}
+
+#perfilGoogle{
+  padding: 3vh 1vw;
+  background: var(--darker-shade);
 }
 
 /* Ripple Out */

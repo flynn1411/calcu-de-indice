@@ -7,6 +7,14 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
     const indiceRedondeado = parseFloat(obtenerIndice()).toFixed(0);
     const indiceNormal = obtenerIndice();
 
+    //document.getElementById("resultados").style.height = window.innerWidth <= 600 ? "35vh" : "48vh";
+
+    if(window.innerWidth <= 600){
+        document.getElementById("resultados").scrollIntoView({ block: 'start',  behavior: 'smooth' });
+    }else{
+        document.getElementById("resultados").scrollIntoView({ block: 'end',  behavior: 'smooth' });
+    }
+
     let failedColor = "rgba(220, 20, 60, 1)";
     let passedColor = "rgba(115, 202, 156, 1)";
 
@@ -20,13 +28,23 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
             height: "1vh"
         },
         to:{
-            height:"48vh"
+            height: "max-content"
+        }
+    });
+
+    const entradaResultados = useSpring({
+        from:{
+            opacity:0,
+            height: "0%"
+        },
+        to:{
+            opacity: 1,
+            height: "max-content"
         },
         config:{
-            tension: 280,
-            friction: 109
+            friction: 71
           }
-    });
+    })
 
     const colorIndice = useSpring({
         from:{
@@ -34,7 +52,8 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
         },
         to:{
             color: indiceRedondeado < 65 ? failedColor: passedColor
-        }
+        },
+        delay: 2000
     });
 
     function obtenerUV(clases){
@@ -58,12 +77,6 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
 
         for (let i=0; i<materiasSinNSP.length; i++){suma += materiasSinNSP[i].Nota*materiasSinNSP[i].UV}
 
-        if(window.innerWidth <= 600){
-            document.getElementById("resultados").scrollIntoView({ block: 'start',  behavior: 'smooth' });
-        }else{
-            document.getElementById("resultados").scrollIntoView({ block: 'end',  behavior: 'smooth' });
-        }
-
         return (parseFloat((suma/totalUV))).toFixed(2);
     }
 
@@ -78,8 +91,8 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
     }
 
     return (
-        <animated.div id="accionCalcular" style={animacionEntrada}>
-            <div className="results">
+        <animated.div id="resultados2" style={animacionEntrada}>
+            <animated.div style={entradaResultados} className="results">
                 <p className="datosT">Indice {getTipo()}</p>
                 <Spring
                     from={{ number: 0
@@ -87,17 +100,17 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
                     to={{ number: indiceNormal
                      }}
                     config={{
-                        tension: 280,
-                        friction: 109
+                        tension: 109,
+                        friction: 113
                       }}
                       delay={500}
                 >
 
                     {props => <animated.p style={colorIndice} className="datosN">{(props.number).toFixed(2)}</animated.p>}
                 </Spring>
-            </div>
+            </animated.div>
         
-            <div className="results">
+            <animated.div style={entradaResultados} className="results">
                 <p className="datosT">Redondeado</p>
                 <Spring
                     from={{ number: 0
@@ -105,15 +118,15 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
                     to={{ number: indiceRedondeado
                      }}
                     config={{
-                        tension: 280,
-                        friction: 109
+                        tension: 109,
+                        friction: 113
                       }}
-                      delay={1000}
+                      delay={750}
                 >
 
                     {props => <animated.p style={colorIndice} className="datosN">{Math.floor(props.number)}</animated.p>}
                 </Spring>
-            </div>
+            </animated.div>
             {moverAGlobal()}
         </animated.div>
     )

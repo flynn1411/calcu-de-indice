@@ -23,7 +23,7 @@ export default function SignedIn( {cerrarSesion, usuario} ) {
     });
 
     return (
-        <animated.div style={animacionSignedIn}>
+        <animated.div style={animacionSignedIn} id="perfilGoogle">
             <div><img id="fotoPerfil" src={usuario.photoURL} alt={"Foto de perfil"}/></div>
             Usuario Actual:<br></br>
             <div id="nombrePerfil">{usuario.displayName}</div>
