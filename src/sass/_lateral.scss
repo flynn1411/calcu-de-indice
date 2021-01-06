@@ -58,9 +58,13 @@
 }
 
 #resultados2{
-    background: var(--darker-shade);
-    padding: 2vh 2vw;
-    margin-top: 2vh;
+  background: var(--darker-shade);
+  padding: 2vh 2vw;
+  margin-top: 2vh;
+
+  -moz-box-shadow: inset 0px 0px 5px 1px var(--innerShadow);
+  -webkit-box-shadow: inset 0px 0px 5px 1px var(--innerShadow);
+  box-shadow: inset 0px 0px 5px 1px var(--innerShadow);
 }
 
 .results{
@@ -112,11 +116,18 @@
   font-family: 'Poppins', sans-serif;
   font-size: medium;
   color: var(--title);
+  -moz-box-shadow: inset 0px 0px 5px 1px var(--innerShadow);
+  -webkit-box-shadow: inset 0px 0px 5px 1px var(--innerShadow);
+  box-shadow: inset 0px 0px 5px 1px var(--innerShadow);
 }
 
 #nombrePerfil{
   font-family: 'Oleo Script', cursive;
   font-size: x-large;
+}
+
+.notAvailable{
+  background-color: var(--darker-shade) !important;
 }
 
 /* Ripple Out */

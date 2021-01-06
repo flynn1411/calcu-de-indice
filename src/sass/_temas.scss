@@ -25,6 +25,7 @@
     --card-bg: var(--navbar-img);
     --card-gradient: var(--fcolor);
     --card-bg2: var(--fcolor);
+    --innerShadow: rgba(4,5,5,0.32);
 
     --main-content-bg: linear-gradient(#16262e 33%, rgba(22,38,46, 0)),
     linear-gradient(rgba(22,38,46, 0), #16262e 66%) 0 100%,
@@ -63,6 +64,7 @@
     --card-bg: var(--navbar-img);
     --card-gradient: var(--fcolor);
     --card-bg2: var(--fcolor);
+    --innerShadow: rgba(4,5,5,0.32);
 
     --main-content-bg: linear-gradient(#d8d8d8 33%, rgba(216,216,216, 0)),
     linear-gradient(rgba(216,216,216, 0), #d8d8d8 66%) 0 100%,
@@ -100,6 +102,7 @@
     --card-bg: url("../resources/synthwave/pattern.png");
     --card-gradient: linear-gradient(180deg, rgba(255,41,117,0.7385153890657825) 0%, rgba(255,103,0,1) 100%);
     --card-bg2: rgb(255,41,117);
+    --innerShadow: rgba(57,255,20,0.75);
 
     --main-content-bg: linear-gradient(#e34535 33%, rgba(227,69,53, 0)),
     linear-gradient(rgba(227,69,53, 0), #e34535 66%) 0 100%,

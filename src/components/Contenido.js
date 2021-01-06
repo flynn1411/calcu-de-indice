@@ -29,7 +29,7 @@ export default function Contenido( {
     setTemaActual,
     mostrarResultados,
     modalidad,
-    timeoutId
+    saving
 } ) {
     
     let tempIndex;
@@ -106,16 +106,21 @@ export default function Contenido( {
     const animacionMobile = useSpring({
         from:{
             height: "1vh",
-            top: "86vh",
+            opacity: 0,
+            top: "86vh"/*,
             right: "1vw",
-            width: "37vw"
+            width: "37vw"*/
         },
         to:{
             height: "85vh",
-            top: "1.5vh",
+            opacity: 1,
+            top: "1.5vh"/*,
             width: "95vw",
-            right: "2.5vw"
-        }
+            right: "2.5vw"*/
+        },
+        config:{
+            velocity: 19
+          }
     });
 
     function mensajeClases(){
@@ -165,32 +170,35 @@ export default function Contenido( {
     }
 
     //Función que realiza el calculo del indice academico
-    function calcularIndice(){
+    function calcularIndice(currentMaterias){
+        //console.log(currentMaterias);   
 
-        if(timeoutId){
-            return;
+        let uvLlenas = true;
+
+        for(let i=0; i<currentMaterias.length; i++){
+            //console.log(currentMaterias[i])
+            if(currentMaterias[i].UV === 0){
+                uvLlenas = false;
+                break
+            }
+        }
+        
+
+        if(uvLlenas){
+            ReactDOM.render(
+            <Resultados
+            materias={currentMaterias}
+            tipoIndice={tipoIndice}
+            getTipo={getTipo}
+            agregarAlGlobal={agregarGlobal}
+            temaActual={temaActual}
+            />,
+            document.getElementById("resultados")
+            );
+            //mostrarResultados();
         }else{
-            mostrarResultados();        
-
-            let uvLlenas = true;
-
-            if(!timeoutId){
-                for(let i=0; i<materias.length; i++){
-                    if(materias[i].UV === 0){
-                        uvLlenas = false;
-                        break
-                    }
-                }
-            }
-
-            if(uvLlenas){
-                ReactDOM.render(<Resultados materias={materias} tipoIndice={tipoIndice} getTipo={getTipo} agregarAlGlobal={agregarGlobal} temaActual={temaActual}/>, document.getElementById("resultados"));
-            }else{
-                alert('Ocupas llenar por lo menos todas las casillas de "UV". Las casillas de notas sin llenar se tomarán como "NSP".')
-            }
-
-        }   
-
+            alert('Ocupas llenar por lo menos todas las casillas de "UV". Las casillas de notas sin llenar se tomarán como "NSP".')
+        }
     }
 
     function manejarAuth(authedUser){
@@ -313,7 +321,10 @@ export default function Contenido( {
                     </div>
                     <br/>
                     <div id="accionCalcular">
-                        <button className={"hvr-ripple-out"} id="calcular" onClick={calcularIndice}>Calcular Indice {getTipo()}</button>
+                        <button className={saving? "notAvailable":"hvr-ripple-out"} id="calcular" onClick={() => {
+                            //console.log(materias);
+                            saving ? console.log("Guardando") : calcularIndice(materias)
+                        }}>Calcular Indice {getTipo()}</button>
                         <div id="resultados"></div>
                     </div>
                     

@@ -49,7 +49,7 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
         <>
         <div id="navbar-desktop" className="navegacion">
             <div className="dNavItems seleccion" id="logo" onClick={e => {showModal();}}>
-                <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Icono de Información."/>
+                <img className="hvr-grow" src={`resources/${temaActual}/info.png`} alt="Icono de Información."/>
             </div>
             <div className="dNavItems" id="indice">Indice:</div>
             <div className={setActive("GLOBAL")} id="global" onClick={() => {cambiarActive("GLOBAL")}}>Global</div>

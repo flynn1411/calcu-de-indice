@@ -41,7 +41,7 @@ let defaultTemplate = infoIndice.default;
 let maxCantidad = infoIndice.cantidadMaxima;
 
 /*#################Variables Globales###################*/
-const TIMEOUT_VALUE = 1000;
+const TIMEOUT_VALUE = 800;
 
 let backupClases = JSON.parse(localStorage.getItem(materiasKey));
 let backupCambios = localStorage.getItem(cambiosKey);
@@ -68,6 +68,7 @@ function App(){
     const [viewModal, setViewModal] = useState(false);
     const [showResultados, setShowResultados] = useState(false);
     const [cambioPagina, setCambioPagina] = useState(false);
+    const [saving, setSavingState] = useState(false);
 
     const auth = firebase.auth();
     const firestore = firebase.firestore();
@@ -132,6 +133,7 @@ function App(){
 
         if (timeoutId) clearTimeout(timeoutId);
 
+        setSavingState(true);
         timeoutId = setTimeout(() => {
             manejarCambiosMateria(id, nuevaMateria)
 
@@ -145,6 +147,7 @@ function App(){
             localStorage.setItem(cambiosKey, timeStamp);
 
             if(user) autoSaveFirebase();
+            setSavingState(false);
         }, TIMEOUT_VALUE);
 
     }
@@ -273,7 +276,9 @@ function App(){
 
     return (
         <>
-            <Modal viewModal={viewModal} closeModal={closeModal}/>
+            <>
+            {viewModal ? <Modal viewModal={viewModal} closeModal={closeModal} temaActual={temaActual}/> : null}
+            </>
             
             <div  id="contenedor-pagina">
                 { cambioPagina ? null : (
@@ -299,7 +304,7 @@ function App(){
                     mostrarResultados={mostrarResultados}
                     modalidad={modalidad}
                     firestore={firestore}
-                    timeoutId={timeoutId}
+                    saving={saving}
                 />
                 ) }
             </div>

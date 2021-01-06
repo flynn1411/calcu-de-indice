@@ -7,18 +7,6 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
     const indiceRedondeado = parseFloat(obtenerIndice()).toFixed(0);
     const indiceNormal = obtenerIndice();
 
-    let finalHeight = "49vh";
-
-    if(tipoIndice === "GLOBAL" && window.innerWidth <= 600){
-        finalHeight = "31vh";
-    }
-    else if(tipoIndice === "GLOBAL" && window.innerWidth > 600){
-        finalHeight = "35vh";
-    }
-    else if(tipoIndice === "PERIODO" && window.innerWidth <= 600){
-        finalHeight = "41vh";
-    }
-
     //document.getElementById("resultados").style.height = window.innerWidth <= 600 ? "35vh" : "48vh";
 
     if(window.innerWidth <= 600){
@@ -37,11 +25,11 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
 
     const animacionEntrada = useSpring({
         from:{
-            height: "0vh",
+            height: "0",
             borderRadius: "0px"
         },
         to:{
-            height: finalHeight,
+            height: "max-content",
             borderRadius: "5px"
         }
     });
@@ -67,7 +55,7 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
         to:{
             color: indiceRedondeado < 65 ? failedColor: passedColor
         },
-        delay: 2000
+        delay: 400
     });
 
     function obtenerUV(clases){
@@ -113,11 +101,11 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
                      }}
                     to={{ number: indiceNormal
                      }}
-                    config={{
-                        tension: 109,
-                        friction: 113
+                     config={{
+                        tension: 120,
+                        friction: 14
                       }}
-                      delay={500}
+                    delay={100}
                 >
 
                     {props => <animated.p style={colorIndice} className="datosN">{(props.number).toFixed(2)}</animated.p>}
@@ -131,11 +119,11 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
                      }}
                     to={{ number: indiceRedondeado
                      }}
-                    config={{
-                        tension: 109,
-                        friction: 113
+                     config={{
+                        tension: 120,
+                        friction: 14
                       }}
-                      delay={750}
+                    delay={350}
                 >
 
                     {props => <animated.p style={colorIndice} className="datosN">{Math.floor(props.number)}</animated.p>}
