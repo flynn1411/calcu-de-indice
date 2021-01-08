@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSpring, animated } from 'react-spring';
 
-export default function Modal( {viewModal, closeModal, temaActual, message} ) {
+export default function Modal( {closeModal, temaActual, message} ) {
 
     const modalBgAnimation = useSpring({
         from:{
@@ -76,20 +76,16 @@ export default function Modal( {viewModal, closeModal, temaActual, message} ) {
     }
 
     function mostrar(){
-        if(!viewModal){
-            return null
-        }else{
-            return (
-                <animated.div style={modalBgAnimation} id="modal-bg">
-                    <animated.div style={ window.innerWidth > 600 ? modalEntranceDesktop : modalEntranceMobile } id="modal-content">
-                        {getMessage()}
-                        <button onClick={e => {closeModal(e)}}>
-                            Cerrar
-                        </button>
-                    </animated.div>                
-                </animated.div>
-            )
-        }
+        return (
+            <animated.div style={modalBgAnimation} id="modal-bg">
+                <animated.div style={ window.innerWidth > 600 ? modalEntranceDesktop : modalEntranceMobile } id="modal-content">
+                    {getMessage()}
+                    <button onClick={e => {closeModal(e)}}>
+                        Cerrar
+                    </button>
+                </animated.div>                
+            </animated.div>
+        )
     }
 
     return (

@@ -277,13 +277,38 @@ function App(){
     }
 
     function mostrarMensaje(){
-        /*localStorage.setItem("informed", "true");
 
         let newHeader = (<>
-        <h2>Versión 2.1</h2>
-        </>);*/
+        <h2>Versión 2.0</h2>
+        </>);
+
+        let newMessage = (<>
+        <div id="list-item">
+            <ul>
+                <li>Nueva interfaz</li>
+                <li>Ahora todo se realizó en ReactJS y no VanillaJS (mas sencillo de mantener y escalar).</li>
+                <li>Opción de agregar clases del índice de periodo al global.</li>
+            </ul>
+        </div>
+        </>);
+
+        let closeModal2 = () =>{
+            localStorage.setItem("informed", "true");
+            window.location.reload();
+    };
 
         console.log("instalado");
+
+        return (<Modal 
+            closeModal={closeModal2}
+            temaActual={temaActual}
+            message={
+                {
+                    "header":newHeader,
+                    "content":newMessage
+                }
+            }
+        />);
     }
 
     /************************************************ANIMACIONES*******************************************************/
@@ -292,7 +317,7 @@ function App(){
     return (
         <>
             <>
-            {viewModal ? <Modal viewModal={viewModal} closeModal={closeModal} temaActual={temaActual} message={null}/> : null}
+            {viewModal ? <Modal closeModal={closeModal} temaActual={temaActual} message={null}/> : null}
             </>
             
             <div  id="contenedor-pagina">
@@ -332,7 +357,7 @@ function App(){
             />
 
             <div id="newUpdate">
-                <strong id="texto">!Nueva actualización disponible! Recarga la pagína para poder ver los cambios.</strong>
+                <strong id="texto">¡Nueva actualización disponible! Recarga la pagína para poder ver los cambios.</strong>
                 <button id="aceptar" onClick={
                     () => {
                         reloadPage();

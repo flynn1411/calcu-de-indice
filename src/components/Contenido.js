@@ -317,7 +317,7 @@ export default function Contenido( {
                     <div id="temas">
                         {user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />}
                         <h4>Tema Actual:</h4>
-                        <img className={"hvr-bounce-in"} id="temaActual" src={`resources/${temaActual}.png`} alt={`Tema de colores ${temaActual}`} onClick={cambiarTema}/>
+                        <img className={"hvr-bounce-in"} id="temaActual" src={`resources/${temaActual}.png`} alt={`${temaActual}`} onClick={cambiarTema}/>
                     </div>
                     <br/>
                     <div id="accionCalcular">
