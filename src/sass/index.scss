@@ -23,6 +23,73 @@ body{
     font-family: 'Glegoo', serif;
 }
 
+#newUpdate{
+    z-index: 300;
+    position: fixed;
+    top: 2vh;
+    left: 3vw;
+
+    background: var(--glass-bg);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 20.0px );
+    -webkit-backdrop-filter: blur( 20.0px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    
+    display: none;
+    padding: 2vh 3vw;
+    border-radius: 5px;
+   
+    width: 88vw;
+
+    grid-template-areas:
+    "texto aceptar cerrar";
+
+    grid-template-columns: 70% 20% 10%;
+}
+
+#texto{
+    grid-area: texto;
+}
+
+#aceptar{
+    grid-area: aceptar;
+    background-color: transparent;
+    //max-width: 20%;
+    border: none;
+    align-self: center;
+    color: var(--passed);
+    font-size: larger;
+    font-weight: bolder;
+
+    a{
+        width: 100%;
+    }
+}
+
+#aceptar:hover{
+    color: var(--hover-bg)
+}
+
+#cerrar{
+    grid-area: cerrar;
+    background-color: transparent;
+    //max-width: 20%;
+    border: none;
+    align-self: center;
+    color: var(--failed);
+    font-size: larger;
+    font-weight: 900;
+
+    a{
+        width: 100%;
+    }
+}
+
+#cerrar:hover{
+    color: var(--hover-fcolor)
+}
+
 #root{
     /*padding-top: 1vh;*/
     width: 100vw;

@@ -271,13 +271,28 @@ function App(){
         },1500);
     }
 
+    function reloadPage(){
+        if(localStorage.getItem("informed")) localStorage.removeItem("informed");
+        window.location.reload();
+    }
+
+    function mostrarMensaje(){
+        /*localStorage.setItem("informed", "true");
+
+        let newHeader = (<>
+        <h2>Versión 2.1</h2>
+        </>);*/
+
+        console.log("instalado");
+    }
+
     /************************************************ANIMACIONES*******************************************************/
 
 
     return (
         <>
             <>
-            {viewModal ? <Modal viewModal={viewModal} closeModal={closeModal} temaActual={temaActual}/> : null}
+            {viewModal ? <Modal viewModal={viewModal} closeModal={closeModal} temaActual={temaActual} message={null}/> : null}
             </>
             
             <div  id="contenedor-pagina">
@@ -315,6 +330,26 @@ function App(){
             temaActual={temaActual}
             setViewModal={setViewModal}
             />
+
+            <div id="newUpdate">
+                <strong id="texto">!Nueva actualización disponible! Recarga la pagína para poder ver los cambios.</strong>
+                <button id="aceptar" onClick={
+                    () => {
+                        reloadPage();
+                    }
+                }>Recargar</button>
+                <button id="cerrar" onClick={
+                    () => {
+                        let snackbar = document.querySelector('#newUpdate');
+
+                        if (snackbar){
+                            snackbar.style.display = "none";
+                        }
+                    }
+                }>X</button>
+            </div>
+
+            {localStorage.getItem("informed") ? null : mostrarMensaje()}
         </>
     );
 }

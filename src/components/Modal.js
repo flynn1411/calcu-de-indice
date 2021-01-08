@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSpring, animated } from 'react-spring';
 
-export default function Modal( {viewModal, closeModal, temaActual} ) {
+export default function Modal( {viewModal, closeModal, temaActual, message} ) {
 
     const modalBgAnimation = useSpring({
         from:{
@@ -36,6 +36,45 @@ export default function Modal( {viewModal, closeModal, temaActual} ) {
         delay: 500
     });
 
+    function getMessage(){
+        if(message){
+            return(
+                <>
+                    <animated.div style={modalEntranceMobile} id="header">
+                        {message.header}
+                    </animated.div>
+                    <animated.div  style={modalEntranceMobile} id="socialMedia">
+                        {message.content}
+                    </animated.div>
+                </>
+            )
+        }else{
+            return(
+                <>
+                    <animated.div style={modalEntranceMobile} id="header">
+                        <h2>2021</h2>
+                        <h2><a href="https://flynn1411.github.io" target="_blank" rel="noreferrer">Josué Ariel Izaguirre</a></h2>
+                        <h2><a href="https://github.com/flynn1411/flynn1411.github.io/releases/tag/v1.4.6" target="_blank" rel="noreferrer">v1.4.6</a></h2>
+                    </animated.div>
+                    <animated.div  style={modalEntranceMobile} id="socialMedia">
+                        <div className="list-item">
+                            <img src={`resources/${temaActual}/github-logo.png`} alt="github"/>
+                            <a href="https://github.com/flynn1411" target="_blank" rel="noreferrer">flynn1411</a>
+                        </div>
+                        <div className="list-item">
+                            <img src={`resources/${temaActual}/twitter.png`} alt="twitter"/>
+                            <a href="https://twitter.com/Flynn1411" target="_blank" rel="noreferrer">@flynn1411</a>
+                        </div>
+                        <div className="list-item">
+                            <img src={`resources/${temaActual}/email.png`} alt="email"/>
+                            <a href="mailto:flynn1411@gmail.com" target="_blank" rel="noreferrer">flynn1411@gmail.com</a>
+                        </div>
+                    </animated.div>
+                </>
+            )
+        }
+    }
+
     function mostrar(){
         if(!viewModal){
             return null
@@ -43,25 +82,7 @@ export default function Modal( {viewModal, closeModal, temaActual} ) {
             return (
                 <animated.div style={modalBgAnimation} id="modal-bg">
                     <animated.div style={ window.innerWidth > 600 ? modalEntranceDesktop : modalEntranceMobile } id="modal-content">
-                        <animated.div style={modalEntranceMobile} id="header">
-                            <h2>2021</h2>
-                            <h2><a href="https://flynn1411.github.io" target="_blank" rel="noreferrer">Josué Ariel Izaguirre</a></h2>
-                            <h2><a href="https://github.com/flynn1411/flynn1411.github.io/releases/tag/v1.4.6" target="_blank" rel="noreferrer">v1.4.6</a></h2>
-                        </animated.div>
-                        <animated.div  style={modalEntranceMobile} id="socialMedia">
-                            <div className="list-item">
-                                <img src={`resources/${temaActual}/github-logo.png`} alt="github"/>
-                                <a href="https://github.com/flynn1411" target="_blank" rel="noreferrer">flynn1411</a>
-                            </div>
-                            <div className="list-item">
-                                <img src={`resources/${temaActual}/twitter.png`} alt="twitter"/>
-                                <a href="https://twitter.com/Flynn1411" target="_blank" rel="noreferrer">@flynn1411</a>
-                            </div>
-                            <div className="list-item">
-                                <img src={`resources/${temaActual}/email.png`} alt="email"/>
-                                <a href="mailto:flynn1411@gmail.com" target="_blank" rel="noreferrer">flynn1411@gmail.com</a>
-                            </div>
-                        </animated.div>
+                        {getMessage()}
                         <button onClick={e => {closeModal(e)}}>
                             Cerrar
                         </button>
