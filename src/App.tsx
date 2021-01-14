@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import uuidv4 from 'uuid/dist/v4';
+import {v4 as uuidv4} from 'uuid';
 import indiceGlobal from './profiles/global';
 import indicePeriodo from './profiles/periodo';
 import firebase from 'firebase/app';
@@ -11,7 +11,7 @@ import Contenido from './components/Contenido';
 import Navegacion from './components/Navegacion';
 //import {useSpring, animated} from 'react-spring';
 import Modal from './components/Modal';
-
+import ObjMateria from './interfaces/materia';
 
 /*********************INICIALIZACIÓN DE FIREBASE***********************/
 
@@ -41,58 +41,58 @@ let defaultTemplate = infoIndice.default;
 let maxCantidad = infoIndice.cantidadMaxima;
 
 /*#################Variables Globales###################*/
-const TIMEOUT_VALUE = 800;
+const TIMEOUT_VALUE: number = 500;
 
-let backupClases = JSON.parse(localStorage.getItem(materiasKey));
-let backupCambios = localStorage.getItem(cambiosKey);
+let backupClases: Array<ObjMateria> = JSON.parse(`${localStorage.getItem(materiasKey)}`);
+let backupCambios: String | null = localStorage.getItem(cambiosKey);
 
-const listaClases = backupClases != null ? backupClases : defaultTemplate;
-const ULTIMOS_CAMBIOS = backupCambios != null ? backupCambios : "nunca";
+const listaClases: Array<ObjMateria> = backupClases != null ? backupClases : defaultTemplate;
+const ULTIMOS_CAMBIOS: String | undefined = backupCambios != null ? backupCambios : "nunca";
 
 
 /*#################Aplicación Principal###################*/
 function App(){
-    function crearID(){
+    function crearID(): string{
         return uuidv4();
     }
 
     /*#################Constantes###################*/
-    const [materias, setMaterias] = useState( listaClases.map((materia)=>{
+    const [materias, setMaterias] = useState<ObjMateria[]>( listaClases.map((materia: ObjMateria)=>{
         return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
     }) );
 
-    const [modalidad, setModalidad] = useState(tipoIndice);
-    const [ultimosCambios, setUltimosCambios] = useState(ULTIMOS_CAMBIOS);
-    const [cantidadMaxima, setCantidadMaxima] = useState(maxCantidad);
-    const [temaActual, setTemaActual] = useState(document.body.className);
-    const [viewModal, setViewModal] = useState(false);
-    const [showResultados, setShowResultados] = useState(false);
-    const [cambioPagina, setCambioPagina] = useState(false);
-    const [saving, setSavingState] = useState(false);
+    const [modalidad, setModalidad] = useState<string>(tipoIndice);
+    const [ultimosCambios, setUltimosCambios] = useState<string>(`${ULTIMOS_CAMBIOS}`);
+    const [cantidadMaxima, setCantidadMaxima] = useState<number>(maxCantidad);
+    const [temaActual, setTemaActual] = useState<string>(document.body.className);
+    const [viewModal, setViewModal] = useState<boolean>(false);
+    const [showResultados, setShowResultados] = useState<boolean>(false);
+    const [cambioPagina, setCambioPagina] = useState<boolean>(false);
+    const [saving, setSavingState] = useState<boolean>(false);
 
     const auth = firebase.auth();
     const firestore = firebase.firestore();
     const [user] = useAuthState(auth);
-    var timeoutId = null;
+    var timeoutId: NodeJS.Timeout | null = null;
 
     /*if(user && navigator.onLine){
         checkAuthedUser();
     }*/
     /*#################Referencias#################*/
-    const refCambios = useRef();
+    //const refCambios = useRef();
 
     /*#################Funciones###################*/
-    function mostrarResultados(){
+    /*function mostrarResultados(){
         setShowResultados(true);
-    }
+    }*/
 
     function ocultarResultados(){
         setShowResultados(false);
     }
 
 
-    function guardarEnStorage(nuevasMaterias){
-        localStorage.setItem(materiasKey, JSON.stringify(nuevasMaterias.map(materia => {return {
+    function guardarEnStorage(nuevasMaterias: Array<ObjMateria>):void{
+        localStorage.setItem(materiasKey, JSON.stringify(nuevasMaterias.map((materia: ObjMateria) => {return {
             "Clase": materia.Clase,
             "Nota": materia.Nota,
             "UV": materia.UV
@@ -112,8 +112,8 @@ function App(){
 
         timeoutID = setTimeout(() => {
             firestore.collection("notas").doc(user.uid).set({
-                global: JSON.parse(localStorage.getItem(indiceGlobal.llaveStorage)),
-                periodo: JSON.parse(localStorage.getItem(indicePeriodo.llaveStorage)),
+                global: JSON.parse(`${localStorage.getItem(indiceGlobal.llaveStorage)}`),
+                periodo: JSON.parse(`${localStorage.getItem(indicePeriodo.llaveStorage)}`),
                 "lastModified-global": localStorage.getItem(indiceGlobal.llaveCambios),
                 "lastModified-periodo": localStorage.getItem(indicePeriodo.llaveCambios)
             }, {merge: true}
@@ -123,26 +123,28 @@ function App(){
             ).catch( error => {
                 console.log(error);
             });
-        }, 10000);
+        }, 5000);
     }
 
-    function autoSaving(id, nuevaMateria){
+    function autoSaving(id: string | null, nuevaMateria: ObjMateria | null, dato?: string){
         let time = new Date();
 
-        refCambios.current.innerText = "Guardando...";
+        let refCambios = document.getElementById("cambios") as HTMLParagraphElement;
+
+        if(refCambios) refCambios.innerHTML = "Guardando...";
 
         if (timeoutId) clearTimeout(timeoutId);
 
         setSavingState(true);
         timeoutId = setTimeout(() => {
-            manejarCambiosMateria(id, nuevaMateria)
+            manejarCambiosMateria(id, nuevaMateria, dato)
 
-            let minutes = time.getMinutes();
+            let minutes: any = time.getMinutes();
 
             if(minutes < 10) minutes = "0" + minutes;
 
             const timeStamp = `${time.getDate()}/${time.getMonth()+1}/${time.getFullYear()} ${time.getHours()}:${minutes}`;
-            refCambios.current.innerText = `Últimos Cambios Realizados: ${timeStamp}`;
+            refCambios.innerHTML = `Últimos Cambios Realizados: ${timeStamp}`;
             setUltimosCambios(timeStamp);
             localStorage.setItem(cambiosKey, timeStamp);
 
@@ -153,27 +155,43 @@ function App(){
     }
 
     //Realiza cambios en el estado de las clases
-    function manejarCambiosMateria(id, nuevaMateria){
+    function manejarCambiosMateria(id: string | null, nuevaMateria: ObjMateria | null, dato?: String){
 
         if (id === null && nuevaMateria === null) return
 
-        const nuevasMaterias = [...materias];
-        const materiaEncontrada = nuevasMaterias.find(materia => materia.id === id);
-        materiaEncontrada.Clase = nuevaMateria.Clase;
-        materiaEncontrada.Nota = nuevaMateria.Nota;
-        materiaEncontrada.UV = nuevaMateria.UV;
-
-        //console.log(nuevasMaterias);
-        setMaterias(nuevasMaterias);
-        guardarEnStorage(nuevasMaterias);
+        else if (nuevaMateria !== null){
+            const nuevasMaterias = [...materias] as ObjMateria[];
+            const materiaEncontrada = nuevasMaterias.find(materia => materia.id === id) as ObjMateria;
+    
+            switch (dato) {
+                case "Clase":                
+                    materiaEncontrada.Clase = nuevaMateria.Clase;
+                    break;
+    
+                case "Nota":
+                    materiaEncontrada.Nota = nuevaMateria.Nota;
+                    break;
+    
+                case "UV":
+                    materiaEncontrada.UV = nuevaMateria.UV;
+                    break;
+    
+                default:
+                    break;
+            }
+    
+            //console.log(nuevasMaterias);
+            setMaterias(nuevasMaterias);
+            guardarEnStorage(nuevasMaterias);
+        }
     }
 
     //devuleve el tipo de indice para el titulo
-    function getTipo(){
+    function getTipo(): string{
         return modalidad === "GLOBAL" ? "Global":"de Periodo";
     }
 
-    function closeModal(){
+    function closeModal(): void{
         setViewModal(false);
     }
 
@@ -187,8 +205,8 @@ function App(){
     }
 
     //cambia el tipo de indice que se utiliza
-    function cambiarModalidad(dato = null){
-        let nuevaModalidad = modalidad;
+    function cambiarModalidad(dato: string | null){
+        let nuevaModalidad: any = modalidad;
 
         if(dato !== null){
             nuevaModalidad = dato === "GLOBAL" ? indiceGlobal: indicePeriodo;
@@ -208,10 +226,10 @@ function App(){
             materiasKey = nuevaModalidad.llaveStorage;
             cambiosKey = nuevaModalidad.llaveCambios;
     
-            backupClases = JSON.parse(localStorage.getItem(materiasKey));
+            backupClases = JSON.parse(`${localStorage.getItem(materiasKey)}`);
             backupCambios = localStorage.getItem(cambiosKey);
     
-            setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia)=>{
+            setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia: { Clase: String; Nota: number; UV: number; })=>{
                 return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
             }) );
             setUltimosCambios(backupCambios != null ? backupCambios : "nunca");
@@ -228,7 +246,7 @@ function App(){
     }
 
     //Agrega clases del periodo a las clases globales
-    function agregarGlobal(){
+    function agregarGlobal(): void{
         let clasesPeriodo = [...materias].map(clase => {
             return {
                 "Clase": clase.Clase,
@@ -237,43 +255,29 @@ function App(){
             }
         });
 
-        let nClases = 0;
-        let clasesGlobal = JSON.parse(localStorage.getItem(indiceGlobal.llaveStorage));
+        let clasesGlobal = JSON.parse(`${localStorage.getItem(indiceGlobal.llaveStorage)}`);
 
         if(clasesGlobal === null){
             localStorage.setItem(indiceGlobal.llaveStorage, JSON.stringify(clasesPeriodo));
         }else{
-            nClases = clasesPeriodo.length;
-
             for(let i=0; i<clasesPeriodo.length; i++){
                 clasesGlobal.push(clasesPeriodo[i]);
             }
             localStorage.setItem(indiceGlobal.llaveStorage, JSON.stringify(clasesGlobal));
         }
         
-        cambiarModalidad();
-
-        if(nClases > 0){
-            let tableBody = document.getElementById("datos").tBodies[0].childNodes;
-
-            for(let i=0; i<nClases; i++){
-                tableBody[(tableBody.length-nClases+i)].style.backgroundColor = "var(--hover-bg)";
-            }
-        }
+        cambiarModalidad(null);
 
         setTimeout(()=>{
+            let elementoClases = document.getElementById("clases") as HTMLDivElement;
+
             if(window.innerWidth <= 600){
-                document.getElementById("clases").scrollIntoView({ block: 'end',  behavior: 'smooth' });
+                elementoClases.scrollIntoView({ block: 'end',  behavior: 'smooth' });
             }else{
-                document.getElementById("clases").scrollIntoView({ block: 'end',  behavior: 'smooth' });
+                elementoClases.scrollIntoView({ block: 'end',  behavior: 'smooth' });
             }
 
         },1500);
-    }
-
-    function reloadPage(){
-        if(localStorage.getItem("informed")) localStorage.removeItem("informed");
-        window.location.reload();
     }
 
     function mostrarMensaje(){
@@ -333,15 +337,15 @@ function App(){
                     getTipo={getTipo}
                     guardarEnStorage={guardarEnStorage}
                     autoSaving={autoSaving}
-                    refCambios={refCambios}
+                    //refCambios={refCambios}
                     agregarGlobal={agregarGlobal}
                     firebase={firebase}
                     auth={auth}
                     user={user}
                     temaActual={temaActual}
                     setTemaActual={setTemaActual}
-                    showResultados={showResultados}
-                    mostrarResultados={mostrarResultados}
+                    //showResultados={showResultados}
+                    //mostrarResultados={mostrarResultados}
                     modalidad={modalidad}
                     firestore={firestore}
                     saving={saving}
@@ -355,24 +359,6 @@ function App(){
             temaActual={temaActual}
             setViewModal={setViewModal}
             />
-
-            <div id="newUpdate">
-                <strong id="texto">¡Nueva actualización disponible! Recarga la pagína para poder ver los cambios.</strong>
-                <button id="aceptar" onClick={
-                    () => {
-                        reloadPage();
-                    }
-                }>Recargar</button>
-                <button id="cerrar" onClick={
-                    () => {
-                        let snackbar = document.querySelector('#newUpdate');
-
-                        if (snackbar){
-                            snackbar.style.display = "none";
-                        }
-                    }
-                }>X</button>
-            </div>
 
             {localStorage.getItem("informed") ? null : mostrarMensaje()}
         </>

@@ -38,7 +38,6 @@ body{
     
     display: none;
     padding: 2vh 3vw;
-    border-radius: 5px;
    
     width: 88vw;
 
@@ -138,6 +137,15 @@ button:hover{
         margin-top: 1.5vh;
         display: grid;
         /*overflow: auto;*/
+    }
+
+    #newUpdate{
+        grid-template-areas:
+        "texto texto"
+        "aceptar cerrar";
+
+        grid-template-columns: auto;
+        row-gap: 2vh;
     }
 
     #pagina{

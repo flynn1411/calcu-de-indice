@@ -41,7 +41,6 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
     }
 
     function showModal(){
-        console.log("corrió");
         setViewModal(true);
     }
 

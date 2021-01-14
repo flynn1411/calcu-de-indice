@@ -47,7 +47,7 @@
     }
 
     button{
-        max-width: 23%;
+        max-width: max-content;
         height: min-content;
         background: var(--card-gradient), var(--card-bg);
         background-color: var(--card-bg2);

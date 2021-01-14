@@ -39,14 +39,14 @@ export default function Materia( {materia, autoSaving, temaActual} ) {
         let nuevaClase = e.target.value;
         //console.log(e.target.value)
 
-        if (nuevaClase.match(/^(([ A-Za-z0-9áéíóúÁÉÍÓÚÜü])|(-))*$/gm) === null){
+        if (nuevaClase.match(/^(([ A-Za-z0-9ñÑáéíóúÁÉÍÓÚÜü])|(-))*$/gm) === null){
             nuevaClase = clase;
             e.target.value = clase;
         }
 
         setClase(nuevaClase)
 
-        autoSaving(materia.id, {"Clase":nuevaClase, "Nota": nota, "UV": uv});
+        autoSaving(materia.id, {"Clase":nuevaClase, "Nota": nota, "UV": uv}, "Clase");
     }
 
     function manejarNota(e){
@@ -73,7 +73,7 @@ export default function Materia( {materia, autoSaving, temaActual} ) {
 
         setNota(nuevaNota)
 
-        autoSaving(materia.id, {"Clase":clase, "Nota": nuevaNota, "UV": uv});
+        autoSaving(materia.id, {"Clase":clase, "Nota": nuevaNota, "UV": uv}, "Nota");
     }
 
     function manejarUV(e){
@@ -95,7 +95,7 @@ export default function Materia( {materia, autoSaving, temaActual} ) {
 
         setNota(nuevoUV)
 
-        autoSaving(materia.id, {"Clase":clase, "Nota": nota, "UV": nuevoUV});
+        autoSaving(materia.id, {"Clase":clase, "Nota": nota, "UV": nuevoUV}, "UV");
     }
 
     function claseInput(){

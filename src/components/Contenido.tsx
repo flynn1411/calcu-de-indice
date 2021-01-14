@@ -7,6 +7,30 @@ import SignedOut from './SignedOut';
 import { useSpring, animated } from 'react-spring';
 import indiceGlobal from '../profiles/global';
 import indicePeriodo from '../profiles/periodo';
+import ObjMateria from '../interfaces/materia';
+import firebase from 'firebase/app';
+
+interface contenidoProps{
+    materias: Array<ObjMateria>;
+    setMaterias: (newMaterias: Array<ObjMateria>) => void;
+    crearID: () => string;
+    tipoIndice: string;
+    getTipo: ()=>string;
+    ultimosCambios: string;
+    setUltimosCambios: (cambios: string) => void;
+    cantidadMaxima: number;
+    guardarEnStorage: (nuevasMaterias: ObjMateria[]) => void;
+    autoSaving: (id: string | null, nuevaMateria: ObjMateria | null, dato?: string) => void;
+    agregarGlobal: () => void;
+    firebase: firebase.app.App;
+    firestore: firebase.firestore.Firestore;
+    auth: firebase.auth.Auth;
+    user: firebase.User;
+    temaActual: string;
+    setTemaActual: (nuevoTema: string) => void;
+    modalidad: string;
+    saving: boolean;
+};
 
 export default function Contenido( {
     materias,
@@ -19,7 +43,7 @@ export default function Contenido( {
     cantidadMaxima,
     guardarEnStorage,
     autoSaving,
-    refCambios,
+    //refCambios,
     agregarGlobal,
     firebase,
     firestore,
@@ -27,10 +51,10 @@ export default function Contenido( {
     user,
     temaActual,
     setTemaActual,
-    mostrarResultados,
+    //mostrarResultados,
     modalidad,
     saving
-} ) {
+}: contenidoProps ) {
     
     let tempIndex;
     
@@ -135,7 +159,7 @@ export default function Contenido( {
     function eliminarClases(e=null){
         if (materias.length === 1) return
 
-        document.getElementById("datos").tBodies[0].lastElementChild.style.maxHeight = "0";
+        //document.getElementById("datos").tBodies[0].lastElementChild.style.maxHeight = "0";
 
         const nuevasMaterias = [...materias].slice(0, materias.length-1);
 
@@ -157,7 +181,7 @@ export default function Contenido( {
     }
 
     //cambiar temas
-    function cambiarTema(e){
+    function cambiarTema(e: Event){
         const temas = ["light", "dark", "synthwave"];
         let newTemaIndex = temaIndex;
 
@@ -170,7 +194,7 @@ export default function Contenido( {
     }
 
     //Función que realiza el calculo del indice academico
-    function calcularIndice(currentMaterias){
+    function calcularIndice(currentMaterias: ObjMateria[]){
         //console.log(currentMaterias);   
 
         let uvLlenas = true;
@@ -201,18 +225,18 @@ export default function Contenido( {
         }
     }
 
-    function manejarAuth(authedUser){
+    function manejarAuth(authedUser: firebase.User){
 
         var referencia = firestore.collection("usuarios").doc(authedUser.uid);
 
         referencia.get().then( respuesta => {
             //console.log(retrieved.data());
             if(respuesta.exists){
-                let datos = respuesta.data();
+                let datos = respuesta.data() as Object | undefined;
 
                 localStorage.setItem("currentTheme", datos["currentTheme"]);
-                setTemaActual(localStorage.getItem("currentTheme"));
-                document.body.className = datos["currentTheme"];
+                setTemaActual(`${localStorage.getItem("currentTheme")}`);
+                document.body.className = `${datos["currentTheme"]}`;
 
                 firestore.collection("notas").doc(authedUser.uid).get().then(
                     respuesta => {
@@ -307,7 +331,7 @@ export default function Contenido( {
                         </tbody>
                     </table>
                 </div>
-                <p id="changes" style={animacionCambios} ref={refCambios}>Últimas módificaciones: {ultimosCambios}</p>
+                <p id="changes" style={animacionCambios}>Últimas módificaciones: {ultimosCambios}</p>
             </div>
             <div id="main-content">
                 <div id="clases">

@@ -74,6 +74,9 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
 
         let materiasSinNSP = materias.filter(materia => materia.Nota !== 0);
 
+        //Indice de Graduación
+        materiasSinNSP = materiasSinNSP.filter(materia => materia.Nota >= 65);
+
         let totalUV = obtenerUV(materiasSinNSP);
         let suma=0;
 
