@@ -1,31 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import {v4 as uuidv4} from 'uuid';
 import indiceGlobal from './profiles/global';
 import indicePeriodo from './profiles/periodo';
-import firebase from 'firebase/app';
-import 'firebase/firebase-firestore';
-import 'firebase/firebase-auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import Contenido from './components/Contenido';
 import Navegacion from './components/Navegacion';
-//import {useSpring, animated} from 'react-spring';
 import Modal from './components/Modal';
 import ObjMateria from './interfaces/materia';
-
-/*********************INICIALIZACIÓN DE FIREBASE***********************/
-
-firebase.initializeApp({
-    apiKey: "AIzaSyCrFbPHJizkQbb3IEPf_DyNjwcwZCD7NpM",
-    authDomain: "calculadoradeindice.firebaseapp.com",
-    databaseURL: "https://calculadoradeindice.firebaseio.com",
-    projectId: "calculadoradeindice",
-    storageBucket: "calculadoradeindice.appspot.com",
-    messagingSenderId: "180634225139",
-    appId: "1:180634225139:web:c4300eb226ca6f4db46a86",
-    measurementId: "G-7DG9TX7RN9"
-
-});
+import { FirebaseContext } from './FirebaseContext';
 
 /*###################Para cuando la pagina carga#######################*/
 const currentTheme = localStorage.getItem("currentTheme");
@@ -70,21 +52,11 @@ function App(){
     const [cambioPagina, setCambioPagina] = useState<boolean>(false);
     const [saving, setSavingState] = useState<boolean>(false);
 
-    const auth = firebase.auth();
-    const firestore = firebase.firestore();
-    const [user] = useAuthState(auth);
+    const firebaseContext = useContext(FirebaseContext);
+    const firestore = firebaseContext.firebase.firestore();
+    const user = firebaseContext.user;
     var timeoutId: NodeJS.Timeout | null = null;
-
-    /*if(user && navigator.onLine){
-        checkAuthedUser();
-    }*/
-    /*#################Referencias#################*/
-    //const refCambios = useRef();
-
-    /*#################Funciones###################*/
-    /*function mostrarResultados(){
-        setShowResultados(true);
-    }*/
+    const refCambios = useRef<HTMLParagraphElement>(null);
 
     function ocultarResultados(){
         setShowResultados(false);
@@ -99,19 +71,13 @@ function App(){
         }})));
     }
 
-    /* Inicio de Funciones Firebase
-    if(user){
-        console.log(user.uid);
-    }
-     Fin de Funciones Firebase*/
-
     function autoSaveFirebase(){
         let timeoutID;
 
         if(timeoutID) clearTimeout(timeoutID);
 
         timeoutID = setTimeout(() => {
-            firestore.collection("notas").doc(user.uid).set({
+            if(user) firestore.collection("notas").doc(user.uid).set({
                 global: JSON.parse(`${localStorage.getItem(indiceGlobal.llaveStorage)}`),
                 periodo: JSON.parse(`${localStorage.getItem(indicePeriodo.llaveStorage)}`),
                 "lastModified-global": localStorage.getItem(indiceGlobal.llaveCambios),
@@ -129,9 +95,8 @@ function App(){
     function autoSaving(id: string | null, nuevaMateria: ObjMateria | null, dato?: string){
         let time = new Date();
 
-        let refCambios = document.getElementById("cambios") as HTMLParagraphElement;
 
-        if(refCambios) refCambios.innerHTML = "Guardando...";
+        if(refCambios.current) refCambios.current.innerText = "Guardando...";
 
         if (timeoutId) clearTimeout(timeoutId);
 
@@ -144,7 +109,7 @@ function App(){
             if(minutes < 10) minutes = "0" + minutes;
 
             const timeStamp = `${time.getDate()}/${time.getMonth()+1}/${time.getFullYear()} ${time.getHours()}:${minutes}`;
-            refCambios.innerHTML = `Últimos Cambios Realizados: ${timeStamp}`;
+            if(refCambios.current) refCambios.current.innerText = `Últimos Cambios Realizados: ${timeStamp}`;
             setUltimosCambios(timeStamp);
             localStorage.setItem(cambiosKey, timeStamp);
 
@@ -232,7 +197,7 @@ function App(){
             setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia: { Clase: String; Nota: number; UV: number; })=>{
                 return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
             }) );
-            setUltimosCambios(backupCambios != null ? backupCambios : "nunca");
+            setUltimosCambios(`${backupCambios != null ? backupCambios : "nunca"}`);
             setCantidadMaxima(nuevaModalidad.cantidadMaxima);
 
             setTimeout(()=>{
@@ -283,15 +248,16 @@ function App(){
     function mostrarMensaje(){
 
         let newHeader = (<>
-        <h2>Versión 2.0</h2>
+        <h2>Versión 2.1</h2>
         </>);
 
         let newMessage = (<>
         <div id="list-item">
             <ul>
-                <li>Nueva interfaz</li>
-                <li>Ahora todo se realizó en ReactJS y no VanillaJS (mas sencillo de mantener y escalar).</li>
-                <li>Opción de agregar clases del índice de periodo al global.</li>
+                <li>Corrección en "Necesita llenar todos los UV... (error mio que me costó encontrar)"</li>
+                <li>Se movió el codigo fuente de Vanilla JS a <a href={"https://www.typescriptlang.org/"}>TypeScript</a>.</li>
+                <li>Opción de calcular indice de Graduación (o sin las clases RPB).</li>
+                <li>Mejoras visuales.</li>
             </ul>
         </div>
         </>);
@@ -337,17 +303,13 @@ function App(){
                     getTipo={getTipo}
                     guardarEnStorage={guardarEnStorage}
                     autoSaving={autoSaving}
-                    //refCambios={refCambios}
+                    refCambios={refCambios}
                     agregarGlobal={agregarGlobal}
-                    firebase={firebase}
-                    auth={auth}
-                    user={user}
                     temaActual={temaActual}
                     setTemaActual={setTemaActual}
                     //showResultados={showResultados}
                     //mostrarResultados={mostrarResultados}
                     modalidad={modalidad}
-                    firestore={firestore}
                     saving={saving}
                 />
                 ) }

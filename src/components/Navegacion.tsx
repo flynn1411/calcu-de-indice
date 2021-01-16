@@ -1,21 +1,28 @@
 import React from 'react';
 
-export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, setViewModal} ) {
+interface NavegacionProps{
+    cambiarModalidad: (dato: string | null)=>void;
+    tipoIndice: string;
+    temaActual: string;
+    setViewModal: (viewModal: boolean)=>void;
+}
 
-    function cambiarActive(id){
+export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, setViewModal}:NavegacionProps ) {
+
+    function cambiarActive(id: string | null){
         cambiarModalidad(id);
 
         if(id !== null){
             //document.getElementById("modoActual").innerHTML = getModalidadActual();
-            let elementoActivo = null;
-            let elementoViejo = null;
+            let elementoActivo;
+            let elementoViejo;
     
             if(id==="GLOBAL"){
-                elementoActivo = document.getElementById("global");
-                elementoViejo = document.getElementById("periodo");
+                elementoActivo = document.getElementById("global") as HTMLDivElement;
+                elementoViejo = document.getElementById("periodo") as HTMLDivElement;
             }else{
-                elementoActivo = document.getElementById("periodo");
-                elementoViejo = document.getElementById("global");
+                elementoActivo = document.getElementById("periodo") as HTMLDivElement;
+                elementoViejo = document.getElementById("global") as HTMLDivElement;
             }
     
             elementoViejo.className = "hvr-grow dNavItems seleccion";
@@ -24,7 +31,7 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
 
     }
 
-    function setActive(id){
+    function setActive(id: string){
         if(id === tipoIndice){
             return "hvr-grow dNavItems seleccion active"
         }else{

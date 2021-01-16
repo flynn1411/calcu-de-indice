@@ -1,18 +1,28 @@
 import React from 'react';
 import {useSpring, animated} from 'react-spring';
 import { Spring } from 'react-spring/renderprops';
+import ObjMateria from '../interfaces/materia';
 
-export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlobal, temaActual} ) {
+interface ResultadosProps{
+    materias: Array<ObjMateria>;
+    tipoIndice: string;
+    getTipo: () => string;
+    agregarAlGlobal: () => void;
+    temaActual: string;
+    grad: boolean;
+}
 
-    const indiceRedondeado = parseFloat(obtenerIndice()).toFixed(0);
-    const indiceNormal = obtenerIndice();
+export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlobal, temaActual, grad}: ResultadosProps ) {
 
-    //document.getElementById("resultados").style.height = window.innerWidth <= 600 ? "35vh" : "48vh";
+    const indiceRedondeado: number = Math.floor(obtenerIndice());
+    const indiceNormal: number = obtenerIndice();
+
+    let resultadosDiv = document.getElementById("resultados") as HTMLDivElement;
 
     if(window.innerWidth <= 600){
-        document.getElementById("resultados").scrollIntoView({ block: 'start',  behavior: 'smooth' });
+        resultadosDiv.scrollIntoView({ block: 'start',  behavior: 'smooth' });
     }else{
-        document.getElementById("resultados").scrollIntoView({ block: 'end',  behavior: 'smooth' });
+        resultadosDiv.scrollIntoView({ block: 'end',  behavior: 'smooth' });
     }
 
     let failedColor = "rgba(220, 20, 60, 1)";
@@ -58,31 +68,31 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
         delay: 400
     });
 
-    function obtenerUV(clases){
-        let uv = 0;
+    function obtenerUV(clases: ObjMateria[]): number{
+        let uv: number = 0;
 
         for (let c=0; c<clases.length; c++){uv += clases[c].UV}
 
         return uv;
     }
 
-    function addToGlobal(e){
+    function addToGlobal(){
         agregarAlGlobal();
     }
 
-    function obtenerIndice(){
+    function obtenerIndice(): number{
 
         let materiasSinNSP = materias.filter(materia => materia.Nota !== 0);
 
         //Indice de Graduación
-        materiasSinNSP = materiasSinNSP.filter(materia => materia.Nota >= 65);
+        if(grad) materiasSinNSP = materiasSinNSP.filter(materia => materia.Nota >= 65);
 
-        let totalUV = obtenerUV(materiasSinNSP);
-        let suma=0;
+        let totalUV: number = obtenerUV(materiasSinNSP);
+        let suma: number =0;
 
         for (let i=0; i<materiasSinNSP.length; i++){suma += materiasSinNSP[i].Nota*materiasSinNSP[i].UV}
 
-        return (parseFloat((suma/totalUV))).toFixed(2);
+        return parseFloat((parseFloat(`${(suma/totalUV)}`)).toFixed(2));
     }
 
     function moverAGlobal(){

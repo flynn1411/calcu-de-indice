@@ -1,11 +1,19 @@
 import React, {useState} from 'react';
 import {useSpring, animated} from 'react-spring';
+import ObjMateria from '../interfaces/materia';
 
-export default function Materia( {materia, autoSaving, temaActual} ) {
+interface MateriaProp{
+    materia: ObjMateria;
+    autoSaving: (id: string | null, nuevaMateria: ObjMateria | null, dato?: string) => void;
+    temaActual: string;
+    grad: boolean;
+}
+
+export default function Materia( {materia, autoSaving, temaActual, grad}: MateriaProp ) {
     //Hooks
-    const [clase, setClase] = useState(materia.Clase);
-    const [nota, setNota] = useState(materia.Nota);
-    const [uv] = useState(materia.UV);
+    const [clase, setClase] = useState<string>(materia.Clase);
+    const [nota, setNota] = useState<number>(materia.Nota);
+    const [uv] = useState<number>(materia.UV);
 
     let toBg = "rgba(0, 0, 0, 0)";
     let fromBg = "rgba(38, 67, 81, 1)";
@@ -35,7 +43,20 @@ export default function Materia( {materia, autoSaving, temaActual} ) {
         //delay: 750
     });
 
-    function manejarClase(e){
+    function setColor():string{
+        if(grad){
+            if(materia.Nota <= 65){
+                return "materiaInput passed"
+            }
+            else{
+                return "materiaInput"
+            }
+        }else{
+            return "materiaInput"
+        }
+    }
+
+    function manejarClase(e: React.ChangeEvent<HTMLInputElement>){
         let nuevaClase = e.target.value;
         //console.log(e.target.value)
 
@@ -46,11 +67,11 @@ export default function Materia( {materia, autoSaving, temaActual} ) {
 
         setClase(nuevaClase)
 
-        autoSaving(materia.id, {"Clase":nuevaClase, "Nota": nota, "UV": uv}, "Clase");
+        autoSaving(`${materia.id}`, {"Clase":nuevaClase, "Nota": nota, "UV": uv}, "Clase");
     }
 
-    function manejarNota(e){
-        let nuevaNota = e.target.value;
+    function manejarNota(e: React.ChangeEvent<HTMLInputElement>){
+        let nuevaNota: any = e.target.value;
         //console.log(e.target.value)
 
         if(nuevaNota.match(/[0-9]{0,3}$/gm)){
@@ -58,7 +79,7 @@ export default function Materia( {materia, autoSaving, temaActual} ) {
             //console.log(nuevaNota);
     
             if( nuevaNota > 100 ){
-                e.target.value = 100;
+                e.target.value = `${100}`;
                 nuevaNota = 100;
             }
         }
@@ -67,17 +88,17 @@ export default function Materia( {materia, autoSaving, temaActual} ) {
         }
         
         else{
-            e.target.value = nota;
+            e.target.value = `${nota}`;
             nuevaNota = nota;
         }
 
         setNota(nuevaNota)
 
-        autoSaving(materia.id, {"Clase":clase, "Nota": nuevaNota, "UV": uv}, "Nota");
+        autoSaving(`${materia.id}`, {"Clase":clase, "Nota": nuevaNota, "UV": uv}, "Nota");
     }
 
-    function manejarUV(e){
-        let nuevoUV = e.target.value;
+    function manejarUV(e: React.ChangeEvent<HTMLInputElement>){
+        let nuevoUV: any = e.target.value;
         //console.log(e.target.value)
 
         if(nuevoUV.match(/^(0|1|2)?[0-9]{1}$/gm)){
@@ -89,28 +110,28 @@ export default function Materia( {materia, autoSaving, temaActual} ) {
         }
 
         else{
-            e.target.value = uv;
+            e.target.value = `${uv}`;
             nuevoUV = uv;
         }
 
-        setNota(nuevoUV)
+        //setUV(nuevoUV)
 
-        autoSaving(materia.id, {"Clase":clase, "Nota": nota, "UV": nuevoUV}, "UV");
+        autoSaving(`${materia.id}`, {"Clase":clase, "Nota": nota, "UV": nuevoUV}, "UV");
     }
 
     function claseInput(){
         if(!clase.match(/^Clase([0-9]{1,3})$/)){
-            return <input className='claseInput' type='text' placeholder='Clase' defaultValue={clase} onChange={manejarClase}/>
+            return <input className={`claseInput ${setColor()}`} type='text' placeholder='Clase' defaultValue={clase} onChange={manejarClase}/>
         }else{
-            return <input className='claseInput' type='text' placeholder={clase} defaultValue={""} onChange={manejarClase}/>
+            return <input className={`claseInput ${setColor()}`} type='text' placeholder={clase} defaultValue={""} onChange={manejarClase}/>
         }
     }
 
     return (
         <tr>
             <td><animated.div style={newMateria}>{ claseInput() }</animated.div></td>
-            <td><animated.div style={newMateria}><input type='number' min="0" max="100" defaultValue={nota === 0 ? "": nota} onChange={manejarNota}/></animated.div></td>
-            <td><animated.div style={newMateria}><input type='number' min="0" max="20" defaultValue={uv === 0 ? "": uv} onChange={manejarUV}/></animated.div></td>
+            <td><animated.div style={newMateria}><input className={setColor()} type='number' min="0" max="100" defaultValue={nota === 0 ? "": nota} onChange={manejarNota}/></animated.div></td>
+            <td><animated.div style={newMateria}><input className={setColor()} type='number' min="0" max="20" defaultValue={uv === 0 ? "": uv} onChange={manejarUV}/></animated.div></td>
         </tr>
     )
 }

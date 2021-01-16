@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { useSpring, animated } from 'react-spring';
+import {FirebaseContext} from '../FirebaseContext';
 
-export default function SignedIn( {cerrarSesion, usuario} ) {
-    //checkAuthedUser();
+interface SignedInProps{
+    cerrarSesion: () => void;
+}
+
+export default function SignedIn( {cerrarSesion}: SignedInProps ) {
+    const usuario = useContext(FirebaseContext).user;
 
     const animacionSignedIn = useSpring({
         from: {
@@ -40,9 +45,13 @@ export default function SignedIn( {cerrarSesion, usuario} ) {
 
     return (
         <animated.div style={animacionSignedIn} id="perfilGoogle">
-            <div id="profilepic"><animated.img style={animacionFoto} id="fotoPerfil" src={usuario.photoURL} alt={"Foto de perfil"}/></div>
+            {() => {
+                if(usuario){
+                    return (<div id="profilepic"><animated.img style={animacionFoto} id="fotoPerfil" src={`${usuario.photoURL}`} alt={"Foto de perfil"}/></div>);
+                }
+            }}
             Usuario Actual:<br></br>
-            <div id="nombrePerfil">{usuario.displayName}</div>
+            <div id="nombrePerfil">{() => {if (usuario !== undefined) return `${usuario.displayName}`}}</div>
             <br></br>
             <div id="signedIn-buttons">
                 <button className="hvr-ripple-out" id="sign-out" onClick={cerrarSesion}>Cerrar Sesión</button>

@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function SignedOut( {googleAuth} ) {
+interface SignedOutProps{
+    googleAuth: ()=>void;
+}
+
+export default function SignedOut( {googleAuth}:SignedOutProps ) {
 
     function signIn(){
         googleAuth();

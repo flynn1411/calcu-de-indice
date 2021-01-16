@@ -1,7 +1,14 @@
 import React from 'react';
 import { useSpring, animated } from 'react-spring';
+import ModalMessage from '../interfaces/message';
 
-export default function Modal( {closeModal, temaActual, message} ) {
+interface ModalProps{
+    closeModal: ()=>void;
+    temaActual: string;
+    message: ModalMessage | null
+}
+
+export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
 
     const modalBgAnimation = useSpring({
         from:{
@@ -80,7 +87,7 @@ export default function Modal( {closeModal, temaActual, message} ) {
             <animated.div style={modalBgAnimation} id="modal-bg">
                 <animated.div style={ window.innerWidth > 600 ? modalEntranceDesktop : modalEntranceMobile } id="modal-content">
                     {getMessage()}
-                    <button onClick={e => {closeModal(e)}}>
+                    <button onClick={() => {closeModal()}}>
                         Cerrar
                     </button>
                 </animated.div>                

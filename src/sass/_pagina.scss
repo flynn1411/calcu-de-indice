@@ -99,7 +99,7 @@
     /*padding: 1.3vh 0vw;*/
 }
 
-#datos > tbody > tr > td > div > input {
+.materiaInput {
     font-family: 'Poppins', sans-serif;
     width: 100%;
     text-align: center;
@@ -114,6 +114,10 @@
     transition: 0.8s ease-in-out;
 }
 
+.passed{
+    color: var(--passed) !important;
+}
+
 #datos > tbody > tr > td > div:focus {
     border: 2px solid var(--hover-fcolor);
 }
@@ -125,4 +129,9 @@
 textarea:focus, input:focus{
     outline: none;
     background-color: var(--hover-bg) !important;
+}
+
+label{
+    font-family: 'Glegoo', serif;
+    font-weight: bolder;
 }

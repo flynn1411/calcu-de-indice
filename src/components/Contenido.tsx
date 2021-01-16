@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Materias from './Materias';
 import Resultados from './Resultados';
@@ -8,7 +8,7 @@ import { useSpring, animated } from 'react-spring';
 import indiceGlobal from '../profiles/global';
 import indicePeriodo from '../profiles/periodo';
 import ObjMateria from '../interfaces/materia';
-import firebase from 'firebase/app';
+import { FirebaseContext } from '../FirebaseContext';
 
 interface contenidoProps{
     materias: Array<ObjMateria>;
@@ -22,14 +22,11 @@ interface contenidoProps{
     guardarEnStorage: (nuevasMaterias: ObjMateria[]) => void;
     autoSaving: (id: string | null, nuevaMateria: ObjMateria | null, dato?: string) => void;
     agregarGlobal: () => void;
-    firebase: firebase.app.App;
-    firestore: firebase.firestore.Firestore;
-    auth: firebase.auth.Auth;
-    user: firebase.User;
     temaActual: string;
     setTemaActual: (nuevoTema: string) => void;
     modalidad: string;
     saving: boolean;
+    refCambios: React.MutableRefObject<HTMLParagraphElement | null>
 };
 
 export default function Contenido( {
@@ -45,16 +42,22 @@ export default function Contenido( {
     autoSaving,
     //refCambios,
     agregarGlobal,
-    firebase,
-    firestore,
-    auth,
-    user,
     temaActual,
     setTemaActual,
     //mostrarResultados,
     modalidad,
-    saving
+    saving,
+    refCambios
 }: contenidoProps ) {
+
+    //Objetos de Firebase
+    const firebaseContext = useContext(FirebaseContext);
+    //const firebase = firebaseContext.firebase;
+    const auth = firebaseContext.authProviders;
+    const firestore = firebaseContext.firebase.firestore();
+    const user = firebaseContext.user;
+
+    const [grad, setGrad] = useState<boolean>(false);
     
     let tempIndex;
     
@@ -156,7 +159,7 @@ export default function Contenido( {
     }
     
     //Elimina Clases
-    function eliminarClases(e=null){
+    function eliminarClases(){
         if (materias.length === 1) return
 
         //document.getElementById("datos").tBodies[0].lastElementChild.style.maxHeight = "0";
@@ -169,7 +172,7 @@ export default function Contenido( {
     }
 
     //Agrega Clases
-    function agregarClases(e=null){
+    function agregarClases(){
         if (materias.length === cantidadMaxima) return
 
         const nuevasMaterias = [...materias, {id: crearID(),"Clase":`Clase${materias.length+1}`,"Nota":0,"UV":0}];
@@ -181,7 +184,7 @@ export default function Contenido( {
     }
 
     //cambiar temas
-    function cambiarTema(e: Event){
+    function cambiarTema(){
         const temas = ["light", "dark", "synthwave"];
         let newTemaIndex = temaIndex;
 
@@ -216,6 +219,7 @@ export default function Contenido( {
             getTipo={getTipo}
             agregarAlGlobal={agregarGlobal}
             temaActual={temaActual}
+            grad={grad}
             />,
             document.getElementById("resultados")
             );
@@ -225,23 +229,26 @@ export default function Contenido( {
         }
     }
 
-    function manejarAuth(authedUser: firebase.User){
+    function manejarAuth(authedUser: any){
 
         var referencia = firestore.collection("usuarios").doc(authedUser.uid);
 
         referencia.get().then( respuesta => {
             //console.log(retrieved.data());
             if(respuesta.exists){
-                let datos = respuesta.data() as Object | undefined;
+                let datos = respuesta.data();
 
-                localStorage.setItem("currentTheme", datos["currentTheme"]);
-                setTemaActual(`${localStorage.getItem("currentTheme")}`);
-                document.body.className = `${datos["currentTheme"]}`;
+                if(datos){
+                    localStorage.setItem("currentTheme", datos["currentTheme"]);
+                    setTemaActual(`${localStorage.getItem("currentTheme")}`);
+                    document.body.className = `${datos["currentTheme"]}`;
+                }
+
 
                 firestore.collection("notas").doc(authedUser.uid).get().then(
                     respuesta => {
                         if(respuesta.exists){
-                            let datosRespuesta = respuesta.data();
+                            let datosRespuesta: any = respuesta.data();
                             let datosGlobal = datosRespuesta["global"] ? datosRespuesta["global"] : indiceGlobal.default;
                             let datosPeriodo = datosRespuesta["periodo"] ? datosRespuesta["periodo"] : indicePeriodo.default;
                             
@@ -257,13 +264,13 @@ export default function Contenido( {
                             }
 
                             if(modalidad === "GLOBAL" && localStorage.getItem(indiceGlobal.llaveCambios)){
-                                setUltimosCambios(localStorage.getItem(indiceGlobal.llaveCambios));
+                                setUltimosCambios(`${localStorage.getItem(indiceGlobal.llaveCambios)}`);
                             }else if(localStorage.getItem(indicePeriodo.llaveCambios)){
-                                setUltimosCambios(localStorage.getItem(indicePeriodo.llaveCambios));
+                                setUltimosCambios(`${localStorage.getItem(indicePeriodo.llaveCambios)}`);
                             }
 
                             let modalidadActual = modalidad === "GLOBAL" ? datosGlobal : datosPeriodo;
-                            setMaterias(modalidadActual.map( clase => {
+                            setMaterias(modalidadActual.map( (clase: ObjMateria) => {
                                 return {"id":crearID(), "Clase":clase.Clase, "Nota":clase.Nota, "UV":clase.UV}
                             }))
                         }
@@ -291,7 +298,7 @@ export default function Contenido( {
     }
 
     function googleAuth(){
-        const provider = new firebase.auth.GoogleAuthProvider();
+        const provider = firebaseContext.googleProvider;
 
         auth.signInWithPopup(provider).then( resultado => manejarAuth(resultado.user) );
     }
@@ -301,6 +308,25 @@ export default function Contenido( {
             localStorage.clear();
             window.location.reload();
         });
+    }
+
+    function crearCheckbox(){
+        return(
+            <>
+                <br/><br/>
+                <div id="switchContainer">
+                    <input
+                    type="checkbox"
+                    name="indiceGrad" 
+                    id="indiceGrad" 
+                    checked={grad}
+                    onChange={() =>{
+                        setGrad(!grad);
+                    }}/>
+                    <label htmlFor="indiceGrad">Sin RPB</label>
+                </div>
+            </>
+        );
     }
 
     return (
@@ -331,15 +357,15 @@ export default function Contenido( {
                         </tbody>
                     </table>
                 </div>
-                <p id="changes" style={animacionCambios}>Últimas módificaciones: {ultimosCambios}</p>
+                <p id="changes" ref={refCambios} style={animacionCambios}>Últimas módificaciones: {ultimosCambios}</p>
             </div>
             <div id="main-content">
                 <div id="clases">
-                    <Materias materias={materias} autoSaving={autoSaving} temaActual={temaActual}/>
+                    <Materias materias={materias} autoSaving={autoSaving} temaActual={temaActual} grad={grad}/>
                 </div>
                 <div id ="lateral">
                     <div id="temas">
-                        {user ? <SignedIn cerrarSesion={cerrarSesion} usuario={user}/>: <SignedOut googleAuth={googleAuth} />}
+                        {user ? <SignedIn cerrarSesion={cerrarSesion}/>: <SignedOut googleAuth={googleAuth} />}
                         <h4>Tema Actual:</h4>
                         <img className={"hvr-bounce-in"} id="temaActual" src={`resources/${temaActual}.png`} alt={`${temaActual}`} onClick={cambiarTema}/>
                     </div>
@@ -349,6 +375,7 @@ export default function Contenido( {
                             //console.log(materias);
                             saving ? console.log("Guardando") : calcularIndice(materias)
                         }}>Calcular Indice {getTipo()}</button>
+                        {tipoIndice ==="GLOBAL"?crearCheckbox():undefined}
                         <div id="resultados"></div>
                     </div>
                     
