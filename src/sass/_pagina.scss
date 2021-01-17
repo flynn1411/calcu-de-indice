@@ -118,6 +118,10 @@
     color: var(--passed) !important;
 }
 
+.passed:focus{
+    background-color: var(--text) !important;
+}
+
 #datos > tbody > tr > td > div:focus {
     border: 2px solid var(--hover-fcolor);
 }
@@ -131,7 +135,54 @@ textarea:focus, input:focus{
     background-color: var(--hover-bg) !important;
 }
 
-label{
-    font-family: 'Glegoo', serif;
-    font-weight: bolder;
+
+/******SWITCH*****/
+.switchContainer {
+    position: relative; width: 90px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.switch-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.switch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid var(--innerShadow); border-radius: 20px;
+}
+.switch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.switch-inner:before, .switch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.switch-inner:before {
+    content: "Sin RPB";
+    padding-left: 10px;
+    background: var(--darker-shade);
+    color: var(--title);
+}
+.switch-inner:after {
+    content: "Con RPB";
+    padding-right: 10px;
+    background: var(--bg);
+    color: #999999;
+    text-align: right;
+}
+.switch {
+    display: block; width: 18px; margin: 6px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 56px;
+    border: 2px solid #999999; border-radius: 20px;
+    transition: all 0.3s ease-in 0s; 
+}
+.switch-checkbox:checked + .switch-label .switch-inner {
+    margin-left: 0;
+}
+.switch-checkbox:checked + .switch-label .switch-switch {
+    right: 0px; 
 }

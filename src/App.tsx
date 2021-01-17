@@ -248,7 +248,7 @@ function App(){
     function mostrarMensaje(){
 
         let newHeader = (<>
-        <h2>Versión 2.1</h2>
+        <h2>Versión 2.1.1</h2>
         </>);
 
         let newMessage = (<>
@@ -258,6 +258,7 @@ function App(){
                 <li>Se movió el codigo fuente de Vanilla JS a <a href={"https://www.typescriptlang.org/"}>TypeScript</a>.</li>
                 <li>Opción de calcular indice de Graduación (o sin las clases RPB).</li>
                 <li>Mejoras visuales.</li>
+                <li>Switch con mejor estilo.</li>
             </ul>
         </div>
         </>);

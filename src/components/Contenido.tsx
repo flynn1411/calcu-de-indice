@@ -322,12 +322,17 @@ export default function Contenido( {
                     <input
                     type="checkbox"
                     name="indiceGrad" 
-                    id="indiceGrad" 
+                    id="indiceGrad"
+                    className="switch-checkbox"
                     checked={grad}
                     onChange={() =>{
                         setGrad(!grad);
                     }}/>
-                    <label htmlFor="indiceGrad">Sin RPB</label>
+                    <label className="switch-label" htmlFor="indiceGrad">
+                        <span className="switch-inner"></span>
+                        <span className="switch-switch"></span>
+                    </label>
+
                 </div>
             </>
         );
