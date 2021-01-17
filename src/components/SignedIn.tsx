@@ -8,6 +8,7 @@ interface SignedInProps{
 
 export default function SignedIn( {cerrarSesion}: SignedInProps ) {
     const usuario = useContext(FirebaseContext).user;
+    //console.log(usuario);
 
     const animacionSignedIn = useSpring({
         from: {
@@ -43,18 +44,30 @@ export default function SignedIn( {cerrarSesion}: SignedInProps ) {
           delay: 500
     });
 
+    function getProfilePic(){
+        if(usuario){
+            return (<div id="profilepic"><animated.img style={animacionFoto} id="fotoPerfil" src={`${usuario.photoURL}`} alt={"Foto de perfil"}/></div>);
+        }else{
+            return undefined;
+        }
+    }
+
+    function getUserName(){
+        if(usuario){
+            return `${usuario.displayName}`;
+        }else{
+            return undefined;
+        }
+    }
+
     return (
         <animated.div style={animacionSignedIn} id="perfilGoogle">
-            {() => {
-                if(usuario){
-                    return (<div id="profilepic"><animated.img style={animacionFoto} id="fotoPerfil" src={`${usuario.photoURL}`} alt={"Foto de perfil"}/></div>);
-                }
-            }}
+            {getProfilePic()}
             Usuario Actual:<br></br>
-            <div id="nombrePerfil">{() => {if (usuario !== undefined) return `${usuario.displayName}`}}</div>
+            <div id="nombrePerfil">{getUserName()}</div>
             <br></br>
             <div id="signedIn-buttons">
-                <button className="hvr-ripple-out" id="sign-out" onClick={cerrarSesion}>Cerrar Sesión</button>
+                <button className="hvr-ripple-out" id="sign-out" onClick={()=>{return cerrarSesion()}}>Cerrar Sesión</button>
                 <br></br>
                 <br></br>
                 <button className="hvr-ripple-out" id="delete">Eliminar Usuario</button>

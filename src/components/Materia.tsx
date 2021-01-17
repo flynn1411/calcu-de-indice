@@ -45,7 +45,7 @@ export default function Materia( {materia, autoSaving, temaActual, grad}: Materi
 
     function setColor():string{
         if(grad){
-            if(materia.Nota <= 65){
+            if(materia.Nota >= 65){
                 return "materiaInput passed"
             }
             else{

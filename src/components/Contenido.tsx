@@ -229,72 +229,76 @@ export default function Contenido( {
         }
     }
 
-    function manejarAuth(authedUser: any){
+    function manejarAuth(authedUser: typeof user){
 
-        var referencia = firestore.collection("usuarios").doc(authedUser.uid);
-
-        referencia.get().then( respuesta => {
-            //console.log(retrieved.data());
-            if(respuesta.exists){
-                let datos = respuesta.data();
-
-                if(datos){
-                    localStorage.setItem("currentTheme", datos["currentTheme"]);
-                    setTemaActual(`${localStorage.getItem("currentTheme")}`);
-                    document.body.className = `${datos["currentTheme"]}`;
-                }
-
-
-                firestore.collection("notas").doc(authedUser.uid).get().then(
-                    respuesta => {
-                        if(respuesta.exists){
-                            let datosRespuesta: any = respuesta.data();
-                            let datosGlobal = datosRespuesta["global"] ? datosRespuesta["global"] : indiceGlobal.default;
-                            let datosPeriodo = datosRespuesta["periodo"] ? datosRespuesta["periodo"] : indicePeriodo.default;
-                            
-                            localStorage.setItem(indiceGlobal.llaveStorage, JSON.stringify(datosGlobal));
-                            localStorage.setItem(indicePeriodo.llaveStorage, JSON.stringify(datosPeriodo));
-
-                            if(datosRespuesta["lastModified-global"]){
-                                localStorage.setItem(indiceGlobal.llaveCambios, datosRespuesta["lastModified-global"]);
-                            }
-
-                            if(datosRespuesta["lastModified-periodo"]){
-                                localStorage.setItem(indicePeriodo.llaveCambios, datosRespuesta["lastModified-periodo"]);
-                            }
-
-                            if(modalidad === "GLOBAL" && localStorage.getItem(indiceGlobal.llaveCambios)){
-                                setUltimosCambios(`${localStorage.getItem(indiceGlobal.llaveCambios)}`);
-                            }else if(localStorage.getItem(indicePeriodo.llaveCambios)){
-                                setUltimosCambios(`${localStorage.getItem(indicePeriodo.llaveCambios)}`);
-                            }
-
-                            let modalidadActual = modalidad === "GLOBAL" ? datosGlobal : datosPeriodo;
-                            setMaterias(modalidadActual.map( (clase: ObjMateria) => {
-                                return {"id":crearID(), "Clase":clase.Clase, "Nota":clase.Nota, "UV":clase.UV}
-                            }))
-                        }
+        if(authedUser){
+            //console.log(authedUser);
+            var referencia = firestore.collection("usuarios").doc(authedUser.uid);
+    
+            referencia.get().then( respuesta => {
+                //console.log(retrieved.data());
+                if(respuesta.exists){
+                    let datos = respuesta.data();
+    
+                    if(datos){
+                        localStorage.setItem("currentTheme", datos["currentTheme"]);
+                        setTemaActual(`${localStorage.getItem("currentTheme")}`);
+                        document.body.className = `${datos["currentTheme"]}`;
                     }
-                ).catch( error => {
-                    console.log(error);
-                });
-            }else{
-                firestore.collection("usuarios").doc(authedUser.uid).set({
-                    nombre : `${authedUser.displayName}`,
-                    correo : `${authedUser.email}`,
-                    correoVerificado : `${authedUser.emailVerified}`,
-                    id : `${authedUser.uid}`,
-                    "visibility" : "public",
-                    currentTheme : localStorage.getItem("currentTheme")
-                }, {merge: true}
-                ).then( () => {
-                    console.log("Success");
+    
+    
+                    firestore.collection("notas").doc(authedUser.uid).get().then(
+                        respuesta => {
+                            if(respuesta.exists){
+                                let datosRespuesta: any = respuesta.data();
+                                let datosGlobal = datosRespuesta["global"] ? datosRespuesta["global"] : indiceGlobal.default;
+                                let datosPeriodo = datosRespuesta["periodo"] ? datosRespuesta["periodo"] : indicePeriodo.default;
+                                
+                                localStorage.setItem(indiceGlobal.llaveStorage, JSON.stringify(datosGlobal));
+                                localStorage.setItem(indicePeriodo.llaveStorage, JSON.stringify(datosPeriodo));
+    
+                                if(datosRespuesta["lastModified-global"]){
+                                    localStorage.setItem(indiceGlobal.llaveCambios, datosRespuesta["lastModified-global"]);
+                                }
+    
+                                if(datosRespuesta["lastModified-periodo"]){
+                                    localStorage.setItem(indicePeriodo.llaveCambios, datosRespuesta["lastModified-periodo"]);
+                                }
+    
+                                if(modalidad === "GLOBAL" && localStorage.getItem(indiceGlobal.llaveCambios)){
+                                    setUltimosCambios(`${localStorage.getItem(indiceGlobal.llaveCambios)}`);
+                                }else if(localStorage.getItem(indicePeriodo.llaveCambios)){
+                                    setUltimosCambios(`${localStorage.getItem(indicePeriodo.llaveCambios)}`);
+                                }
+    
+                                let modalidadActual = modalidad === "GLOBAL" ? datosGlobal : datosPeriodo;
+                                setMaterias(modalidadActual.map( (clase: ObjMateria) => {
+                                    return {"id":crearID(), "Clase":clase.Clase, "Nota":clase.Nota, "UV":clase.UV}
+                                }))
+                            }
+                        }
+                    ).catch( error => {
+                        console.log(error);
+                    });
+                }else{
+                    firestore.collection("usuarios").doc(authedUser.uid).set({
+                        nombre : `${authedUser.displayName}`,
+                        correo : `${authedUser.email}`,
+                        correoVerificado : `${authedUser.emailVerified}`,
+                        id : `${authedUser.uid}`,
+                        "visibility" : "public",
+                        currentTheme : localStorage.getItem("currentTheme")
+                    }, {merge: true}
+                    ).then( () => {
+                        console.log("Success");
+                    }
+                    ).catch( error => {
+                        console.log(error);
+                    });
                 }
-                ).catch( error => {
-                    console.log(error);
-                });
-            }
-        } ).catch();
+            } ).catch();
+        }
+        
     }
 
     function googleAuth(){
