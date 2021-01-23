@@ -36,7 +36,13 @@
     --darker-shade: #a7a7a7;
 
     --glass-bg: rgba( 216, 216, 216, 0.40 );
-    /*--font1 : */
+
+    /*###########CHART###########*/
+    --chart-axis: var(--navbar-text);
+    --chart-grid: rgba(216, 216, 216, 0.09);
+    --chart-mainLine: var(--bg);
+    --chart-bg: var(--fcolor);
+    --chart-dot: var(--title);
 }
 
 .light{
@@ -57,7 +63,7 @@
     --title-neon: none;
     --navbar-img: none;
     --navbar-bg: var(--fcolor);
-    --navbar-text: #262626;
+    --navbar-text: hsl(0, 0%, 15%);
     --data-color: #d8d8d8;
     --box-shadow1: 0px 6px 10px 3px rgba(4,5,5,0.32);
     --box-shadow2: 0px 6px 10px 3px rgba(4,5,5,0.32);
@@ -67,6 +73,13 @@
     --card-gradient: var(--fcolor);
     --card-bg2: var(--fcolor);
     --innerShadow: rgba(4,5,5,0.32);
+
+    /*###########CHART###########*/
+    --chart-axis: var(--navbar-text);
+    --chart-grid: rgba(38, 38, 38, 0.09);
+    --chart-mainLine: var(--bg);
+    --chart-bg: var(--fcolor);
+    --chart-dot: var(--title);
 
     --main-content-bg: linear-gradient(#d8d8d8 33%, rgba(216,216,216, 0)),
     linear-gradient(rgba(216,216,216, 0), #d8d8d8 66%) 0 100%,
@@ -118,4 +131,11 @@
     --darker-shade: linear-gradient(180deg, rgba(12,191,233,1) 0%, rgba(227,69,53,1) 100%);
 
     --glass-bg: rgba( 54, 40, 59, 0.40 );
+
+    /*###########CHART###########*/
+    --chart-axis: var(--navbar-text);
+    --chart-grid: rgba(12, 193, 233, 0.09);
+    --chart-mainLine: var(--fcolor);
+    --chart-bg: var(--text);
+    --chart-dot: var(--button-hover);
 }

@@ -92,7 +92,8 @@ body{
 #root{
     /*padding-top: 1vh;*/
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     overflow: hidden;
     display: grid;
     row-gap: 1vh;
@@ -100,6 +101,7 @@ body{
     "contenido"
     "navegacion";
     justify-content: center;
+    row-gap: 2vh;
 }
 
 #contenedor-pagina{
@@ -126,9 +128,18 @@ button:hover{
 
 @media only screen and (max-width: 600px){
     #root{
-        //height: 100%;
+        min-height: -webkit-fill-available;
         bottom: 0vh;
     }
+
+    body {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+      }
+
+      html {
+        height: -webkit-fill-available;
+      }
 
     #contenedor-pagina{
         grid-area: contenido;
@@ -152,13 +163,28 @@ button:hover{
         //height: 85vh !important;
         grid-template-areas:
             "titulo"
-            "controles"
-            "main";
+            "contenidoInner";
         //bottom: 4.5vh !important;
+        width: 95vw;
         grid-template-rows: auto auto auto;
         overflow: auto !important;
         scroll-behavior: smooth;
         bottom: auto !important;
+    }
+
+    #tituloInner{
+        display: grid;
+        place-items: center;
+    }
+
+    #modoNormal{
+        display: grid;
+        grid-area: contenidoInner;
+        overflow: visible;
+    
+        grid-template-areas:
+        "controles"
+        "main";
     }
 
     #titulo{
@@ -280,13 +306,28 @@ button:hover{
         //height: 88vh;
         grid-template-areas: 
         "titulo"
+        "contenidoInner";
+        //grid-template-rows: 18% auto auto;
+    }
+
+    #modoNormal{
+        display: grid;
+        grid-area: contenidoInner;
+        overflow: hidden;
+    
+        grid-template-areas:
         "controles"
         "main";
-        grid-template-rows: 18% auto auto;
     }
 
     #controles{
         width: 80vw;
+        grid-template-areas:
+        "spinner mensaje"
+        "cambios cambios";
+        row-gap: 1vh;
+        //place-items: center;
+        column-gap: 2vw;
     }
 
     #temaActual{

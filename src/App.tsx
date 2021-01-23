@@ -8,6 +8,7 @@ import Navegacion from './components/Navegacion';
 import Modal from './components/Modal';
 import ObjMateria from './interfaces/materia';
 import { FirebaseContext } from './FirebaseContext';
+import IndiceConfig from './interfaces/indice';
 
 /*###################Para cuando la pagina carga#######################*/
 const currentTheme = localStorage.getItem("currentTheme");
@@ -51,6 +52,7 @@ function App(){
     const [showResultados, setShowResultados] = useState<boolean>(false);
     const [cambioPagina, setCambioPagina] = useState<boolean>(false);
     const [saving, setSavingState] = useState<boolean>(false);
+    const [graphMode, setgraphMode] = useState<boolean>(false);
 
     const firebaseContext = useContext(FirebaseContext);
     const firestore = firebaseContext.firebase.firestore();
@@ -171,7 +173,7 @@ function App(){
 
     //cambia el tipo de indice que se utiliza
     function cambiarModalidad(dato: string | null){
-        let nuevaModalidad: any = modalidad;
+        let nuevaModalidad: string | IndiceConfig = modalidad;
 
         if(dato !== null){
             nuevaModalidad = dato === "GLOBAL" ? indiceGlobal: indicePeriodo;
@@ -183,6 +185,8 @@ function App(){
             setCambioPagina(true);
 
             setModalidad(nuevaModalidad.tipoIndice);
+
+            if(nuevaModalidad.tipoIndice === "PERIODO") setgraphMode(false);
     
             if(showResultados){
                 cerrarResultados();
@@ -194,7 +198,7 @@ function App(){
             backupClases = JSON.parse(`${localStorage.getItem(materiasKey)}`);
             backupCambios = localStorage.getItem(cambiosKey);
     
-            setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia: { Clase: String; Nota: number; UV: number; })=>{
+            setMaterias((backupClases != null ? backupClases : nuevaModalidad.default).map((materia: { Clase: string; Nota: number; UV: number; })=>{
                 return {"id":crearID(), "Clase":materia.Clase, "Nota":materia.Nota, "UV":materia.UV}
             }) );
             setUltimosCambios(`${backupCambios != null ? backupCambios : "nunca"}`);
@@ -248,7 +252,7 @@ function App(){
     function mostrarMensaje(){
 
         let newHeader = (<>
-        <h2>Versión 2.1.1</h2>
+        <h2>Versión 2.2.1</h2>
         </>);
 
         let newMessage = (<>
@@ -259,6 +263,8 @@ function App(){
                 <li>Opción de calcular indice de Graduación (o sin las clases RPB).</li>
                 <li>Mejoras visuales.</li>
                 <li>Switch con mejor estilo.</li>
+                <li>Agregado de modo gráfica.</li>
+                <li>Cambio en el uso de fuentes del titulo.</li>
             </ul>
         </div>
         </>);
@@ -312,6 +318,8 @@ function App(){
                     //mostrarResultados={mostrarResultados}
                     modalidad={modalidad}
                     saving={saving}
+                    graphMode={graphMode}
+                    setGraphMode={setgraphMode}
                 />
                 ) }
             </div>

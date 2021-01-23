@@ -1,22 +1,48 @@
 @import 'controles';
 @import 'lateral';
-@import url('https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap');
+@import 'switch';
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,700&display=swap');
 
 #pagina{
     background: var(--card-gradient), var(--card-bg);
     background-color: var(--card-bg2);
     color: var(--text);
-    width: 95vw;
+    //width: 95vw;
     display: grid;
     grid-template-areas: 
-    " titulo titulo"
-    "controles ."
-    "main main";
-    grid-template-rows: 20% auto auto;
+    " titulo "
+    " contenidoInner ";
+    grid-template-rows: 18% auto;
+    //padding-left: 0.5vw;
+    //grid-template-rows: 20% auto auto;
     border-radius: 5px;
     row-gap: 1vh;
     box-shadow: var(--box-shadow1);
     position: absolute;
+}
+
+#modoNormal{
+    display: grid;
+    grid-area: contenidoInner;
+    overflow: hidden;
+
+    grid-template-areas:
+    "controles ."
+    "main main";
+}
+
+#stats{
+    display: grid;
+    grid-area: contenidoInner;
+    padding-left: 0.5vw;
+    padding-right: 5vw;
+    padding-top: 5vh;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+.recharts-wrapper{
+    background-color: var(--chart-bg) !important;
 }
 
 #main-content{
@@ -43,7 +69,7 @@
 
 #titulo{
     transition: 0.8s;
-    font-family: 'Oleo Script', cursive;
+    font-family: 'Lora', serif;
     grid-area: titulo;
     overflow: hidden;
     text-align: center;
@@ -63,6 +89,14 @@
         strong{
             font-size: 3rem;
         }
+    }
+}
+
+#tituloInner{
+    display: -moz-inline-grid;
+
+    @supports(display: inline){
+        display: inline-flex;
     }
 }
 

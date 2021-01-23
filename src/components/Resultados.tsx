@@ -10,12 +10,16 @@ interface ResultadosProps{
     agregarAlGlobal: () => void;
     temaActual: string;
     grad: boolean;
+    setIndiceActual: (indice: number)=>void
 }
 
-export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlobal, temaActual, grad}: ResultadosProps ) {
+export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlobal, temaActual, grad, setIndiceActual}: ResultadosProps ) {
 
-    const indiceRedondeado: number = Math.floor(obtenerIndice());
+    const indiceRedondeado: number = Math.round(obtenerIndice());
     const indiceNormal: number = obtenerIndice();
+    if(indiceRedondeado){
+        setIndiceActual(indiceRedondeado);
+    }
 
     let resultadosDiv = document.getElementById("resultados") as HTMLDivElement;
 
@@ -139,7 +143,7 @@ export default function Resultados( {materias, tipoIndice, getTipo, agregarAlGlo
                     delay={350}
                 >
 
-                    {props => <animated.p style={colorIndice} className="datosN">{Math.floor(props.number)}</animated.p>}
+                    {props => <animated.p style={colorIndice} className="datosN">{Math.round(props.number)}</animated.p>}
                 </Spring>
             </animated.div>
             {moverAGlobal()}
