@@ -288,6 +288,14 @@ function App(){
         />);
     }
 
+    function getHeight(){
+        if(window.innerWidth > 900){
+            return {height: "85vh"}
+        }else{
+            return {height: `${window.innerHeight*0.85}px`}
+        }
+    }
+
     /************************************************ANIMACIONES*******************************************************/
 
 
@@ -297,7 +305,7 @@ function App(){
             {viewModal ? <Modal closeModal={closeModal} temaActual={temaActual} message={null}/> : null}
             </>
             
-            <div  id="contenedor-pagina">
+            <div  id="contenedor-pagina" style={getHeight()}>
                 { cambioPagina ? null : (
                 <Contenido 
                     materias={materias}

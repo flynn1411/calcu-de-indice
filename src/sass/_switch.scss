@@ -1,0 +1,61 @@
+#graphToggleContainer{
+    margin-left: 1vw;
+}
+
+.graphLabel{
+    display: block;
+    width: min-content;
+    padding: 0.6vh 0.6vw;
+    height: min-content;
+    background-color: var(--text);
+    border-radius: 10%;
+    cursor: pointer;
+}
+
+#graphToggle{
+    opacity: 0;
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.fa-chart-line{
+    color: var(--hover-fcolor);
+    padding-bottom: 1vh;
+}
+
+.fa-table{
+    color: var(--hover-bg);
+    padding-top: 1vh;
+}
+
+#graphToggle:checked + .graphLabel .fa-chart-line{
+    color: var(--hover-bg);
+}
+
+#graphToggle:checked + .graphLabel .fa-table{
+    color: var(--hover-fcolor);
+}
+
+@media only screen and (max-width: 600px){
+    #graphToggleContainer{
+        margin-top: 2vh;
+    }
+    
+    .graphLabel{
+        display: block;
+        width: 20vw;
+        padding: 0.6vh 0.6vw;
+        height: min-content;
+        border-radius: 8%;
+    }
+    
+    .fa-chart-line{
+        padding-right: 3vw;
+        align-self: flex-start;
+    }
+    
+    .fa-table{
+        padding-left: 3vw;
+    }
+}

@@ -96,14 +96,14 @@ export default function Contenido( {
 
     const animacionMobile = useSpring({
         from:{
-            height: "1vh",
+            height: `${window.innerHeight*0.01}px`,
             opacity: 0,
             top: "86vh"/*,
             right: "1vw",
             width: "37vw"*/
         },
         to:{
-            height: "85vh",
+            height: `${window.innerHeight*0.85}px`,
             opacity: 1,
             top: "1.5vh"/*,
             width: "95vw",
@@ -157,7 +157,11 @@ export default function Contenido( {
                         checked={graphMode}
                         onChange={()=>{setGraphMode(!graphMode)}}
                     />
-                    <label htmlFor="graphToggle">{graphMode? "Modo Gráfica" : "Modo Tabla"}</label>
+                    <label htmlFor="graphToggle" className="graphLabel">
+                        <i className="fas fa-chart-line"></i>
+                        <i className="fas fa-table"></i>
+                        <div className="graphSlider"></div>
+                    </label>
                 </div>
             )
         }

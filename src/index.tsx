@@ -5,6 +5,7 @@ import FirebaseProvider from './FirebaseContext';
 //import Modal from './components/Modal'
 import './sass/index.scss';
 import './sass/hover-min.css';
+import '@fortawesome/fontawesome-free'
 import * as serviceWorkerRegistrator from './serviceWorkerRegistration';
 
 ReactDOM.render(
