@@ -47,10 +47,16 @@ const GraphMode: React.FC<GraphModeProps> = (
         return width;
     }
 
+    /*const getCustomTooltip: Tooltip = ({active, payload, label}) => {
+        if(active){
+
+        }
+    }*/
+
     return (
         <div id="stats">
             <LineChart
-                height={(window.innerHeight)*0.58}
+                height={(window.innerHeight)*0.60}
                 width={getChartWidth()}
                 data={materias}
             >
@@ -79,8 +85,8 @@ const GraphMode: React.FC<GraphModeProps> = (
                     <Label
                         value={labelRPB}
                         position={'insideBottomLeft'}
-                        fontSize={"0.76em"}
-                        fontWeight={"bold"}
+                        fontSize={"0.85em"}
+                        //fontWeight={"bold"}
                         stroke={"var(--chart-axis)"}
                     />
                 </ReferenceLine>
@@ -92,8 +98,8 @@ const GraphMode: React.FC<GraphModeProps> = (
                     <Label
                         value={labelIndice}
                         position={'insideBottomLeft'}
-                        fontSize={"0.76em"}
-                        fontWeight={"bold"}
+                        fontSize={"0.85em"}
+                        //fontWeight={"bold"}
                         stroke={"var(--chart-axis)"}
                     />
                 </ReferenceLine>

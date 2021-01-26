@@ -24,11 +24,13 @@
     background: var(--bg-gradient), var(--bg-img);
     background-color: var(--bg) !important;
     color: var(--fcolor) !important;
-    z-index: 200;
+    z-index: 400;
     position: absolute;
     box-shadow: var(--box-shadow1);
     place-items: center;
     font-family: 'Poppins', sans-serif;
+    overflow: auto;
+    //padding-right: 5vw;
 
     a{
         text-decoration: none;
@@ -44,6 +46,7 @@
         margin-block: 0;
         margin-inline: 0 0;
         text-align: center;
+        padding: 5vh;
     }
 
     button{
@@ -55,7 +58,28 @@
         border: none;
         font-family: 'Poppins', sans-serif;
         font-size: 1.3em;
+        //padding: 5vh;
     }
+
+    li{
+        padding-bottom: 5vh;
+
+        video{
+            max-width: 25vw;
+            height: auto;
+            padding-right: 4vw;
+        }
+
+        img{
+            max-width: 25vw;
+            height: auto;
+            padding-right: 4vw;
+        }
+    }
+}
+
+#buttonContainer{
+    padding: 5vh;
 }
 
 .list-item > img{
@@ -64,4 +88,23 @@
 
 .list-item > a {
     font-size: 1.1em;
+}
+
+@media only screen and (max-width: 900px){
+    #modal-content{
+        li{
+            video{
+                max-width: 60vw;
+                height: auto;
+                padding-right: 4vw;
+                padding-top: 3vh;
+                display: block;
+            }
+
+            img{
+                max-width: 60vw;
+                padding-top: 3vh;
+            }
+        }
+    }
 }

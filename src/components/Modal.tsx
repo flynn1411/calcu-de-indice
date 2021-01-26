@@ -16,7 +16,8 @@ export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
         },
         to:{
             background: "rgba(0, 0, 0, 0.69)"
-        }
+        },
+        height: `${window.innerHeight}px`
     });
 
     const modalEntranceDesktop = useSpring({
@@ -34,12 +35,17 @@ export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
             left: "5vw",
             borderRadius: "0%"
         },
-        delay: 250
+        delay: 250,
+        height:`${window.innerHeight*0.80}px`
     });
 
     const modalEntranceMobile = useSpring({
-        from:{opacity: 0},
-        to: {opacity: 1},
+        from:{
+            opacity: 0
+        },
+        to: {
+            opacity: 1
+        },
         delay: 500
     });
 
@@ -76,6 +82,7 @@ export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
                             <img src={`resources/${temaActual}/email.png`} alt="email"/>
                             <a href="mailto:flynn1411@gmail.com" target="_blank" rel="noreferrer">flynn1411@gmail.com</a>
                         </div>
+                        
                     </animated.div>
                 </>
             )
@@ -87,9 +94,11 @@ export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
             <animated.div style={modalBgAnimation} id="modal-bg">
                 <animated.div style={ window.innerWidth > 600 ? modalEntranceDesktop : modalEntranceMobile } id="modal-content">
                     {getMessage()}
-                    <button onClick={() => {closeModal()}}>
-                        Cerrar
-                    </button>
+                    <div id={"buttonContainer"}>
+                        <button onClick={() => {closeModal()}}>
+                            Cerrar
+                        </button>
+                    </div>
                 </animated.div>                
             </animated.div>
         )

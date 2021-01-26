@@ -258,13 +258,34 @@ function App(){
         let newMessage = (<>
         <div id="list-item">
             <ul>
-                <li>Corrección en "Necesita llenar todos los UV... (error mio que me costó encontrar)"</li>
-                <li>Se movió el codigo fuente de Vanilla JS a <a href={"https://www.typescriptlang.org/"}>TypeScript</a>.</li>
-                <li>Opción de calcular indice de Graduación (o sin las clases RPB).</li>
-                <li>Mejoras visuales.</li>
-                <li>Switch con mejor estilo.</li>
-                <li>Agregado de modo gráfica.</li>
-                <li>Cambio en el uso de fuentes del titulo.</li>
+                <li>
+                    Corrección en como se maneja el 100% de la pantalla.
+                    <br/>
+                    Antes / Despúes
+                    <br/>
+                    <img src="resources/changes/heightBefore.jpg" alt="Altura antes"/>
+                    <img src="resources/changes/heightAfter.jpg" alt="Altura despúes"/>
+                </li>
+                <li>
+                    Cambios visuales en el interruptor para cambiar de Tabla a Gráfica.
+                    <br/>
+                    Antes / Despúes
+                    <br/>
+                    <video
+                        src="resources/changes/toggleBefore.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                    ></video>
+                    <video
+                        src="resources/changes/toggleAfter.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                    ></video>
+                </li>
             </ul>
         </div>
         </>);

@@ -12,7 +12,7 @@
     grid-template-areas: 
     " titulo "
     " contenidoInner ";
-    grid-template-rows: 18% auto;
+    grid-template-rows: 20% auto;
     //padding-left: 0.5vw;
     //grid-template-rows: 20% auto auto;
     border-radius: 5px;
@@ -36,17 +36,18 @@
     grid-area: contenidoInner;
     padding-left: 0.5vw;
     padding-right: 5vw;
-    padding-top: 5vh;
+    //padding-top: 5vh;
     overflow-y: scroll;
     overflow-x: scroll;
     scroll-behavior: smooth;
     scrollbar-color: var(--hover-fcolor) transparent;
     scrollbar-width: thin;
-}
-
-.recharts-wrapper{
     background-color: var(--chart-bg) !important;
 }
+
+/*.recharts-wrapper{
+    background-color: var(--chart-bg) !important;
+}*/
 
 #main-content{
     padding-left: 5vw;

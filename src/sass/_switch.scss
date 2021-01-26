@@ -5,11 +5,19 @@
 .graphLabel{
     display: block;
     width: min-content;
-    padding: 0.6vh 0.6vw;
+    padding: 0.8vh 0.5vw;
     height: min-content;
-    background-color: var(--text);
+    border: 4px solid var(--text);
     border-radius: 10%;
     cursor: pointer;
+    background: var(--toggle-bg);
+    background: var(--unchecked-gradient-vc);
+    transition: 0.8s;
+
+    i{
+        font-size: 1.3em;
+        transition: 0.8s;
+    }
 }
 
 #graphToggle{
@@ -20,21 +28,25 @@
 }
 
 .fa-chart-line{
-    color: var(--hover-fcolor);
-    padding-bottom: 1vh;
-}
-
-.fa-table{
-    color: var(--hover-bg);
+    color: var(--text);
     padding-top: 1vh;
 }
 
+.fa-table{
+    color: var(--checked-icon);
+    padding-bottom: 1vh;
+}
+
 #graphToggle:checked + .graphLabel .fa-chart-line{
-    color: var(--hover-bg);
+    color: var(--checked-icon);
 }
 
 #graphToggle:checked + .graphLabel .fa-table{
-    color: var(--hover-fcolor);
+    color: var(--text);
+}
+
+#graphToggle:checked + .graphLabel{
+    background: var(--checked-gradient-vc);
 }
 
 @media only screen and (max-width: 600px){
@@ -45,17 +57,29 @@
     .graphLabel{
         display: block;
         width: 20vw;
-        padding: 0.6vh 0.6vw;
-        height: min-content;
+        //padding: 0.6vh 0.6vw;
+        display: block;
+        width: 20vw;
+        height: 5.3vh;
         border-radius: 8%;
+        border-radius: 8%;
+        background: var(--unchecked-gradient-hz);
+
+        i{
+            font-size: 1.4em;
+        }
     }
     
     .fa-chart-line{
-        padding-right: 3vw;
+        padding-left: 3vw;
         align-self: flex-start;
     }
     
     .fa-table{
-        padding-left: 3vw;
+        padding-right: 3vw;
+    }
+
+    #graphToggle:checked + .graphLabel{
+        background: var(--checked-gradient-hz);
     }
 }

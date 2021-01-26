@@ -158,9 +158,8 @@ export default function Contenido( {
                         onChange={()=>{setGraphMode(!graphMode)}}
                     />
                     <label htmlFor="graphToggle" className="graphLabel">
-                        <i className="fas fa-chart-line"></i>
                         <i className="fas fa-table"></i>
-                        <div className="graphSlider"></div>
+                        <i className="fas fa-chart-line"></i>
                     </label>
                 </div>
             )
