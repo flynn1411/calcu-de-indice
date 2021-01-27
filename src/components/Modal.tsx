@@ -68,7 +68,7 @@ export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
                     <div id="header">
                         <h2>2021</h2>
                         <h2><a href="https://flynn1411.github.io" target="_blank" rel="noreferrer">Josué Ariel Izaguirre</a></h2>
-                        <h2><a href="https://github.com/flynn1411/flynn1411.github.io/releases/tag/v1.4.6" target="_blank" rel="noreferrer">v1.4.6</a></h2>
+                        <h2>v2.1.4</h2>
                     </div>
                     <div  id="socialMedia">
                         <div className="list-item">
@@ -169,7 +169,6 @@ export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
                                         playsInline
                                         className={"manualVidDesktop"}
                                     ></video>
-                                    <br/>
                                     <br/>
                                 </li>
                             </ul>

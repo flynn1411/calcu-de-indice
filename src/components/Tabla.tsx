@@ -120,6 +120,24 @@ const Tabla: React.FC<TablaProps> = ({
         document.body.className = temas[newTemaIndex++ % temas.length];
         setTemaIndex(newTemaIndex++);
         localStorage.setItem("currentTheme", document.body.className);
+
+        if(user){
+            firestore.collection("usuarios").doc(`${user.uid}`).set({
+                nombre : `${user.displayName}`,
+                correo : `${user.email}`,
+                correoVerificado : `${user.emailVerified}`,
+                id : `${user.uid}`,
+                "visibility" : "public",
+                currentTheme : localStorage.getItem("currentTheme")
+            }, {merge: true}
+            ).then( () => {
+                console.log("Success");
+            }
+            ).catch( error => {
+                console.log(error);
+            });
+        }
+
         setTemaActual(document.body.className);
     }
 

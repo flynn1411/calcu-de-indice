@@ -253,7 +253,7 @@ function App(){
     function mostrarMensaje(){
 
         let newHeader = (<>
-        <h2>Versión 2.2.1</h2>
+        <h2>Versión 2.1.4</h2>
         </>);
 
         let newMessage = (<>
