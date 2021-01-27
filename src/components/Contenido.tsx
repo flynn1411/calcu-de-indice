@@ -103,7 +103,7 @@ export default function Contenido( {
             width: "37vw"*/
         },
         to:{
-            height: `${window.innerHeight*0.85}px`,
+            height: `${window.innerHeight*0.84}px`,
             opacity: 1,
             top: "1.5vh"/*,
             width: "95vw",

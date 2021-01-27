@@ -68,9 +68,6 @@ export default function SignedIn( {cerrarSesion}: SignedInProps ) {
             <br></br>
             <div id="signedIn-buttons">
                 <button className="hvr-ripple-out" id="sign-out" onClick={()=>{return cerrarSesion()}}>Cerrar Sesión</button>
-                <br></br>
-                <br></br>
-                <button className="hvr-ripple-out" id="delete">Eliminar Usuario</button>
             </div>
         </animated.div>
     )

@@ -46,7 +46,7 @@
         margin-block: 0;
         margin-inline: 0 0;
         text-align: center;
-        padding: 5vh;
+        padding: 2vh;
     }
 
     button{
@@ -64,18 +64,25 @@
     li{
         padding-bottom: 5vh;
 
-        video{
-            max-width: 25vw;
-            height: auto;
-            padding-right: 4vw;
-        }
-
         img{
             max-width: 25vw;
             height: auto;
             padding-right: 4vw;
         }
     }
+}
+
+#socialMedia{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.manualVidDesktop{
+    max-width: 55vw;
+    height: auto;
+    display: block;
+    margin: auto;
 }
 
 #buttonContainer{
@@ -90,21 +97,34 @@
     font-size: 1.1em;
 }
 
+#utilities{
+    padding-top: 5vh;
+}
+
+.changesVid{
+    max-width: 25vw;
+    height: auto;
+    padding-right: 4vw;
+}
+
 @media only screen and (max-width: 900px){
     #modal-content{
+        top: 5vh;
+
         li{
-            video{
-                max-width: 60vw;
-                height: auto;
-                padding-right: 4vw;
-                padding-top: 3vh;
-                display: block;
-            }
 
             img{
                 max-width: 60vw;
                 padding-top: 3vh;
             }
         }
+    }
+
+    .changesVid{
+        max-width: 60vw;
+        height: auto;
+        padding-right: 4vw;
+        padding-top: 3vh;
+        display: block;
     }
 }

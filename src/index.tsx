@@ -30,6 +30,7 @@ ReactDOM.render(
 
 serviceWorkerRegistrator.register({ onUpdate: (registration: ServiceWorkerRegistration) =>{
     console.log("Nueva Actualización Disponible");
+    if(localStorage.getItem("informed")) localStorage.removeItem("informed");
 
     let acceptBttn = document.querySelector("#aceptar") as HTMLButtonElement;
 
@@ -39,7 +40,6 @@ serviceWorkerRegistrator.register({ onUpdate: (registration: ServiceWorkerRegist
                 registration.waiting.postMessage({type: "SKIP_WAITING"});
             }
 
-            if(localStorage.getItem("informed")) localStorage.removeItem("informed");
             window.location.reload();
         };
     }

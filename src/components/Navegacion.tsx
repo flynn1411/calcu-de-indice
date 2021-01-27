@@ -62,8 +62,8 @@ export default function Navegacion( {cambiarModalidad, tipoIndice, temaActual, s
             <div className={setActive("PERIODO")} id="periodo" onClick={() => {cambiarActive("PERIODO")}}>Periodo</div>
         </div>
         
-        <div id="navbar-mobile" className="navegacion">
-            <div className="dNavItems seleccion" id="logo" onClick={e => {showModal();}}>
+        <div id="navbar-mobile" className="navegacion" style={{height:`${window.innerHeight*0.11}px`}}>
+            <div className="dNavItems seleccion" id="logo" onClick={e => {showModal()}}>
                     <img className="hvr-grow" src={`resources/${temaActual}/info.png` } alt="Info"/>
                 </div>
                 <div className="dNavItems" id="indice">Indice:</div>

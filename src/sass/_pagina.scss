@@ -45,9 +45,14 @@
     background-color: var(--chart-bg) !important;
 }
 
-/*.recharts-wrapper{
-    background-color: var(--chart-bg) !important;
-}*/
+.custom-tooltip{
+    background: var(--bg-gradient), var(--bg-img);
+    background-color: var(--bg) !important;
+    color: var(--fcolor);
+    padding: 1vh 1vw;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5%;
+}
 
 #main-content{
     padding-left: 5vw;

@@ -96,7 +96,7 @@ body{
     min-height: -webkit-fill-available;
     overflow: hidden;
     display: grid;
-    row-gap: 1vh;
+    //row-gap: 1vh;
     grid-template-areas:
     "contenido"
     "navegacion";
@@ -130,6 +130,7 @@ button:hover{
     #root{
         min-height: -webkit-fill-available;
         bottom: 0vh;
+        row-gap: 1vh;
     }
 
     body {
@@ -289,6 +290,10 @@ button:hover{
 
     .hvr-bounce-in:hover, .hvr-bounce-in:focus, .hvr-bounce-in:active {
         transform: none !important;
+    }
+
+    .seleccion:hover{
+        z-index: 1;
     }
 }
 

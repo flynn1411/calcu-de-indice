@@ -54,6 +54,7 @@ function App(){
     const [saving, setSavingState] = useState<boolean>(false);
     const [graphMode, setgraphMode] = useState<boolean>(false);
 
+
     const firebaseContext = useContext(FirebaseContext);
     const firestore = firebaseContext.firebase.firestore();
     const user = firebaseContext.user;
@@ -277,6 +278,7 @@ function App(){
                         loop
                         muted
                         playsInline
+                        className={"changesVid"}
                     ></video>
                     <video
                         src="resources/changes/toggleAfter.mp4"
@@ -284,7 +286,16 @@ function App(){
                         loop
                         muted
                         playsInline
+                        className={"changesVid"}
                     ></video>
+                </li>
+                <li>
+                    Cambios visuales en la información de una clase en modo Tabla.
+                    <br/>
+                    Antes / Despúes
+                    <br/>
+                    <img src="resources/changes/toolTip-before.png" alt="Tooltip antes"/>
+                    <img src="resources/changes/toolTip-after.png" alt="Tooltip despúes"/>
                 </li>
             </ul>
         </div>

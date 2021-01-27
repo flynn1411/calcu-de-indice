@@ -1,5 +1,14 @@
 import React from 'react';
-import {Line, LineChart, YAxis, XAxis, CartesianGrid, ReferenceLine, Tooltip, Label} from 'recharts';
+import {
+    Line,
+    LineChart,
+    YAxis,
+    XAxis,
+    CartesianGrid,
+    ReferenceLine,
+    Tooltip,
+    Label
+} from 'recharts';
 import ObjMateria from '../interfaces/materia';
 
 export interface GraphModeProps {
@@ -33,6 +42,24 @@ const GraphMode: React.FC<GraphModeProps> = (
     let labelIndice: string = `Índice Actual: ${indice}`;
     let labelRPB: string = "RPB";
     let colorIndice: string = indice < 65 ? "var(--failed)" : "var(--passed)";
+
+    let colorShadow = (nota: number | null): string => {
+        let shadow= "var(--box-shadow2)"
+
+        if(nota && nota< 65) shadow = "var(--box-shadow1)"
+
+        else if(nota === null && indice < 65) shadow = "var(--box-shadow1)"
+
+        return shadow;
+    }
+
+    let colorNota = (nota: number): string =>{
+        let defaultColor = "var(--passed)";
+
+        if(nota < 65) defaultColor = "var(--failed)"
+
+        return defaultColor
+    }
     
     function getChartWidth(): number{
         let width: number;
@@ -47,10 +74,26 @@ const GraphMode: React.FC<GraphModeProps> = (
         return width;
     }
 
-    /*const getCustomTooltip: Tooltip = ({active, payload, label}) => {
-        if(active){
-
+    const CustomTooltip = (props: any) => {
+        if (props.active && props.payload) {
+            let nota = props.payload[0].payload.Nota;
+            let clase = props.payload[0].payload.Clase;
+            let uv = props.payload[0].payload.UV;
+            
+          return (
+            <div className="custom-tooltip" style={{boxShadow:colorShadow(nota)}}>
+              <p className="label"><strong style={{color: colorNota(nota), textAlign: "center", textDecoration: 'underline'}}>{clase}</strong></p>
+              <p className="intro">Nota: <strong style={{color: colorNota(nota)}}>{nota}</strong></p>
+              <p className="desc">UV: <strong style={{color: colorNota(nota)}}>{uv}</strong></p>
+            </div>
+          );
         }
+      
+        return null;
+      };
+
+    /*const CustomDot = (props: any | null) =>{
+        return <text x={props.x} y={props.y} dy={-4} fill={colorNota(props.value)} fontSize={10} textAnchor="middle">{props.value}</text>;
     }*/
 
     return (
@@ -80,6 +123,7 @@ const GraphMode: React.FC<GraphModeProps> = (
                 >
                 </Line>
                 <Tooltip
+                    content={<CustomTooltip/>}
                 />
                 <ReferenceLine y={65} stroke="var(--failed)" strokeDasharray={"3 3"} strokeWidth={2}>
                     <Label

@@ -46,30 +46,31 @@ export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
         to: {
             opacity: 1
         },
-        delay: 500
+        delay: 500,
+        height:`${window.innerHeight*0.80}px`
     });
 
     function getMessage(){
         if(message){
             return(
                 <>
-                    <animated.div style={modalEntranceMobile} id="header">
+                    <div id="header">
                         {message.header}
-                    </animated.div>
-                    <animated.div  style={modalEntranceMobile} id="socialMedia">
+                    </div>
+                    <div  id="socialMedia">
                         {message.content}
-                    </animated.div>
+                    </div>
                 </>
             )
         }else{
             return(
                 <>
-                    <animated.div style={modalEntranceMobile} id="header">
+                    <div id="header">
                         <h2>2021</h2>
                         <h2><a href="https://flynn1411.github.io" target="_blank" rel="noreferrer">Josué Ariel Izaguirre</a></h2>
                         <h2><a href="https://github.com/flynn1411/flynn1411.github.io/releases/tag/v1.4.6" target="_blank" rel="noreferrer">v1.4.6</a></h2>
-                    </animated.div>
-                    <animated.div  style={modalEntranceMobile} id="socialMedia">
+                    </div>
+                    <div  id="socialMedia">
                         <div className="list-item">
                             <img src={`resources/${temaActual}/github-logo.png`} alt="github"/>
                             <a href="https://github.com/flynn1411" target="_blank" rel="noreferrer">flynn1411</a>
@@ -82,8 +83,98 @@ export default function Modal( {closeModal, temaActual, message}: ModalProps ) {
                             <img src={`resources/${temaActual}/email.png`} alt="email"/>
                             <a href="mailto:flynn1411@gmail.com" target="_blank" rel="noreferrer">flynn1411@gmail.com</a>
                         </div>
-                        
-                    </animated.div>
+                        <div id="utilities">
+                            <h2 style={{textAlign: "center", textDecoration: "underline"}}>Utilidades</h2>
+                            <ul>
+                                <li>Calcular el índice global o de periodo (con guardado automático de datos), las notas que no sean llenadas o sean 0 no serán tomadas para calcular el indice:
+                                    <br/>
+                                    <br/>
+                                    <video
+                                        src="resources/manual/calcular.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className={"manualVidDesktop"}
+                                    ></video>
+                                    <br/>
+                                    <br/>
+                                </li>
+                                <li>
+                                    Habilidad para instalar la página web como aplicación nativa (tambien disponible en el navegador web Safari de iPhones). Para lograr eso, debes de apretar este mensaje la primera vez que te cargue la app.
+                                    <br/><br/>
+                                    <img src="resources/manual/pwa.jpg" alt="Optimización Aplicación Web Progresiva" className={"manualVidDesktop"}/>
+                                </li>
+                                <li>
+                                    En la sección para calcular el índice global, se encuentra una opción para obtener el índice unicamente con las clases aprobadas (mayor o igual a 65 en su nota final).
+                                    <br/>
+                                    <br/>
+                                    <video
+                                        src="resources/manual/calcular-sin-rpb.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className={"manualVidDesktop"}
+                                    ></video>
+                                <br/>
+                                <br/>
+                                </li>
+                                <li>
+                                    En la sección para calcular el índice de periodo, se puede encontrar un botón abajo de la sección en donde se muestran los resultados para agregar las clases del periodo actual a las clases en la sección del índice global. Esto con la intención de evitar volver a escribir los datos de una sección a la siguiente.
+                                    <video
+                                        src="resources/manual/mover-a-global.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className={"manualVidDesktop"}
+                                    ></video>
+                                    <br/>
+                                    <br/>
+                                </li>
+                                <li>
+                                    !Tiene temas¡ Así es, en ambas secciones (global o periodo) se encuentra un botón el cual cambia el tema actual de la página. En estos momentos solamente se encuentran tres temas (claro, oscuro y uno synthwave o de colores neon ochenteros), pero podría agregar más con el tiempo.
+                                    <video
+                                        src="resources/manual/cambio-temas.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className={"manualVidDesktop"}
+                                    ></video>
+                                    <br/>
+                                    <br/>
+                                </li>
+                                <li>
+                                    Si deseas tener una visualización gráfica de tu índice global puedes hacerlo.
+                                    <video
+                                        src="resources/manual/modo-grafica.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className={"manualVidDesktop"}
+                                    ></video>
+                                    <br/>
+                                    <br/>
+                                </li>
+                                <li>
+                                    Otra gran utilidad es poder guardar tus datos al ingresar con una cuenta de google, o al ingresar con la misma, tus datos existentes serán cargados, incluyendo el último tema que seleccionaste. Los datos se guardan en <a href="https://firebase.google.com/" style={{textDecoration: "underline"}}>Firebase</a> de manera segura utilizando <a href="https://programacionymas.com/blog/protocolo-oauth-2" style={{textDecoration: "underline"}}>OAuth 2</a> al ingresar con una cuenta de Google.
+                                    <video
+                                        src="resources/manual/google-signin.mp4"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className={"manualVidDesktop"}
+                                    ></video>
+                                    <br/>
+                                    <br/>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </>
             )
         }
