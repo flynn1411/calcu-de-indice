@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import ObjMateria from '../interfaces/materia';
 import GraphMode from './GraphMode';
@@ -25,6 +25,10 @@ interface contenidoProps{
     setGraphMode: (mode: boolean) => void;
 };
 
+interface infoVentana{
+    "height": number
+};
+
 export default function Contenido( {
     materias,
     setMaterias,
@@ -49,6 +53,13 @@ export default function Contenido( {
 }: contenidoProps ) {
 
     const [indiceActual, setIndiceActual] = useState<number>(-1);
+    const [currentHeight, setCurrentHeight] = useState<infoVentana>({
+        "height": 800
+    });
+
+    useEffect(()=>{
+        setCurrentHeight({"height":window.innerHeight});
+    },[]);
 
     const periodoSpawn = {
         "width": "34vw",
@@ -96,14 +107,14 @@ export default function Contenido( {
 
     const animacionMobile = useSpring({
         from:{
-            height: `${window.innerHeight*0.01}px`,
+            height: `${currentHeight.height*0.01}px`,
             opacity: 0,
             top: "86vh"/*,
             right: "1vw",
             width: "37vw"*/
         },
         to:{
-            height: `${window.innerHeight*0.84}px`,
+            height: `${currentHeight.height*0.84}px`,
             opacity: 1,
             top: "1.5vh"/*,
             width: "95vw",
