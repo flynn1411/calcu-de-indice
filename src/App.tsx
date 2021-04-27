@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {v4 as uuidv4} from 'uuid';
 import indiceGlobal from './profiles/global';
@@ -53,6 +53,11 @@ function App(){
     const [cambioPagina, setCambioPagina] = useState<boolean>(false);
     const [saving, setSavingState] = useState<boolean>(false);
     const [graphMode, setgraphMode] = useState<boolean>(false);
+    const [currentHeight, setHeight] = useState<number>(510);
+
+    useEffect(()=>{
+        setHeight(window.innerHeight*0.85);
+    },[]);
 
 
     const firebaseContext = useContext(FirebaseContext);
@@ -324,7 +329,7 @@ function App(){
         if(window.innerWidth > 900){
             return {height: "85vh"}
         }else{
-            return {height: `${window.innerHeight*0.85}px`}
+            return {height: `${currentHeight}px`}
         }
     }
 
